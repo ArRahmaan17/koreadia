@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mail_agendas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('desctiption');
+            $table->string('description');
             $table->timestamps();
         });
     }

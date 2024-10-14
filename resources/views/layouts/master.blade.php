@@ -39,6 +39,32 @@
 
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')
+    <script>
+        function serializeObject(node) {
+            var o = {};
+            var a = node.serializeArray();
+            $.each(a, function() {
+                if (this.value !== "") {
+                    if (o[this.name]) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                }
+            });
+            return o;
+        }
+    </script>
+    @if (env('APP_ENV') === 'production')
+        <script>
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            })
+        </script>
+    @endif
 </body>
 
 </html>

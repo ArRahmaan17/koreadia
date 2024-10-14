@@ -1,6 +1,13 @@
 <?php
 return [
     'menu' => 'Menu',
+    'mail_agenda' => 'Mail Agenda',
+    'mail_type' => 'Mail Type',
+    'mail_priority' => 'Mail Priority',
+    'add' => 'Add',
+    'update' => 'Update',
+    'save' => 'Save',
+    'close' => 'Close',
     'dashboards' => 'Dashboards',
     'analytics' => 'Analytics',
     'crm' => 'CRM',
