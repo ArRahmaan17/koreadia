@@ -36,7 +36,7 @@ class AgendaController extends Controller
         } else {
             $assets = MailAgenda::select('*')
                 ->where('name', 'like', '%'.$request['search']['value'].'%')
-                ->orWhere('route', 'like', '%'.$request['search']['value'].'%');
+                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
                 $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);

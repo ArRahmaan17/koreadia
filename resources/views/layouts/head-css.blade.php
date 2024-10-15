@@ -1,4 +1,5 @@
 @yield('css')
+<link href="{{ URL::asset('build/libs/select2/select2.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 <!-- Layout config Js -->
 <script src="{{ URL::asset('build/js/layout.js') }}"></script>
 <!-- Bootstrap Css -->

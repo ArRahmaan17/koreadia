@@ -201,8 +201,8 @@
                     target: 0,
                     name: 'number',
                     data: 'number',
-                    orderable: true,
-                    searchable: true,
+                    orderable: false,
+                    searchable: false,
                     render: (data, type, row, meta) => {
                         return `<div class='text-wrap'>${data}</div>`
                     }

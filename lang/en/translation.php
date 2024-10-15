@@ -4,6 +4,8 @@ return [
     'mail_agenda' => 'Mail Agenda',
     'mail_type' => 'Mail Type',
     'mail_priority' => 'Mail Priority',
+    'role' => 'App Role',
+    'menu' => 'App Menu',
     'add' => 'Add',
     'update' => 'Update',
     'save' => 'Save',

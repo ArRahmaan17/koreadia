@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Dev\Mail\AgendaController;
 use App\Http\Controllers\Dev\Mail\PriorityController;
 use App\Http\Controllers\Dev\Mail\TypeController;
+use App\Http\Controllers\Dev\MenuController;
+use App\Http\Controllers\Dev\RoleController;
 use App\Http\Controllers\User\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +45,22 @@ Route::middleware('auth')->prefix('master')->name('master.')->group(function () 
         Route::put('/{id?}', [PriorityController::class, 'update'])->name('update');
         Route::delete('/{id?}', [PriorityController::class, 'destroy'])->name('destroy');
         Route::post('/', [PriorityController::class, 'store'])->name('store');
+    });
+    Route::prefix('menu')->name('menu.')->group(function () {
+        Route::get('/', [MenuController::class, 'index'])->name('index');
+        Route::get('/data-table', [MenuController::class, 'dataTable'])->name('data-table');
+        Route::get('/{id?}', [MenuController::class, 'show'])->name('show');
+        Route::put('/{id?}', [MenuController::class, 'update'])->name('update');
+        Route::delete('/{id?}', [MenuController::class, 'destroy'])->name('destroy');
+        Route::post('/', [MenuController::class, 'store'])->name('store');
+    });
+    Route::prefix('role')->name('role.')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::get('/data-table', [RoleController::class, 'dataTable'])->name('data-table');
+        Route::get('/{id?}', [RoleController::class, 'show'])->name('show');
+        Route::put('/{id?}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{id?}', [RoleController::class, 'destroy'])->name('destroy');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
     });
 });
 Route::middleware('guest')->group(function () {

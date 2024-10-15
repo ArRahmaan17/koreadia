@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.mail_type')
+    @lang('translation.role')
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('build/libs/datatable/dataTables.min.css') }}" />
@@ -11,19 +11,19 @@
             Master
         @endslot
         @slot('title')
-            Mail Type
+            Role
         @endslot
     @endcomponent
     <div class="card">
         <div class="card-header align-items-center d-flex">
-            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.mail_type')</h4>
+            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.role')</h4>
             <div class="flex-shrink-0">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-type">@lang('translation.add')</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-role">@lang('translation.add')</button>
             </div>
         </div><!-- end card header -->
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="table-type">
+                <table class="table table-bordered" id="table-role">
                     <thead>
                         <tr>
                             <td>No</td>
@@ -38,31 +38,31 @@
             </div>
         </div>
     </div>
-    <div id="modal-type" class="modal fade" tabindex="-1" aria-labelledby="modal-type-label" aria-hidden="true" style="display: none;">
+    <div id="modal-role" class="modal fade" tabindex="-1" aria-labelledby="modal-role-label" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-type-label">Add @lang('translation.mail_type')</h5>
+                    <h5 class="modal-title" id="modal-role-label">Add @lang('translation.role')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" id="form-type">
+                    <form action="#" id="form-role">
                         @csrf
                         <input type="hidden" name="id">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name type mail">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name role mail">
                             <label for="name">Name</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description type mail"></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description role mail"></textarea>
                             <label for="description">Description</label>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-success" id="save-type">@lang('translation.save') Changes</button>
-                    <button type="button" class="btn btn-soft-warning d-none" id="update-type">@lang('translation.update') Changes</button>
+                    <button type="button" class="btn btn-soft-success" id="save-role">@lang('translation.save') Changes</button>
+                    <button type="button" class="btn btn-soft-warning d-none" id="update-role">@lang('translation.update') Changes</button>
                 </div>
             </div>
         </div>
@@ -77,32 +77,32 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.resonsive.min.js') }}"></script>
     <script>
-        window.dataTableType = null;
+        window.datatableRole = null;
         window.state = 'add';
 
         function actionData() {
             $('.edit').click(function() {
                 window.state = 'update';
-                let idType = $(this).data("type");
-                $("#update-type").data("type", idType);
-                if (window.dataTableType.rows('.selected').data().length == 0) {
-                    $('#table-type tbody').find('tr').removeClass('selected');
+                let idRole = $(this).data("role");
+                $("#update-role").data("role", idRole);
+                if (window.datatableRole.rows('.selected').data().length == 0) {
+                    $('#table-role tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.dataTableType.rows('.selected').data()[0];
+                var data = window.datatableRole.rows('.selected').data()[0];
 
-                $('#modal-type').modal('show');
-                $('#modal-type').find('.modal-title').html(`Edit @lang('translation.mail_type')`);
-                $('#save-type').addClass('d-none');
-                $('#update-type').removeClass('d-none');
+                $('#modal-role').modal('show');
+                $('#modal-role').find('.modal-title').html(`Edit @lang('translation.role')`);
+                $('#save-role').addClass('d-none');
+                $('#update-role').removeClass('d-none');
 
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('master.type.show') }}/" + idType,
+                    url: "{{ route('master.role.show') }}/" + idRole,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-type').find("form")
+                        $('#modal-role').find("form")
                             .find('input, textarea').map(function(index, element) {
                                 if (response.data[element.name]) {
                                     $(`[name=${element.name}]`).val(response.data[element
@@ -112,7 +112,7 @@
                     },
                     error: function(error) {
                         iziToast.error({
-                            id: 'alert-type-action',
+                            id: 'alert-role-action',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -124,12 +124,12 @@
             })
 
             $('.delete').click(function() {
-                if (window.dataTableType.rows('.selected').data().length == 0) {
-                    $('#table-type tbody').find('tr').removeClass('selected');
+                if (window.datatableRole.rows('.selected').data().length == 0) {
+                    $('#table-role tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
-                let idType = $(this).data("type");
-                var data = window.dataTableType.rows('.selected').data()[0];
+                let idRole = $(this).data("role");
+                var data = window.datatableRole.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -140,7 +140,7 @@
                     id: 'question',
                     zindex: 9999,
                     title: 'Confirmation',
-                    message: "Are you sure you want to delete this mails type data?",
+                    message: "Are you sure you want to delete this mails role data?",
                     position: 'center',
                     icon: 'bx bx-question-mark',
                     buttons: [
@@ -150,26 +150,26 @@
                             }, toast, 'button');
                             $.ajax({
                                 type: "DELETE",
-                                url: "{{ route('master.type.destroy') }}/" +
-                                    idType,
+                                url: "{{ route('master.role.destroy') }}/" +
+                                    idRole,
                                 data: {
                                     _token: `{{ csrf_token() }}`,
                                 },
                                 dataType: "json",
                                 success: function(response) {
                                     iziToast.success({
-                                        id: 'alert-type-form',
+                                        id: 'alert-role-form',
                                         title: 'Success',
                                         message: response.message,
                                         position: 'topRight',
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.dataTableType.ajax.reload()
+                                    window.datatableRole.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
-                                        id: 'alert-type-action',
+                                        id: 'alert-role-action',
                                         title: 'Error',
                                         message: error.responseJSON.message,
                                         position: 'topRight',
@@ -189,9 +189,9 @@
             });
         }
         $(function() {
-            window.dataTableType = $('#table-type').DataTable({
+            window.datatableRole = $('#table-role').DataTable({
                 scrollY: '100%',
-                ajax: "{{ route('master.type.data-table') }}",
+                ajax: "{{ route('master.role.data-table') }}",
                 processing: true,
                 serverSide: true,
                 order: [
@@ -235,38 +235,38 @@
                     }
                 }]
             });
-            window.dataTableType.on('draw.dt', function() {
+            window.datatableRole.on('draw.dt', function() {
                 actionData();
             });
-            $('#save-type').click(function() {
-                let data = serializeObject($('#form-type'));
+            $('#save-role').click(function() {
+                let data = serializeObject($('#form-role'));
                 $.ajax({
                     type: "POST",
-                    url: `{{ route('master.type.store') }}`,
+                    url: `{{ route('master.role.store') }}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-type').modal('hide')
+                        $('#modal-role').modal('hide')
                         iziToast.success({
-                            id: 'alert-type-form',
+                            id: 'alert-role-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.dataTableType.ajax.reload();
+                        window.datatableRole.ajax.reload();
 
                     },
                     error: function(error) {
-                        $('#modal-type .is-invalid').removeClass('is-invalid')
+                        $('#modal-role .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-type').find('[name=' + indexInArray +
+                            $('#modal-role').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-type-form',
+                            id: 'alert-role-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -276,35 +276,35 @@
                     }
                 });
             });
-            $('#update-type').click(function() {
-                let data = serializeObject($('#form-type'));
+            $('#update-role').click(function() {
+                let data = serializeObject($('#form-role'));
                 $.ajax({
                     type: "PUT",
-                    url: `{{ route('master.type.update') }}/${data.id}`,
+                    url: `{{ route('master.role.update') }}/${data.id}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-type').modal('hide')
+                        $('#modal-role').modal('hide')
                         iziToast.success({
-                            id: 'alert-type-form',
+                            id: 'alert-role-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.dataTableType.ajax.reload();
+                        window.datatableRole.ajax.reload();
 
                     },
                     error: function(error) {
-                        $('#modal-type .is-invalid').removeClass('is-invalid')
+                        $('#modal-role .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-type').find('[name=' + indexInArray +
+                            $('#modal-role').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-type-form',
+                            id: 'alert-role-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -314,14 +314,14 @@
                     }
                 });
             });
-            $('#modal-type').on('hidden.bs.modal', function() {
+            $('#modal-role').on('hidden.bs.modal', function() {
                 window.state = 'add';
                 $(this).find('form')[0].reset();
-                $(this).find('.modal-title').html(`Add @lang('translation.mail_type')`);
-                $('#save-type').removeClass('d-none');
-                $('#update-type').addClass('d-none');
-                $('#modal-type .is-invalid').removeClass('is-invalid')
-                $('#table-type tbody').find('tr').removeClass('selected');
+                $(this).find('.modal-title').html(`Add @lang('translation.role')`);
+                $('#save-role').removeClass('d-none');
+                $('#update-role').addClass('d-none');
+                $('#modal-role .is-invalid').removeClass('is-invalid')
+                $('#table-role tbody').find('tr').removeClass('selected');
             });
         });
     </script>
