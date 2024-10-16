@@ -115,7 +115,7 @@
                                         <label for="parent" class="form-label">Menu Accessibility</label>
                                         @foreach ($roles as $role)
                                             <div class="form-check form-switch form-switch-warning">
-                                                <input class="form-check-input" type="checkbox" role="switch" name="role[]" value="{{ $role->id }}"
+                                                <input class="form-check-input" type="checkbox" role="switch" name="roles[]" value="{{ $role->id }}"
                                                     id="role-{{ Str::lower($role->name) }}" @if ($loop->first) checked @endif>
                                                 <label class="form-check-label" for="role-{{ Str::lower($role->name) }}">{{ $role->name }}
                                                     ({{ $role->description }})
@@ -138,9 +138,6 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('build/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
-    <script src="{{ asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
     <!--datatable js-->
     <script src="{{ asset('build/libs/datatable/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
@@ -173,13 +170,13 @@
                     success: function(response) {
                         $('#modal-menu').find("form")
                             .find('input, select').map(function(index, element) {
-                                if (response.data[element.name] != undefined) {
+                                if (element.name != '_token') {
                                     if (element.name === 'place') {
                                         $(`[name=${element.name}][value=${response.data[element
                                                 .name]}]`).prop('checked', true)
-                                    } else if (element.name === 'role[]') {
-                                        response.data[element.name].forEach(role => {
-                                        $(`[name=${element.name}][value=${role}]`).prop('checked', true)
+                                    } else if (element.name === 'roles[]') {
+                                        response.data['roles'].forEach(role => {
+                                            $(`[name="${element.name}"][value=${role.role_id}]`).prop('checked', true)
                                         });
                                     } else {
                                         $(`[name=${element.name}]`).val(response.data[element
@@ -200,7 +197,51 @@
                     }
                 });
             })
+            $('.parent').click(function() {
+                window.state = 'add';
+                let idMenu = $(this).data("menu");
+                $("#edit-menu").data("menu", idMenu);
+                if (window.dataTableMenu.rows('.selected').data().length == 0) {
+                    $('#table-menu tbody').find('tr').removeClass('selected');
+                    $(this).parents('tr').addClass('selected')
+                }
 
+                var data = window.dataTableMenu.rows('.selected').data()[0];
+
+                $('#modal-menu').modal('show');
+                $('#modal-menu').find('.modal-title').html(`Add Child @yield('title')`);
+                $('#save-menu').removeClass('d-none');
+                $('#edit-menu').addClass('d-none');
+                $('#modal-menu')
+                    .find('form select')
+                    .val(idMenu)
+                    .trigger('change');
+                setTimeout(() => {
+                    $('#modal-menu')
+                        .find('form select')
+                        .prop("disabled", true);
+                }, 200);
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('master.menu.show') }}/" + idMenu,
+                    dataType: "json",
+                    success: function(response) {
+                        response.data.roles.forEach(role => {
+                            $(`[name="roles[]"][value=${role.role_id}]`).prop('checked', true)
+                        });
+                    },
+                    error: function(error) {
+                        iziToast.error({
+                            id: 'alert-menu-action',
+                            title: 'Error',
+                            message: error.responseJSON.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
+                        });
+                    }
+                });
+            })
             $('.delete').click(function() {
                 if (window.dataTableMenu.rows('.selected').data().length == 0) {
                     $('#table-menu tbody').find('tr').removeClass('selected');
@@ -317,6 +358,9 @@
                 actionData();
             });
             $('#save-menu').click(function() {
+                $('#modal-menu')
+                    .find('form select')
+                    .prop("disabled", false);
                 let data = serializeObject($('#form-menu'));
                 $.ajax({
                     type: "POST",
@@ -400,6 +444,9 @@
                 $('#update-menu').addClass('d-none');
                 $('#modal-menu .is-invalid').removeClass('is-invalid')
                 $('#table-menu tbody').find('tr').removeClass('selected');
+                $('#modal-menu')
+                    .find('form select')
+                    .prop("disabled", true);
             });
             $('#modal-menu').on('shown.bs.modal', function() {
                 setTimeout(() => {

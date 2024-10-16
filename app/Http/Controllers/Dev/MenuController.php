@@ -68,7 +68,7 @@ class MenuController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-menu='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-menu='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-info parent' data-menu='" . $item->id . "' ><i class='bx bx-plus' ></i></button><button class='btn btn-icon btn-warning edit' data-menu='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-menu='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -92,14 +92,14 @@ class MenuController extends Controller
             'route' => 'required',
             'icon' => 'required',
             'parent' => 'required',
-            'role' => 'required|array',
+            'roles' => 'required|array',
         ]);
         try {
             $data = $request->except('_token', 'id', 'role');
             $menu = Menu::create($data);
             $roleMenu =  array_map(function ($data) use ($menu) {
                 return ['role_id' => $data, 'menu_id' => $menu->id, 'created_at' => now('Asia/Jakarta')];
-            }, $request->role);
+            }, $request->roles);
             RoleMenu::insert($roleMenu);
             DB::commit();
             $response = ['message' => 'Creating resource successfully'];
@@ -140,7 +140,7 @@ class MenuController extends Controller
             'route' => 'required',
             'icon' => 'required',
             'parent' => 'required',
-            'role' => 'required|array',
+            'roles' => 'required|array',
         ]);
         try {
             $data = $request->except('_token', 'id', 'role');
@@ -148,7 +148,7 @@ class MenuController extends Controller
             RoleMenu::where('menu_id', $id)->delete();
             $roleMenu =  array_map(function ($data) use ($id) {
                 return ['role_id' => $data, 'menu_id' => $id, 'created_at' => now('Asia/Jakarta')];
-            }, $request->role);
+            }, $request->roles);
             RoleMenu::insert($roleMenu);
             DB::commit();
             $response = ['message' => 'Updating resource successfully'];

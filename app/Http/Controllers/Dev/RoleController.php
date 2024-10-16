@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\RoleMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
-   /**
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -30,16 +31,16 @@ class RoleController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
             $assets = $assets->get();
         } else {
             $assets = Role::select('*')
-                ->where('name', 'like', '%'.$request['search']['value'].'%')
-                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
+                ->where('name', 'like', '%' . $request['search']['value'] . '%')
+                ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -48,11 +49,11 @@ class RoleController extends Controller
             $assets = $assets->get();
 
             $totalFiltered = Role::select('*')
-                ->where('name', 'like', '%'.$request['search']['value'].'%')
-                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
+                ->where('name', 'like', '%' . $request['search']['value'] . '%')
+                ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['order'][0]['name'].' '.$request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['order'][0]['name'] . ' ' . $request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -62,7 +63,7 @@ class RoleController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-role='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-role='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-role='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-role='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -86,7 +87,8 @@ class RoleController extends Controller
         ]);
         DB::beginTransaction();
         try {
-            Role::create($request->except('_token'));
+            $role = Role::create($request->except('_token'));
+            RoleMenu::create(['role_id' => $role->id, 'menu_id' => 1]);
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
             DB::commit();
@@ -121,7 +123,7 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:roles,name,'.$id,
+            'name' => 'required|unique:roles,name,' . $id,
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();
