@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Dev\AuthController;
 use App\Http\Controllers\Dev\Mail\AgendaController;
 use App\Http\Controllers\Dev\Mail\PriorityController;
 use App\Http\Controllers\Dev\Mail\TypeController;
