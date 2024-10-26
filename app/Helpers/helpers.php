@@ -22,6 +22,41 @@ if (! function_exists('buildTree')) {
         return $branch;
     }
 }
+function getSql($model)
+{
+    $replace = function ($sql, $bindings) {
+        $needle = '?';
+        foreach ($bindings as $replace) {
+            $pos = strpos($sql, $needle);
+            if ($pos !== false) {
+                if (gettype($replace) === 'string') {
+                    $replace = ' "'.addslashes($replace).'" ';
+                }
+                $sql = substr_replace($sql, $replace, $pos, strlen($needle));
+            }
+        }
+
+        return $sql;
+    };
+    $sql = $replace($model->toSql(), $model->getBindings());
+
+    return $sql;
+}
+
+
+function unFormattedPhoneNumber($formattedNumber)
+{
+    // Remove any characters that are not digits
+    $unformattedNumber = preg_replace('/\D/', '', $formattedNumber);
+
+    // Ensure the number starts with '62' after removing non-digit characters
+    if (substr($unformattedNumber, 0, 2) !== '62') {
+        return 'Invalid Indonesian phone number.';
+    }
+    str_replace('62', '', $unformattedNumber);
+
+    return $unformattedNumber;
+}
 if (! function_exists('buildTreeMenu')) {
 
     function buildTreeMenu(array &$elements, $idParent = '0')
@@ -61,28 +96,28 @@ if (! function_exists('buildMenu')) {
                     if (isset($element['children'])) {
                         $children = buildMenu($element['children']);
                         $html .= '<li class="menu-item">
-                        <a class="nav-link menu-link" href="#sideBar'.$element['id'].'" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sideBar'.$element['id'].'">
-                        <i class="ri-apps-2-line"></i> <span>'.trans($element['name']).'</span>
+                        <a class="nav-link menu-link" href="#sideBar' . $element['id'] . '" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sideBar' . $element['id'] . '">
+                        <i class="ri-apps-2-line"></i> <span>' . trans($element['name']) . '</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sideBar'.$element['id'].'">
+                    <div class="collapse menu-dropdown" id="sideBar' . $element['id'] . '">
                         <ul class="nav nav-sm flex-column">
-                            '.$children.'
+                            ' . $children . '
                         </ul>
                     </div>
                     </li>';
                     } else {
                         $html .= '<li class="nav-item">
-                            <a href="'.(Route::has($element['route']) ? route($element['route']) : $element['route']).'" class="nav-link">
-                                <i class="'.$element['icon'].' text-muted fs-16 align-middle me-1"></i> 
-                                <span>'.trans($element['name']).'</span>
+                            <a href="' . (Route::has($element['route']) ? route($element['route']) : $element['route']) . '" class="nav-link menu-link">
+                                <i class="' . $element['icon'] . ' align-middle me-1"></i> 
+                                <span>' . trans($element['name']) . '</span>
                             </a>
                         </li>';
                     }
                 } elseif ($place == 1) {
-                    $html .= '<a class="dropdown-item" href="'.(Route::has($element['route']) ? route($element['route']) : $element['route']).'">
-                                <i class="'.$element['icon'].' text-muted fs-16 align-middle me-1"></i> 
-                                <span class="align-middle">'.$element['name'].'</span>
+                    $html .= '<a class="dropdown-item" href="' . (Route::has($element['route']) ? route($element['route']) : $element['route']) . '">
+                                <i class="' . $element['icon'] . ' text-muted fs-16 align-middle me-1"></i> 
+                                <span class="align-middle">' . $element['name'] . '</span>
                             </a>';
                 }
             }

@@ -42,11 +42,24 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'public_file' => [
+            'driver' => 'local',
+            'root' => public_path('/'),
+            'url' => env('APP_URL') . '/file_attachment',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'file_attachment' => [
+            'driver' => 'local',
+            'root' => public_path('file_attachment'),
             'visibility' => 'public',
             'throw' => false,
         ],

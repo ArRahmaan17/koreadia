@@ -57,6 +57,61 @@
             });
             return o;
         }
+
+        function dataToOption(allData, attr = false) {
+            let html = "<option>Mohon Pilih</option>";
+
+            allData.forEach(data => {
+                if (attr) {
+                    html +=
+                        `<option data-attr='${data.attribute}' value='${data.id ? data.id : data.name}'>${data.name} ( Tersedia di ${data.attribute})</option>`;
+                } else {
+                    html += `<option value='${data.id ? data.id : data.name}'>${data.name}</option>`;
+                }
+            });
+
+            return html;
+        }
+
+        function serializeFiles(node) {
+            let form = $(node),
+                formData = new FormData(),
+                formParams = form.serializeArray();
+
+            $.each(form.find('input[type="file"]'), function(i, tag) {
+                if ($(tag)[0].files.length > 0) {
+                    $.each($(tag)[0].files, function(i, file) {
+                        formData.append(tag.name, file);
+                    });
+                }
+            });
+
+            $.each(formParams, function(i, val) {
+                formData.append(val.name, val.value);
+            });
+            return formData;
+        };
+
+        function formattedInput() {
+            $('.phone_number').inputmask('(+62) 999-999-9999[9]')
+            $('.number-mail').inputmask({
+                regex: `[0-9]{3,10}\/[A-Z a-z]{2,10}\/[A-Z a-z]{2,4}\/\[0-9]{4}`
+            })
+            $('.email').inputmask({
+                mask: "*{1,15}[.*{1,15}][.*{1,15}][.*{1,15}]@*{1,15}[.*{2,6}][.*{1,2}]",
+                greedy: false,
+                onBeforePaste: function(pastedValue, opts) {
+                    pastedValue = pastedValue.toLowerCase();
+                    return pastedValue.replace("mailto:", "");
+                },
+                definitions: {
+                    '*': {
+                        validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~\-]",
+                        casing: "lower"
+                    }
+                }
+            });
+        }
     </script>
     @if (env('APP_ENV') === 'production')
         <script>

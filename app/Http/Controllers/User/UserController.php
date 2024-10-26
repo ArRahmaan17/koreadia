@@ -1,20 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Dev;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class MailContoller extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('mail');
+        //
     }
-
+    public function all()
+    {
+        $data = User::all();
+        $response = ['message' => 'showing all resources successfully', 'data' => ($data)];
+        $code = 200;
+        if (empty($data)) {
+            $response = ['message' => 'failed showing all resources', 'data' => ($data)];
+            $code = 422;
+        }
+        return response()->json($response, $code);
+    }
     /**
      * Show the form for creating a new resource.
      */

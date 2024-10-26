@@ -183,11 +183,9 @@
                             buttonsStyling: false,
                             showCloseButton: true
                         }).then((result) => {
-                            if (result.isConfirmed) {
                                 setTimeout(() => {
                                     window.location = `{{ route('home') }}`;
                                 }, 1000);
-                            }
                         });
                     },
                     error: function(error) {

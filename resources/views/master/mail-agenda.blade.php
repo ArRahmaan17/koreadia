@@ -75,7 +75,7 @@
     <!--datatable js-->
     <script src="{{ asset('build/libs/datatable/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('build/libs/datatable/dataTables.resonsive.min.js') }}"></script>
+    <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
         window.datatableAgenda = null;
         window.state = 'add';

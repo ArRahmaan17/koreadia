@@ -1,29 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\Dev\Mail;
+namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
-use App\Models\MailType;
+use App\Models\SincerelyWord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TypeController extends Controller
+class SincerelyWordController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('master.mail-type');
+        return view('master.sincerely-word');
     }
 
     public function dataTable(Request $request)
     {
-        $totalData = MailType::orderBy('id', 'asc')
+        $totalData = SincerelyWord::orderBy('id', 'asc')
             ->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = MailType::select('*');
+            $assets = SincerelyWord::select('*');
 
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -34,7 +34,7 @@ class TypeController extends Controller
             }
             $assets = $assets->get();
         } else {
-            $assets = MailType::select('*')
+            $assets = SincerelyWord::select('*')
                 ->where('name', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
 
@@ -47,7 +47,7 @@ class TypeController extends Controller
             }
             $assets = $assets->get();
 
-            $totalFiltered = MailType::select('*')
+            $totalFiltered = SincerelyWord::select('*')
                 ->where('name', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
 
@@ -62,7 +62,7 @@ class TypeController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-type='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-type='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-agenda='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-agenda='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -77,27 +77,26 @@ class TypeController extends Controller
 
     public function all()
     {
-        $response = ['message' => 'showing all resources successfully', 'data' => MailType::all()];
+        $response = ['message' => 'showing all resources successfully', 'data' => SincerelyWord::all()];
         $code = 200;
-        if (MailType::count() == 0) {
-            $response = ['message' => 'failed showing all resources', 'data' => MailType::all()];
+        if (SincerelyWord::count() == 0) {
+            $response = ['message' => 'failed showing all resources', 'data' => SincerelyWord::all()];
             $code = 422;
         }
         return response()->json($response, $code);
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:mail_types,name',
+            'name' => 'required|unique:mail_agendas,name',
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();
         try {
-            MailType::create($request->except('_token'));
+            SincerelyWord::create($request->except('_token'));
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
             DB::commit();
@@ -115,7 +114,7 @@ class TypeController extends Controller
      */
     public function show(string $id)
     {
-        $data = MailType::find($id);
+        $data = SincerelyWord::find($id);
         $response = ['message' => 'showing resources successfully', 'data' => $data];
         $code = 200;
         if (empty($data)) {
@@ -132,12 +131,12 @@ class TypeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:mail_types,name,' . $id,
+            'name' => 'required|unique:mail_agendas,name,' . $id,
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();
         try {
-            MailType::find($id)->update($request->except('_token'));
+            SincerelyWord::find($id)->update($request->except('_token'));
             $response = ['message' => 'updating resources successfully'];
             $code = 200;
             DB::commit();
@@ -157,7 +156,7 @@ class TypeController extends Controller
     {
         DB::beginTransaction();
         try {
-            MailType::find($id)->delete();
+            SincerelyWord::find($id)->delete();
             DB::commit();
             $response = ['message' => 'destroying resources successfully'];
             $code = 200;

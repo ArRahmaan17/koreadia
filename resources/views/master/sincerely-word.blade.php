@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.role')
+    @lang('translation.sincerely-word')
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('build/libs/datatable/dataTables.min.css') }}" />
@@ -11,19 +11,19 @@
             Master
         @endslot
         @slot('title')
-            Role
+           Sincerely Word
         @endslot
     @endcomponent
     <div class="card">
         <div class="card-header align-items-center d-flex">
-            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.role')</h4>
+            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.sincerely-word')</h4>
             <div class="flex-shrink-0">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-role">@lang('translation.add')</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-sincerely-word">@lang('translation.add')</button>
             </div>
         </div><!-- end card header -->
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="table-role">
+                <table class="table table-bordered" id="table-sincerely-word">
                     <thead>
                         <tr>
                             <td>No</td>
@@ -38,31 +38,31 @@
             </div>
         </div>
     </div>
-    <div id="modal-role" class="modal fade" tabindex="-1" aria-labelledby="modal-role-label" aria-hidden="true" style="display: none;">
+    <div id="modal-sincerely-word" class="modal fade" tabindex="-1" aria-labelledby="modal-sincerely-word-label" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-role-label">Add @lang('translation.role')</h5>
+                    <h5 class="modal-title" id="modal-sincerely-word-label">Add @lang('translation.sincerely-word')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" id="form-role">
+                    <form action="#" id="form-sincerely-word">
                         @csrf
                         <input type="hidden" name="id">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name role mail">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name sincerely-word mail">
                             <label for="name">Name</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description role mail"></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description sincerely-word mail"></textarea>
                             <label for="description">Description</label>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-success" id="save-role">@lang('translation.save') Changes</button>
-                    <button type="button" class="btn btn-soft-warning d-none" id="update-role">@lang('translation.update') Changes</button>
+                    <button type="button" class="btn btn-soft-success" id="save-sincerely-word">@lang('translation.save') Changes</button>
+                    <button type="button" class="btn btn-soft-warning d-none" id="update-sincerely-word">@lang('translation.update') Changes</button>
                 </div>
             </div>
         </div>
@@ -77,32 +77,32 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
-        window.datatableRole = null;
+        window.datatableSincerelyWord = null;
         window.state = 'add';
 
         function actionData() {
             $('.edit').click(function() {
                 window.state = 'update';
-                let idRole = $(this).data("role");
-                $("#update-role").data("role", idRole);
-                if (window.datatableRole.rows('.selected').data().length == 0) {
-                    $('#table-role tbody').find('tr').removeClass('selected');
+                let idSincerelyWord = $(this).data("sincerely-word");
+                $("#update-sincerely-word").data("sincerely-word", idSincerelyWord);
+                if (window.datatableSincerelyWord.rows('.selected').data().length == 0) {
+                    $('#table-sincerely-word tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableRole.rows('.selected').data()[0];
+                var data = window.datatableSincerelyWord.rows('.selected').data()[0];
 
-                $('#modal-role').modal('show');
-                $('#modal-role').find('.modal-title').html(`Edit @lang('translation.role')`);
-                $('#save-role').addClass('d-none');
-                $('#update-role').removeClass('d-none');
+                $('#modal-sincerely-word').modal('show');
+                $('#modal-sincerely-word').find('.modal-title').html(`Edit @lang('translation.sincerely-word')`);
+                $('#save-sincerely-word').addClass('d-none');
+                $('#update-sincerely-word').removeClass('d-none');
 
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('master.role.show') }}/" + idRole,
+                    url: "{{ route('master.sincerely-word.show') }}/" + idSincerelyWord,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-role').find("form")
+                        $('#modal-sincerely-word').find("form")
                             .find('input, textarea').map(function(index, element) {
                                 if (response.data[element.name]) {
                                     $(`[name=${element.name}]`).val(response.data[element
@@ -112,7 +112,7 @@
                     },
                     error: function(error) {
                         iziToast.error({
-                            id: 'alert-role-action',
+                            id: 'alert-sincerely-word-action',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -124,12 +124,12 @@
             })
 
             $('.delete').click(function() {
-                if (window.datatableRole.rows('.selected').data().length == 0) {
-                    $('#table-role tbody').find('tr').removeClass('selected');
+                if (window.datatableSincerelyWord.rows('.selected').data().length == 0) {
+                    $('#table-sincerely-word tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
-                let idRole = $(this).data("role");
-                var data = window.datatableRole.rows('.selected').data()[0];
+                let idSincerelyWord = $(this).data("sincerely-word");
+                var data = window.datatableSincerelyWord.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -140,7 +140,7 @@
                     id: 'question',
                     zindex: 9999,
                     title: 'Confirmation',
-                    message: "Are you sure you want to delete this mails role data?",
+                    message: "Are you sure you want to delete this mails sincerely-word data?",
                     position: 'center',
                     icon: 'bx bx-question-mark',
                     buttons: [
@@ -150,26 +150,26 @@
                             }, toast, 'button');
                             $.ajax({
                                 type: "DELETE",
-                                url: "{{ route('master.role.destroy') }}/" +
-                                    idRole,
+                                url: "{{ route('master.sincerely-word.destroy') }}/" +
+                                    idSincerelyWord,
                                 data: {
                                     _token: `{{ csrf_token() }}`,
                                 },
                                 dataType: "json",
                                 success: function(response) {
                                     iziToast.success({
-                                        id: 'alert-role-form',
+                                        id: 'alert-sincerely-word-form',
                                         title: 'Success',
                                         message: response.message,
                                         position: 'topRight',
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableRole.ajax.reload()
+                                    window.datatableSincerelyWord.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
-                                        id: 'alert-role-action',
+                                        id: 'alert-sincerely-word-action',
                                         title: 'Error',
                                         message: error.responseJSON.message,
                                         position: 'topRight',
@@ -189,9 +189,9 @@
             });
         }
         $(function() {
-            window.datatableRole = $('#table-role').DataTable({
+            window.datatableSincerelyWord = $('#table-sincerely-word').DataTable({
                 scrollY: '100%',
-                ajax: "{{ route('master.role.data-table') }}",
+                ajax: "{{ route('master.sincerely-word.data-table') }}",
                 processing: true,
                 serverSide: true,
                 order: [
@@ -235,38 +235,38 @@
                     }
                 }]
             });
-            window.datatableRole.on('draw.dt', function() {
+            window.datatableSincerelyWord.on('draw.dt', function() {
                 actionData();
             });
-            $('#save-role').click(function() {
-                let data = serializeObject($('#form-role'));
+            $('#save-sincerely-word').click(function() {
+                let data = serializeObject($('#form-sincerely-word'));
                 $.ajax({
                     type: "POST",
-                    url: `{{ route('master.role.store') }}`,
+                    url: `{{ route('master.sincerely-word.store') }}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-role').modal('hide')
+                        $('#modal-sincerely-word').modal('hide')
                         iziToast.success({
-                            id: 'alert-role-form',
+                            id: 'alert-sincerely-word-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableRole.ajax.reload();
+                        window.datatableSincerelyWord.ajax.reload();
 
                     },
                     error: function(error) {
-                        $('#modal-role .is-invalid').removeClass('is-invalid')
+                        $('#modal-sincerely-word .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-role').find('[name=' + indexInArray +
+                            $('#modal-sincerely-word').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-role-form',
+                            id: 'alert-sincerely-word-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -276,35 +276,35 @@
                     }
                 });
             });
-            $('#update-role').click(function() {
-                let data = serializeObject($('#form-role'));
+            $('#update-sincerely-word').click(function() {
+                let data = serializeObject($('#form-sincerely-word'));
                 $.ajax({
                     type: "PUT",
-                    url: `{{ route('master.role.update') }}/${data.id}`,
+                    url: `{{ route('master.sincerely-word.update') }}/${data.id}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-role').modal('hide')
+                        $('#modal-sincerely-word').modal('hide')
                         iziToast.success({
-                            id: 'alert-role-form',
+                            id: 'alert-sincerely-word-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableRole.ajax.reload();
+                        window.datatableSincerelyWord.ajax.reload();
 
                     },
                     error: function(error) {
-                        $('#modal-role .is-invalid').removeClass('is-invalid')
+                        $('#modal-sincerely-word .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-role').find('[name=' + indexInArray +
+                            $('#modal-sincerely-word').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-role-form',
+                            id: 'alert-sincerely-word-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -314,14 +314,14 @@
                     }
                 });
             });
-            $('#modal-role').on('hidden.bs.modal', function() {
+            $('#modal-sincerely-word').on('hidden.bs.modal', function() {
                 window.state = 'add';
                 $(this).find('form')[0].reset();
-                $(this).find('.modal-title').html(`Add @lang('translation.role')`);
-                $('#save-role').removeClass('d-none');
-                $('#update-role').addClass('d-none');
-                $('#modal-role .is-invalid').removeClass('is-invalid')
-                $('#table-role tbody').find('tr').removeClass('selected');
+                $(this).find('.modal-title').html(`Add @lang('translation.sincerely-word')`);
+                $('#save-sincerely-word').removeClass('d-none');
+                $('#update-sincerely-word').addClass('d-none');
+                $('#modal-sincerely-word .is-invalid').removeClass('is-invalid')
+                $('#table-sincerely-word tbody').find('tr').removeClass('selected');
             });
         });
     </script>
