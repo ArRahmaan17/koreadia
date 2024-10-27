@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('mail')->name('mail.')->group(function () {
         Route::prefix('in')->name('in.')->group(function () {
             Route::get('/', [MailTransactionController::class, 'index'])->name('index');
+            Route::put('/request-notified/{id?}', [MailTransactionController::class, 'requestedNotified'])->name('request-notified');
             Route::put('/status-update/{id?}', [MailTransactionController::class, 'statusUpdate'])->name('status-update');
             Route::get('/data-table', [MailTransactionController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [MailTransactionController::class, 'show'])->name('show');
@@ -51,7 +52,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('type')->name('type.')->group(function () {
             Route::get('/', [TypeController::class, 'index'])->name('index');
-            Route::get('/all', [AgendaController::class, 'all'])->name('all');
+            Route::get('/all', [TypeController::class, 'all'])->name('all');
             Route::get('/data-table', [TypeController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [TypeController::class, 'show'])->name('show');
             Route::put('/{id?}', [TypeController::class, 'update'])->name('update');
@@ -60,7 +61,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('priority')->name('priority.')->group(function () {
             Route::get('/', [PriorityController::class, 'index'])->name('index');
-            Route::get('/all', [AgendaController::class, 'all'])->name('all');
+            Route::get('/all', [TypeController::class, 'all'])->name('all');
             Route::get('/data-table', [PriorityController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [PriorityController::class, 'show'])->name('show');
             Route::put('/{id?}', [PriorityController::class, 'update'])->name('update');

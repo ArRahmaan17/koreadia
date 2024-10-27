@@ -380,6 +380,70 @@
                     }
                 });
             });
+            $('.request-notify').click(function() {
+                if (window.datatableMail.rows('.selected').data().length == 0) {
+                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $(this).parents('tr').addClass('selected')
+                }
+                let idMail = $(this).data("mailsin");
+                var data = window.datatableMail.rows('.selected').data()[0];
+                iziToast.question({
+                    timeout: 5000,
+                    layout: 2,
+                    close: false,
+                    overlay: true,
+                    color: 'green',
+                    displayMode: 'once',
+                    id: 'question',
+                    zindex: 9999,
+                    title: 'Confirmation',
+                    message: "Are you sure you want to request notified this mails?",
+                    position: 'center',
+                    icon: 'bx bx-question-mark',
+                    buttons: [
+                        ['<button><b>OK</b></button>', function(instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOut'
+                            }, toast, 'button');
+                            $.ajax({
+                                type: "PUT",
+                                url: "{{ route('mail.in.request-notified') }}/" +
+                                    idMail,
+                                data: {
+                                    _token: `{{ csrf_token() }}`,
+                                },
+                                dataType: "json",
+                                success: function(response) {
+                                    iziToast.success({
+                                        id: 'alert-mail-in-form',
+                                        title: 'Success',
+                                        message: response.message,
+                                        position: 'topRight',
+                                        layout: 2,
+                                        displayMode: 'replace'
+                                    });
+                                    window.datatableMail.ajax.reload()
+                                },
+                                error: function(error) {
+                                    iziToast.error({
+                                        id: 'alert-mail-in-action',
+                                        title: 'Error',
+                                        message: error.responseJSON.message,
+                                        position: 'topRight',
+                                        layout: 2,
+                                        displayMode: 'replace'
+                                    });
+                                }
+                            });
+                        }, true],
+                        ['<button>CANCEL</button>', function(instance, toast) {
+                            instance.hide({
+                                transitionOut: 'fadeOut'
+                            }, toast, 'button');
+                        }],
+                    ],
+                });
+            });
         }
         $(function() {
             window.datatableMail = $('#table-mail-in').DataTable({
