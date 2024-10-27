@@ -1,6 +1,5 @@
 /.phpunit.cache
 /node_modules
-/public/build
 /public/assets/media/news/asset/*
 /public/file_attachment
 /public/reply_file_attachment

@@ -77,8 +77,8 @@
                                         </div>
 
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="on" name="remeber-me" id="remeber-me">
-                                            <label class="form-check-label" for="remeber-me">Remember me</label>
+                                            <input class="form-check-input" type="checkbox" value="on" name="remember_me" id="remember_me">
+                                            <label class="form-check-label" for="remember_me">Remember me</label>
                                         </div>
 
                                         <div class="mt-4">

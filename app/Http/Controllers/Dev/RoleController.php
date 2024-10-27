@@ -17,7 +17,17 @@ class RoleController extends Controller
     {
         return view('master.role');
     }
-
+    public function all()
+    {
+        $data = Role::all();
+        $response = ['message' => 'showing all resources successfully', 'data' => $data];
+        $code = 200;
+        if (empty($data)) {
+            $code = 404;
+            $response = ['message' => 'failed showing all resources', 'data' => $data];
+        }
+        return response()->json($response, $code);
+    }
     public function dataTable(Request $request)
     {
         $totalData = Role::orderBy('id', 'asc')

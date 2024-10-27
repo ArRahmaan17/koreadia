@@ -56,7 +56,9 @@ class AuthController extends Controller
         ]);
         $response = ['status' => 'Gagal', 'message' => 'kombinasi username dan password tidak terdaftar di aplikasi kita', 'button' => 'Coba lagi'];
         $code = 401;
-        if (Auth::attempt($request->except('_token', 'remeber-me'), ($request['remeber-me']) ? true : false)) {
+        $user = User::where(['username' => $request->username, 'valid' => true])->first();
+        if (User::where(['username' => $request->username, 'valid' => true])->count() == 1 && Hash::check($request->password, $user->password)) {
+            Auth::login($user, $request->has('remember_me') ? true : false);
             $request->session()->regenerate();
             $response = ['status' => 'Berhasil', 'message' => 'kombinasi username dan password ditemukan', 'button' => 'Masuk Aplikasi'];
             $code = 200;

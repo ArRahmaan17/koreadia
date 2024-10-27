@@ -6,10 +6,12 @@ use App\Http\Controllers\Dev\Mail\PriorityController;
 use App\Http\Controllers\Dev\Mail\TypeController;
 use App\Http\Controllers\Dev\MailTransactionController;
 use App\Http\Controllers\Dev\MenuController;
+use App\Http\Controllers\Dev\OrganizationController;
 use App\Http\Controllers\Dev\RoleController;
+use App\Http\Controllers\Dev\RoleUserController;
 use App\Http\Controllers\Dev\SincerelyWordController;
+use App\Http\Controllers\Dev\UserController;
 use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,10 +27,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/all', [UserController::class, 'all'])->name('all');
-    });
     Route::prefix('mail')->name('mail.')->group(function () {
         Route::prefix('in')->name('in.')->group(function () {
             Route::get('/', [MailTransactionController::class, 'index'])->name('index');
@@ -79,6 +77,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('role')->name('role.')->group(function () {
             Route::get('/', [RoleController::class, 'index'])->name('index');
+            Route::get('/all', [RoleController::class, 'all'])->name('all');
             Route::get('/data-table', [RoleController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [RoleController::class, 'show'])->name('show');
             Route::put('/{id?}', [RoleController::class, 'update'])->name('update');
@@ -93,6 +92,34 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id?}', [SincerelyWordController::class, 'update'])->name('update');
             Route::delete('/{id?}', [SincerelyWordController::class, 'destroy'])->name('destroy');
             Route::post('/', [SincerelyWordController::class, 'store'])->name('store');
+        });
+        Route::prefix('organization')->name('organization.')->group(function () {
+            Route::get('/', [OrganizationController::class, 'index'])->name('index');
+            Route::get('/all', [OrganizationController::class, 'all'])->name('all');
+            Route::get('/data-table', [OrganizationController::class, 'dataTable'])->name('data-table');
+            Route::get('/{id?}', [OrganizationController::class, 'show'])->name('show');
+            Route::put('/{id?}', [OrganizationController::class, 'update'])->name('update');
+            Route::delete('/{id?}', [OrganizationController::class, 'destroy'])->name('destroy');
+            Route::post('/', [OrganizationController::class, 'store'])->name('store');
+        });
+        Route::prefix('role-user')->name('role-user.')->group(function () {
+            Route::get('/', [RoleUserController::class, 'index'])->name('index');
+            Route::get('/all', [RoleUserController::class, 'all'])->name('all');
+            Route::get('/all-user', [RoleUserController::class, 'allUser'])->name('all-user');
+            Route::get('/data-table', [RoleUserController::class, 'dataTable'])->name('data-table');
+            Route::get('/{id?}', [RoleUserController::class, 'show'])->name('show');
+            Route::put('/{id?}', [RoleUserController::class, 'update'])->name('update');
+            Route::delete('/{id?}', [RoleUserController::class, 'destroy'])->name('destroy');
+            Route::post('/', [RoleUserController::class, 'store'])->name('store');
+        });
+        Route::prefix('user')->name('user.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/all', [UserController::class, 'all'])->name('all');
+            Route::get('/data-table', [UserController::class, 'dataTable'])->name('data-table');
+            Route::get('/{id?}', [UserController::class, 'show'])->name('show');
+            Route::put('/{id?}', [UserController::class, 'update'])->name('update');
+            Route::delete('/{id?}', [UserController::class, 'destroy'])->name('destroy');
+            Route::post('/', [UserController::class, 'store'])->name('store');
         });
     });
 });

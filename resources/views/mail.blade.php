@@ -349,7 +349,7 @@
                 $('input[name=id]').val(idMail);
                 $.ajax({
                     type: "GET",
-                    url: `{{ route('user.all') }}`,
+                    url: `{{ route('master.user.all') }}`,
                     dataType: "json",
                     success: function(response) {
                         if (data.status == 'IN') {
