@@ -328,13 +328,5 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => '2024-10-26 19:45:22'
             ]
         ]);
-        \App\Models\RoleUser::create([
-            'role_id' => 1,
-            'user_id' => 1,
-        ]);
-        \App\Models\RoleMenu::create([
-            'role_id' => 1,
-            'menu_id' => 1,
-        ]);
     }
 }
