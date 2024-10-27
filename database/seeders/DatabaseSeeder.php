@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('mamanrecing'),
             'avatar' => 'avatar-1.jpg',
             'phone_number' => '(+62) 895-229-83270',
+            'valid' => TRUE,
             'created_at' => now(),
         ]);
         \App\Models\Menu::insert([
