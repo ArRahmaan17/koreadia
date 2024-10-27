@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'dev.rahmaan',
             'password' => Hash::make('mamanrecing'),
             'avatar' => 'avatar-1.jpg',
+            'avatar' => '(+62) 895-229-83270',
             'created_at' => now(),
         ]);
         \App\Models\Role::create([
