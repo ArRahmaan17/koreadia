@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'dev.rahmaan',
             'password' => Hash::make('mamanrecing'),
             'avatar' => 'avatar-1.jpg',
-            'avatar' => '(+62) 895-229-83270',
+            'phone_number' => '(+62) 895-229-83270',
             'created_at' => now(),
         ]);
         \App\Models\Menu::insert([
@@ -131,6 +131,36 @@ class DatabaseSeeder extends Seeder
                 'place' => 0,
                 'created_at' => '2024-10-27 03:48:42',
                 'updated_at' => '2024-10-27 03:48:42'
+            ]
+        ]);
+        \App\Models\Role::insert([
+            [
+                'id' => '1',
+                'name' => 'Developer',
+                'description' => 'Developer App',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],
+            [
+                'id' => '2',
+                'name' => 'Admin Sistem',
+                'description' => 'Sistem Administrator',
+                'created_at' => '2024-10-27 02:46:40',
+                'updated_at' => '2024-10-27 02:46:40'
+            ],
+            [
+                'id' => '3',
+                'name' => 'Admin Biro Umum',
+                'description' => 'Biro Umum Administrator',
+                'created_at' => '2024-10-27 02:47:05',
+                'updated_at' => '2024-10-27 02:47:05'
+            ],
+            [
+                'id' => '4',
+                'name' => 'User Eselon',
+                'description' => 'Sistem Eselon User',
+                'created_at' => '2024-10-27 02:47:29',
+                'updated_at' => '2024-10-27 02:47:29'
             ]
         ]);
         \App\Models\RoleMenu::insert([
@@ -288,10 +318,6 @@ class DatabaseSeeder extends Seeder
                 'created_at' => '2024-10-27 10:48:42',
                 'updated_at' => null
             ]
-        ]);
-        \App\Models\Role::create([
-            'name' => 'Developer',
-            'description' => 'Developer App',
         ]);
         \App\Models\RoleUser::insert([
             [
