@@ -62,7 +62,7 @@ class OrganizationController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-agenda='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-agenda='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-organization='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-organization='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -91,7 +91,7 @@ class OrganizationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:mail_agendas,name',
+            'name' => 'required|unique:organizations,name',
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();
@@ -131,7 +131,7 @@ class OrganizationController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:mail_agendas,name,' . $id,
+            'name' => 'required|unique:organizations,name,' . $id,
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();

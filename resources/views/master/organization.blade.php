@@ -83,6 +83,7 @@
         function actionData() {
             $('.edit').click(function() {
                 window.state = 'update';
+console.log($(this).data())
                 let idOrganization = $(this).data("organization");
                 $("#update-organization").data("organization", idOrganization);
                 if (window.datatableOrganization.rows('.selected').data().length == 0) {
