@@ -8,7 +8,6 @@ use App\Models\WhatsappQueue;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class MailTransactionController extends Controller
 {
@@ -127,14 +126,16 @@ class MailTransactionController extends Controller
             $row['priority'] = $item->priority;
             $row['type'] = $item->type;
             if ($item->notified && ($item->status == 'REPLIED' || $item->status == 'OUT')) {
-                $row['action'] = "<button class='btn btn-icon btn-warning show-data' data-mailsIn='" . $item->id . "' ><i class='bx bx-check-double'></i></button>";
-            } else if ($item->notified && ($item->status != 'REPLIED' && $item->status != 'OUT')) {
+                $row['action'] = "<button class='btn btn-icon btn-warning update-status' data-mailsIn='" . $item->id . "' ><i class='bx bx-check-double'></i></button>";
+            } else if ($item->notified && ($item->status != 'REPLIED' && $item->status != 'OUT' && $item->status != 'ARCHIVE')) {
                 $row['action'] = "<button class='btn btn-icon btn-info update-status' data-mailsIn='" . $item->id . "' ><i class='bx bxs-chevrons-up'></i></button><button class='btn btn-icon btn-warning edit' data-mailsIn='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-mailsIn='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
-            } else if($item->request_notified== true && $item->notified == false) {
+            } else if ($item->request_notified == true && $item->notified == false) {
                 $row['action'] = "<button class='btn btn-icon btn-secondary disabled' data-mailsIn='" . $item->id . "' ><i class='bx bx-loader-circle' ></i></button>";
-            }else{
+            } else if ($item->status != 'ARCHIVE' && $item->request_notified == true && $item->notified == false) {
                 $row['action'] = "<button class='btn btn-icon btn-success request-notify' data-mailsIn='" . $item->id . "' ><i class='bx bxl-whatsapp'></i></button>";
-}
+            } else {
+                $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='" . $item->id . "' ><i class='bx bxs-show'></i></button>";
+            }
             $dataFiltered[] = $row;
         }
         $response = [
@@ -236,31 +237,30 @@ class MailTransactionController extends Controller
                 file_put_contents(public_path($file_name), base64_decode($file_attachment->data));
                 $data['file_attachment'] = $file_name;
             }
-            $last_transaction = TransactionMail::find($id);
-            $transaction_mail = $request->except('_token', 'file_attachment', 'admin');
+            $current_status = TransactionMail::find($id);
             TransactionMail::find($id)->update($data);
-            switch ($last_transaction->status) {
+            switch ($current_status->status) {
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
                         $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'PROCESS', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
                     } else if ($data['status'] == 'DISPOSITION') {
-                        $where_queue = [['transaction_mail_id', $transaction_mail['id']], ['current_status', '!=', 'IN']];
+                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', $current_status->status]];
                         $data_queue = [
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'ACCELERATION', 'last_status' => 'IN', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'DISPOSITION', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     } else if ($data['status'] == 'OUT') {
-                        $where_queue = [['transaction_mail_id', $transaction_mail['id']], ['current_status', '!=', 'IN']];
+                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'ACCELERATION', 'last_status' => 'IN', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'OUT', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     } else if ($data['status'] == 'REPLIED') {
-                        $where_queue = [['transaction_mail_id', $transaction_mail['id']], ['current_status', '!=', 'IN']];
+                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'ACCELERATION', 'last_status' => 'IN', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'REPLIED', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     }
                     WhatsappQueue::where($where_queue)->delete();
@@ -269,53 +269,50 @@ class MailTransactionController extends Controller
                 case 'PROCESS':
                     if ($data['status'] == 'DISPOSITION') {
                         $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'DISPOSITION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
-                    } else if ($data['status'] == 'OUT') {
-                        $where_queue = [['transaction_mail_id', $transaction_mail['id']], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
+                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'],  'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                    } else if ($data['status'] == 'OUT' || $data['status'] == 'REPLIED') {
+                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
                         $data_queue = [
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'OUT', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                        ];
-                    } else if ($data['status'] == 'REPLIED') {
-                        $where_queue = [['transaction_mail_id', $transaction_mail['id']], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
-                        $data_queue = [
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'REPLIED', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     }
                     WhatsappQueue::where($where_queue)->delete();
                     WhatsappQueue::insert($data_queue);
                     break;
                 case 'DISPOSITION':
-                    if ($data['status'] == 'OUT') {
-                        $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'OUT'];
-                    } else if ($data['status'] == 'REPLIED') {
-                        $where_queue = [
-                            ['transaction_mail_id', $transaction_mail['id']],
-                            ['current_status', '!=', 'IN'],
-                            ['current_status', '!=', 'PROCESS'],
-                            ['current_status', '!=', 'DISPOSITION'],
-                        ];
-                        $data_queue = [
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'REPLIED', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                        ];
-                    }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
-                    break;
-                case 'OUT':
-                    if ($data['status'] == 'REPLIED') {
-                        $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'OUT', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
-                    }
+                    $where_queue = [
+                        ['transaction_mail_id', $current_status->id],
+                        ['current_status', '!=', 'IN'],
+                        ['current_status', '!=', 'PROCESS'],
+                        ['current_status', '!=', 'DISPOSITION'],
+                    ];
+                    $data_queue = [
+                        ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                        ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                    ];
+
                     WhatsappQueue::where($where_queue)->delete();
                     WhatsappQueue::insert($data_queue);
                     break;
                 case 'REPLIED':
-                    $where_queue = [['transaction_mail_id', NULL]];
-                    $data_queue = ['transaction_mail_id' => $transaction_mail['id'], 'current_status' => 'OUT', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                    $where_queue = [
+                        ['transaction_mail_id', $current_status->id],
+                        ['current_status', '!=', 'IN'],
+                        ['current_status', '!=', 'PROCESS'],
+                        ['current_status', '!=', 'DISPOSITION'],
+                        ['current_status', '!=', 'REPLIED'],
+                    ];
+                    $data_queue = [
+                        'transaction_mail_id' => $current_status->id,
+                        'request_notified' => true,
+                        'request_notified_at' => now('Asia/Jakarta'),
+                        'current_status' =>  $data['status'],
+                        'last_status' => $current_status->status,
+                        'created_at' => now('Asia/Jakarta'),
+                        'updated_at' => now('Asia/Jakarta'),
+                        'user_id' => auth()->user()->id
+                    ];
                     WhatsappQueue::where($where_queue)->delete();
                     WhatsappQueue::insert($data_queue);
                     break;
@@ -380,32 +377,37 @@ class MailTransactionController extends Controller
 
     public function statusUpdate($id, Request $request)
     {
-        $current_status = TransactionMail::find($id);
-        $data = $request->except('_token');
+        $request->validate([
+            'user_id' => 'required|numeric'
+        ], [
+            'user_id.numeric' => 'The processor must selected.'
+        ]);
         DB::beginTransaction();
         try {
+            $current_status = TransactionMail::find($id);
+            $data = $request->except('_token');
             switch ($current_status->status) {
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
                         $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => 'PROCESS', 'last_status' => 'IN', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
                     } else if ($data['status'] == 'DISPOSITION') {
-                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
+                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', $current_status->status]];
                         $data_queue = [
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'ACCELERATION', 'last_status' => 'IN', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'DISPOSITION', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     } else if ($data['status'] == 'OUT') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'ACCELERATION', 'last_status' => 'IN', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'OUT', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     } else if ($data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'ACCELERATION', 'last_status' => 'IN', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'REPLIED', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     }
                     WhatsappQueue::where($where_queue)->delete();
@@ -414,53 +416,54 @@ class MailTransactionController extends Controller
                 case 'PROCESS':
                     if ($data['status'] == 'DISPOSITION') {
                         $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => 'DISPOSITION',  'last_status' => 'PROCESS', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
-                    } else if ($data['status'] == 'OUT') {
+                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'],  'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                    } else if ($data['status'] == 'OUT' || $data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
                         $data_queue = [
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'ACCELERATION', 'last_status' => 'PROCESS', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'OUT', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                        ];
-                    } else if ($data['status'] == 'REPLIED') {
-                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
-                        $data_queue = [
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'ACCELERATION', 'last_status' => 'PROCESS', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'REPLIED', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                            ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
                         ];
                     }
                     WhatsappQueue::where($where_queue)->delete();
                     WhatsappQueue::insert($data_queue);
                     break;
                 case 'DISPOSITION':
-                    if ($data['status'] == 'OUT') {
-                        $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => 'OUT', 'last_status' => 'DISPOSITION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
-                    } else if ($data['status'] == 'REPLIED') {
-                        $where_queue = [
-                            ['transaction_mail_id', $current_status->id],
-                            ['current_status', '!=', 'IN'],
-                            ['current_status', '!=', 'PROCESS'],
-                            ['current_status', '!=', 'DISPOSITION'],
-                        ];
-                        $data_queue = [
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'ACCELERATION', 'last_status' => 'DISPOSITION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                            ['transaction_mail_id' => $current_status->id, 'current_status' => 'REPLIED', 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
-                        ];
-                    }
+                    $where_queue = [['transaction_mail_id', NULL]];
+                    $data_queue = [
+                        ['transaction_mail_id' => $current_status->id, 'request_notifed' => true, 'request_notified_at' => now('Asia/Jakarta'), 'current_status' => 'ACCELERATION', 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                        ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => 'ACCELERATION', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id],
+                    ];
+
                     WhatsappQueue::where($where_queue)->delete();
                     WhatsappQueue::insert($data_queue);
                     break;
                 case 'OUT':
-                    if ($data['status'] == 'REPLIED') {
-                        $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => 'REPLIED', 'last_status' => 'OUT', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
-                    }
+                    $where_queue = [['transaction_mail_id', NULL]];
+                    $data_queue = [
+                        'transaction_mail_id' => $current_status->id,
+                        'request_notified' => true,
+                        'request_notified_at' => now('Asia/Jakarta'),
+                        'current_status' =>  $data['status'],
+                        'last_status' => $current_status->status,
+                        'created_at' => now('Asia/Jakarta'),
+                        'updated_at' => now('Asia/Jakarta'),
+                        'user_id' => auth()->user()->id
+                    ];
                     WhatsappQueue::where($where_queue)->delete();
                     WhatsappQueue::insert($data_queue);
                     break;
                 case 'REPLIED':
                     $where_queue = [['transaction_mail_id', NULL]];
-                    $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => 'OUT', 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                    $data_queue = [
+                        'transaction_mail_id' => $current_status->id,
+                        'request_notified' => true,
+                        'request_notified_at' => now('Asia/Jakarta'),
+                        'current_status' =>  $data['status'],
+                        'last_status' => $current_status->status,
+                        'created_at' => now('Asia/Jakarta'),
+                        'updated_at' => now('Asia/Jakarta'),
+                        'user_id' => auth()->user()->id
+                    ];
                     WhatsappQueue::where($where_queue)->delete();
                     WhatsappQueue::insert($data_queue);
                     break;
@@ -473,7 +476,10 @@ class MailTransactionController extends Controller
                 file_put_contents(public_path($file_name), base64_decode($file_attachment->data));
                 $data['reply_file_attachment'] = $file_name;
             }
-            TransactionMail::find($id)->update($request->except('_token', 'id'));
+            if ($request->has('sincerely')) {
+                $data['sincerely'] = json_encode($request->sincerely);
+            }
+            TransactionMail::find($id)->update($data);
             $response = ['message' => 'updating status mail successfully'];
             $code = 200;
             DB::commit();

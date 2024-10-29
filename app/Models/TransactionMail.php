@@ -22,6 +22,11 @@ class TransactionMail extends Model
         'priority_id',
         'type_id',
         'user_id',
+        'creator_id',
+        'sincerely',
+        'reply_note',
+        'reply_file_attachment',
+        'note',
     ];
 
     public function admin(): HasOne

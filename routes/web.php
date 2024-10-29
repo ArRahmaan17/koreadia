@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('priority')->name('priority.')->group(function () {
             Route::get('/', [PriorityController::class, 'index'])->name('index');
-            Route::get('/all', [TypeController::class, 'all'])->name('all');
+            Route::get('/all', [PriorityController::class, 'all'])->name('all');
             Route::get('/data-table', [PriorityController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [PriorityController::class, 'show'])->name('show');
             Route::put('/{id?}', [PriorityController::class, 'update'])->name('update');

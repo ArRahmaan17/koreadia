@@ -375,6 +375,11 @@
                             $('.col-status-in').addClass('d-none');
                             $('.col-status-process').addClass('d-none');
                             $('.col-status-disposision').removeClass('d-none');
+                        } else if (data.status == 'OUT' || data.status == 'REPLIED') {
+                            $('input[name=status]').val('ARCHIVE');
+                            $('.col-status-in').addClass('d-none');
+                            $('.col-status-process').addClass('d-none');
+                            $('.col-status-disposision').addClass('d-none');
                         }
                         $('#modal-status-mail-in select[name=user_id]').html(dataToOption(response.data))
                     }

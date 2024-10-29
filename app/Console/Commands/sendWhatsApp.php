@@ -36,7 +36,7 @@ class sendWhatsApp extends Command implements Isolatable
             file_get_contents(public_path($data['file_attachment'])),
             $data['regarding'] . '.pdf',
         )->post(env('WHATSAPP_URL') . 'mail-status/' . $data['sender_phone_number'] . '/' . $data['status'], ['sender' => $data['sender']]);
-        if ($response->accepted()) {
+        if ($response->status() == 200) {
             $this->info('Notified Mail Sender Successfully');
         } else {
             $this->error("Failed Notified Mail Sender");

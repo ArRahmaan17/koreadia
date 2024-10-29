@@ -30,7 +30,9 @@ class executeWhatsappQueue extends Command
         $data = WhatsappQueue::where(['notified' => false, 'request_notified' => true])->orderBy('transaction_mail_id', 'ASC')->first();
         if (!empty($data)) {
             Artisan::call('app:send-whats-app ' . $data->transaction_mail_id);
-            dd(Artisan::output());
+            if (trim(Artisan::output()) == 'Notified Mail Sender Successfully') {
+                WhatsappQueue::find($data->id)->update(['notified' => true]);
+            }
         }
     }
 }
