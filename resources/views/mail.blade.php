@@ -194,8 +194,8 @@
                                     aria-describedby="file_attachment_help">
                             </div>
                             <div class="mb-3">
-                                <label for="note">Reply Note</label>
-                                <input type="text" name="note" id="note" class="form-control">
+                                <label for="reply_note">Reply Note</label>
+                                <input type="text" name="reply_note" id="reply_note" class="form-control">
                             </div>
                         </div>
                     </form>
@@ -354,12 +354,10 @@
                     success: function(response) {
                         if (data.status == 'IN') {
                             $('input[name=status]').val('PROCESS');
-                            $('.col-status-in').removeClass('d-none');
                             $('.col-status-process').addClass('d-none');
                             $('.col-status-disposision').addClass('d-none');
                         } else if (data.status == 'PROCESS') {
-                            $('input[name=status]').val('DISPOSITION');
-                            $('.col-status-in').addClass('d-none');
+                            $('input[name=status]').val('FILED');
                             $('.col-status-process').removeClass('d-none');
                             $('.col-status-disposision').addClass('d-none');
                             $.ajax({
@@ -370,14 +368,16 @@
                                     $('#modal-status-mail-in select[name=sincerely]').html(dataToOption(response.data))
                                 }
                             });
-                        } else if (data.status == 'DISPOSITION') {
-                            $('input[name=status]').val('OUT');
-                            $('.col-status-in').addClass('d-none');
+                        } else if (data.status == 'FILED') {
+                            $('input[name=status]').val('DISPOSITION');
                             $('.col-status-process').addClass('d-none');
                             $('.col-status-disposision').removeClass('d-none');
-                        } else if (data.status == 'OUT' || data.status == 'REPLIED') {
+                        } else if (data.status == 'DISPOSITION') {
+                            $('input[name=status]').val('REPLIED');
+                            $('.col-status-process').addClass('d-none');
+                            $('.col-status-disposision').removeClass('d-none');
+                        } else if (data.status == 'REPLIED') {
                             $('input[name=status]').val('ARCHIVE');
-                            $('.col-status-in').addClass('d-none');
                             $('.col-status-process').addClass('d-none');
                             $('.col-status-disposision').addClass('d-none');
                         }
@@ -547,7 +547,7 @@
                     orderable: true,
                     searchable: true,
                     render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
+                        return `<div class='d-flex m-0 p-0 g-1'>${data}</div>`
                     }
                 }, {
                     target: 10,

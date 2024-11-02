@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
 
 class AuthController extends Controller
 {
@@ -56,9 +57,12 @@ class AuthController extends Controller
         ]);
         $response = ['status' => 'Gagal', 'message' => 'kombinasi username dan password tidak terdaftar di aplikasi kita', 'button' => 'Coba lagi'];
         $code = 401;
-        $user = User::where(['username' => $request->username, 'valid' => true])->first();
-        if (User::where(['username' => $request->username, 'valid' => true])->count() == 1 && Hash::check($request->password, $user->password)) {
-            Auth::login($user, $request->has('remember_me') ? true : false);
+        if (Auth::attempt([
+            'username' => $request->username,
+            'password' => $request->password,
+        ], function (User $user) {
+            return $user->valid;
+        }, $request->has('remember_me') ? true : false)) {
             $request->session()->regenerate();
             $response = ['status' => 'Berhasil', 'message' => 'kombinasi username dan password ditemukan', 'button' => 'Masuk Aplikasi'];
             $code = 200;

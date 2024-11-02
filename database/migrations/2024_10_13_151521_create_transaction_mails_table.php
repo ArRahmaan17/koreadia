@@ -23,8 +23,8 @@ return new class extends Migration
                 'ARCHIVE',
                 'IN',
                 'PROCESS',
+                'FILED',
                 'DISPOSITION',
-                'OUT',
                 'REPLIED',
             ]);
             $table->dateTime('date_in')->comment('Mail in date');

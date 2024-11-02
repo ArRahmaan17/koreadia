@@ -83,7 +83,6 @@
         function actionData() {
             $('.edit').click(function() {
                 window.state = 'update';
-console.log($(this).data())
                 let idOrganization = $(this).data("organization");
                 $("#update-organization").data("organization", idOrganization);
                 if (window.datatableOrganization.rows('.selected').data().length == 0) {
@@ -122,7 +121,7 @@ console.log($(this).data())
                         });
                     }
                 });
-            })
+            });
 
             $('.delete').click(function() {
                 if (window.datatableOrganization.rows('.selected').data().length == 0) {
@@ -141,7 +140,7 @@ console.log($(this).data())
                     id: 'question',
                     zindex: 9999,
                     title: 'Confirmation',
-                    message: "Are you sure you want to delete this mails organization data?",
+                    message: "Are you sure you want to delete this organizations data?",
                     position: 'center',
                     icon: 'bx bx-question-mark',
                     buttons: [
