@@ -223,6 +223,23 @@
             </div>
         </div>
     </div>
+    <div id="modal-report-mail-in" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-in-label" aria-hidden="true"
+        style="display: none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-file-mail-in-label">Report @lang('translation.mail-in')</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe class="col-12" style="min-height: 80vh;" src="" frameborder="0"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <!-- filepond js -->
@@ -302,6 +319,17 @@
                 $('#modal-file-mail-in').modal('show');
                 $('#modal-file-mail-in').find('.modal-title').html(`File @lang('translation.mail-in')`);
                 $('#modal-file-mail-in').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
+            });
+            $('.print-report').click(function() {
+                let fileId = $(this).data("mailsin");
+                if (window.datatableMail.rows('.selected').data().length == 0) {
+                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $(this).parents('tr').addClass('selected')
+                }
+                var data = window.datatableMail.rows('.selected').data()[0];
+                $('#modal-report-mail-in').modal('show');
+                $('#modal-report-mail-in').find('.modal-title').html(`Report @lang('translation.mail-in')`);
+                $('#modal-report-mail-in').find('.modal-body iframe').prop('src', `{{ route('mail.in.report') }}/${fileId}`)
             })
             $('.delete').click(function() {
                 if (window.datatableMail.rows('.selected').data().length == 0) {

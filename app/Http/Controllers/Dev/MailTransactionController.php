@@ -119,9 +119,9 @@ class MailTransactionController extends Controller
             $row['sender'] = $item->sender;
             $row['sender_phone_number'] = $item->sender_phone_number;
             if ($item->reply_file_attachment == NULL) {
-                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->file_attachment . "'><i class='bx bxs-printer' ></i></button>";
+                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->file_attachment . "'><i class='bx bxs-file-pdf' ></i></button>";
             } else {
-                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->reply_file_attachment . "'><i class='bx bxs-printer' ></i></button>";
+                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->reply_file_attachment . "'><i class='bx bxs-file-pdf' ></i></button>";
             }
             $row['status'] = $item->status;
             $row['date_in'] = $item->date_in;
@@ -138,7 +138,7 @@ class MailTransactionController extends Controller
             } else if ($item->status != 'ARCHIVE' && $item->request_notified == false && $item->notified == false) {
                 $row['action'] = "<button class='btn btn-icon btn-success request-notify' data-mailsIn='" . $item->id . "' ><i class='bx bxl-whatsapp'></i></button>";
             } else {
-                $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='" . $item->id . "' ><i class='bx bxs-show'></i></button>";
+                $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='" . $item->id . "' ><i class='bx bxs-show'></i></button><button class='btn btn-icon btn-success print-report' data-mailsIn='" . $item->id . "' ><i class='bx bxs-printer'></i></button>";
             }
             $dataFiltered[] = $row;
         }
@@ -782,5 +782,8 @@ class MailTransactionController extends Controller
         return response()->json($response, $code);
     }
 
-    public function showFile($folder, string $file_id) {}
+    public function reportFile($id)
+    {
+        return view('report.mail');
+    }
 }
