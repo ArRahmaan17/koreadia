@@ -106,8 +106,8 @@
     </table>
     <div class="flex">
       <div class="checkboxes">
-          <label class="checkbox-label"><input type="checkbox"> Penting</label>
           <label class="checkbox-label"><input type="checkbox"> Rahasia</label>
+          <label class="checkbox-label"><input type="checkbox"> Penting</label>
           <label class="checkbox-label"><input type="checkbox"> Segera</label>
           <label class="checkbox-label"><input type="checkbox"> Biasa</label>
       </div>
@@ -125,23 +125,23 @@
         </tr>
         <tr>
             <td>1. Mohon pendapat/saran</td>
-            <td>15. Selesaikan sesuai konsep</td>
+            <td>6. Selesaikan sesuai konsep</td>
         </tr>
         <tr>
             <td>2. Mohon petunjuk</td>
-            <td>16. Setuju diselesaikan</td>
+            <td>7. Setuju diselesaikan</td>
         </tr>
         <tr>
             <td>3. Mohon keputusan</td>
-            <td>17. Untuk diketahui</td>
+            <td>8. Untuk diketahui</td>
         </tr>
         <tr>
             <td>4. Untuk perhatian</td>
-            <td>18. Untuk diselesaikan</td>
+            <td>9. Untuk diselesaikan</td>
         </tr>
         <tr>
             <td>5. Siapkan konsep</td>
-            <td>19. Mohon koreksi konsep</td>
+            <td>10. Mohon koreksi konsep</td>
         </tr>
         <!-- Continue filling in rows as necessary -->
     </table>
