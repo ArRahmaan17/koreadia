@@ -40,6 +40,21 @@
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')
     <script>
+        function unFormattedPhoneNumber(formattedNumber) {
+            // Remove any characters that are not digits
+            let unformattedNumber = formattedNumber.replace(/\D/g, '');
+
+            // Ensure the number starts with '62' after removing non-digit characters
+            if (unformattedNumber.substr(0, 2) !== '62') {
+                return 'Invalid Indonesian phone number.';
+            }
+
+            // Remove the '62' prefix
+            unformattedNumber = unformattedNumber.replace(/^62/, '');
+
+            return unformattedNumber;
+        }
+
         function serializeObject(node) {
             var o = {};
             var a = node.serializeArray();

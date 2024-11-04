@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('in')->name('in.')->group(function () {
             Route::get('/', [MailTransactionController::class, 'index'])->name('index');
             Route::put('/request-notified/{id?}', [MailTransactionController::class, 'requestedNotified'])->name('request-notified');
+            Route::put('/show-file/{folder?}/{id?}', [MailTransactionController::class, 'showFile'])->name('show-file');
             Route::put('/status-update/{id?}', [MailTransactionController::class, 'statusUpdate'])->name('status-update');
             Route::get('/data-table', [MailTransactionController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [MailTransactionController::class, 'show'])->name('show');

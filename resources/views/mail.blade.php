@@ -207,6 +207,22 @@
             </div>
         </div>
     </div>
+    <div id="modal-file-mail-in" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-in-label" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-file-mail-in-label">File @lang('translation.mail-in')</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe class="col-12" style="min-height: 80vh;" src="" frameborder="0"></iframe>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <!-- filepond js -->
@@ -273,6 +289,19 @@
                         }
                     });
                 }, 2000);
+            });
+            $('.file').click(function() {
+                window.state = 'update';
+                let fileId = $(this).data("file");
+                $("#update-mail-in").data("file", fileId);
+                if (window.datatableMail.rows('.selected').data().length == 0) {
+                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $(this).parents('tr').addClass('selected')
+                }
+                var data = window.datatableMail.rows('.selected').data()[0];
+                $('#modal-file-mail-in').modal('show');
+                $('#modal-file-mail-in').find('.modal-title').html(`File @lang('translation.mail-in')`);
+                $('#modal-file-mail-in').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
             })
             $('.delete').click(function() {
                 if (window.datatableMail.rows('.selected').data().length == 0) {
@@ -760,6 +789,9 @@
                     multiple: true,
                 })
             });
+            $('#modal-file-mail-in').on('hidden.bs.modal', function() {
+                $('#modal-file-mail-in').find('.modal-body iframe').prop('src', ``)
+            });
             $(".flatpikrc").flatpickr({
                 "locale": "id"
             });
@@ -797,6 +829,34 @@
                 $('#modal-status-mail-in input[name=status]').val('OUT')
                 $('#modal-status-mail-in input[name=note]').val('')
             });
+            $('#sender_phone_number').change(function() {
+                $.ajax({
+                    type: "GET",
+                    url: `{{ env('WHATSAPP_URL') }}phone-check/${unFormattedPhoneNumber(this.value)}`,
+                    dataType: "json",
+                    success: function(response) {
+                        $('#sender_phone_number').removeClass('is-invalid');
+                        if (window.state == 'add') {
+                            $('#save-mail-in').removeClass('d-none');
+                        } else {
+                            $('#update-mail-in').removeClass('d-none');
+                        }
+                    },
+                    error: function(error) {
+                        $('#sender_phone_number').addClass('is-invalid');
+                        iziToast.error({
+                            id: 'alert-mail-in-form',
+                            title: 'Error',
+                            message: error.responseJSON.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
+                        });
+                        $('#save-mail-in').addClass('d-none');
+                        $('#update-mail-in').addClass('d-none');
+                    }
+                });
+            })
         });
     </script>
 @endsection

@@ -118,7 +118,11 @@ class MailTransactionController extends Controller
             $row['date'] = $item->date;
             $row['sender'] = $item->sender;
             $row['sender_phone_number'] = $item->sender_phone_number;
-            $row['file_attachment'] = "<button class='btn btn-icon btn-success preview-file " . (($item->reply_file_attachment == NULL) ? 'in' : 'reply') . "' data-link='" . ($item->reply_file_attachment == NULL) ? $item->reply_file_attachment : $item->file_attachment . "'><i class='bx bxs-show'></i></button>";
+            if ($item->reply_file_attachment == NULL) {
+                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->file_attachment . "'><i class='bx bxs-printer' ></i></button>";
+            } else {
+                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->reply_file_attachment . "'><i class='bx bxs-printer' ></i></button>";
+            }
             $row['status'] = $item->status;
             $row['date_in'] = $item->date_in;
             $row['admin'] = $item->admin;
@@ -777,4 +781,6 @@ class MailTransactionController extends Controller
         }
         return response()->json($response, $code);
     }
+
+    public function showFile($folder, string $file_id) {}
 }
