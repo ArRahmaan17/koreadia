@@ -40,7 +40,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{id?}', [MailTransactionController::class, 'destroy'])->name('destroy');
             Route::post('/', [MailTransactionController::class, 'store'])->name('store');
         });
-        Route::prefix('out')->name('out.')->group(function () {});
     });
     Route::prefix('master')->name('master.')->group(function () {
         Route::prefix('agenda')->name('agenda.')->group(function () {
@@ -132,4 +131,5 @@ Route::middleware('guest')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/register', [AuthController::class, 'signup'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::get('/tracking/{mail_number?}', [MailTransactionController::class, 'tracking'])->name('tracking');
 });

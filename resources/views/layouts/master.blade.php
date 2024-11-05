@@ -109,9 +109,9 @@
 
         function formattedInput() {
             $('.phone_number').inputmask('(+62) 999-999-9999[9]')
-            $('.number-mail').inputmask({
-                regex: `[0-9]{3,10}\/[A-Z a-z]{2,10}\/[A-Z a-z]{2,4}\/\[0-9]{4}`
-            })
+            // $('.number-mail').inputmask({
+            //     regex: `[0-9A-Za-z]{3,10}\/[0-9A-Za-z]{2,10}\/[0-9A-Za-z]{2,4}\/\[0-9A-Za-z]{4}`
+            // })
             $('.email').inputmask({
                 mask: "*{1,15}[.*{1,15}][.*{1,15}][.*{1,15}]@*{1,15}[.*{2,6}][.*{1,2}]",
                 greedy: false,

@@ -75,7 +75,7 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="number" class="form-label">Mail Number</label>
-                                    <input type="text" class="form-control number-mail" name="number" id="number">
+                                    <input type="text" class="form-control number-mail" name="number" id="number" placeholder="0001/TEST/PNDK/2024">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
@@ -123,7 +123,7 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="sender_phone_number" class="form-label">Mail Sender Phone Number</label>
-                                    <input type="text" class="form-control phone_number" placeholder="(+62) 895 451 4512" id="sender_phone_number"
+                                    <input type="text" class="form-control phone_number" placeholder="(+62) 895-451-4512" id="sender_phone_number"
                                         name="sender_phone_number">
                                 </div>
                             </div><!--end col-->

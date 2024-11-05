@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TransactionMail extends Model
@@ -45,5 +46,9 @@ class TransactionMail extends Model
     public function type(): HasOne
     {
         return $this->hasOne(MailType::class, 'id', 'type_id');
+    }
+    public function histories(): HasMany
+    {
+        return $this->hasMany(WhatsappQueue::class, 'transaction_mail_id', 'id');
     }
 }
