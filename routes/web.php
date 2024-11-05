@@ -131,5 +131,5 @@ Route::middleware('guest')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/register', [AuthController::class, 'signup'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::get('/tracking/{mail_number?}', [MailTransactionController::class, 'tracking'])->name('tracking');
 });
+Route::get('/tracking/{mail_number?}', [MailTransactionController::class, 'tracking'])->name('tracking');
