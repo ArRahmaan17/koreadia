@@ -25,7 +25,7 @@
             <h4 class="card-title mb-0 flex-grow-1">@lang('translation.mail-in')</h4>
             <div class="flex-shrink-0">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-mail-in">@lang('translation.add')</button>
-                <button type="button" class="btn btn-warning">@lang('translation.reload')</button>
+                <button type="button" class="btn btn-warning" id="reload-mail-in">@lang('translation.reload')</button>
             </div>
         </div><!-- end card header -->
         <div class="card-body">
@@ -889,6 +889,9 @@
                     }
                 });
             });
+            $('#reload-mail-in').click(debounce(function() {
+                window.datatableMail.ajax.reload();
+            }, 1000));
         });
     </script>
 @endsection
