@@ -7,6 +7,7 @@ return [
     'role' => 'App Role',
     'menu' => 'App Menu',
     'add' => 'Add',
+    'reload' => 'Reload',
     'update' => 'Update',
     'save' => 'Save',
     'close' => 'Close',

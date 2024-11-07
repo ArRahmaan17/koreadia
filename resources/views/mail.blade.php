@@ -25,6 +25,7 @@
             <h4 class="card-title mb-0 flex-grow-1">@lang('translation.mail-in')</h4>
             <div class="flex-shrink-0">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-mail-in">@lang('translation.add')</button>
+                <button type="button" class="btn btn-warning">@lang('translation.reload')</button>
             </div>
         </div><!-- end card header -->
         <div class="card-body">
@@ -601,8 +602,8 @@
                     target: 9,
                     name: 'file_attachment',
                     data: 'file_attachment',
-                    orderable: true,
-                    searchable: true,
+                    orderable: false,
+                    searchable: false,
                     render: (data, type, row, meta) => {
                         return `<div class='d-flex m-0 p-0 g-1'>${data}</div>`
                     }
@@ -628,8 +629,8 @@
                     target: 12,
                     name: 'admin',
                     data: 'admin',
-                    orderable: false,
-                    searchable: false,
+                    orderable: true,
+                    searchable: true,
                     render: (data, type, row, meta) => {
                         return `<div class='d-flex gap-1'>${data}</div>`
                     }
@@ -637,8 +638,8 @@
                     target: 13,
                     name: 'action',
                     data: 'action',
-                    orderable: true,
-                    searchable: true,
+                    orderable: false,
+                    searchable: false,
                     render: (data, type, row, meta) => {
                         return `<div class='d-flex m-0 p-0 g-1'>${data}</div>`
                     }
@@ -817,6 +818,9 @@
                     multiple: true,
                 })
             });
+            $('#modal-status-mail-in').on('hidden.bs.modal', function() {
+                $('#form-status-mail-in')[0].reset();
+            });
             $('#modal-file-mail-in').on('hidden.bs.modal', function() {
                 $('#modal-file-mail-in').find('.modal-body iframe').prop('src', ``)
             });
@@ -884,7 +888,7 @@
                         $('#update-mail-in').addClass('d-none');
                     }
                 });
-            })
+            });
         });
     </script>
 @endsection

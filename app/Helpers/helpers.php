@@ -30,7 +30,7 @@ function getSql($model)
             $pos = strpos($sql, $needle);
             if ($pos !== false) {
                 if (gettype($replace) === 'string') {
-                    $replace = ' "'.addslashes($replace).'" ';
+                    $replace = ' "' . addslashes($replace) . '" ';
                 }
                 $sql = substr_replace($sql, $replace, $pos, strlen($needle));
             }
@@ -81,7 +81,7 @@ if (! function_exists('buildTreeMenu')) {
 if (! function_exists('checkPermissionMenu')) {
     function checkPermissionMenu($id, $role)
     {
-        return DB::table('role_menus')->where(['menuId' => $id, 'roleId' => $role])->count() > 0 ? true : false;
+        return DB::table('role_menus')->where(['menu_id' => $id, 'role_id' => $role])->count() > 0 ? true : false;
     }
 }
 
@@ -91,7 +91,7 @@ if (! function_exists('buildMenu')) {
     {
         $html = '';
         foreach ($elements as $element) {
-            if (getRole() == 'Developer' || (getRole() == 'Manager' && $element['dev_only'] == 0) || checkPermissionMenu($element['id'], session('userLogged')['roleId'])) {
+            if (getRole() == 'Developer' || checkPermissionMenu($element['id'], auth()->user()->role->id)) {
                 if ($place == 0) {
                     if (isset($element['children'])) {
                         $children = buildMenu($element['children']);

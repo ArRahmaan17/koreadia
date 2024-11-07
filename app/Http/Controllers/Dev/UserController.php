@@ -83,10 +83,10 @@ class UserController extends Controller
 
     public function all()
     {
-        $response = ['message' => 'showing all resources successfully', 'data' => User::all()];
+        $response = ['message' => 'showing all resources successfully', 'data' => User::where('id', '!=', auth()->user()->id)->get()];
         $code = 200;
         if (User::count() == 0) {
-            $response = ['message' => 'failed showing all resources', 'data' => User::all()];
+            $response = ['message' => 'failed showing all resources', 'data' => User::where('id', '!=', auth()->user()->id)->get()];
             $code = 422;
         }
         return response()->json($response, $code);

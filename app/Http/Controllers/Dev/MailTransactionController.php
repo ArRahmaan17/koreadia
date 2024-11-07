@@ -28,7 +28,7 @@ class MailTransactionController extends Controller
             ->leftJoin('whatsapp_queues as wq', function (JoinClause $join) {
                 $join->on('transaction_mails.id', '=', 'wq.transaction_mail_id')
                     ->on('transaction_mails.status', '=', 'wq.current_status');
-            })
+            })->where([['transaction_mails.user_id', ((getRole() == 'Developer') ? '<>' : '='), ((getRole() == 'Developer') ? NULL : auth()->user()->id)]])
             ->orderBy('id', 'asc')
             ->count();
         $totalFiltered = $totalData;
@@ -49,7 +49,7 @@ class MailTransactionController extends Controller
             if (isset($request['order'][0]['column'])) {
                 $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
-            $assets = $assets->get();
+            $assets = $assets->where([['transaction_mails.user_id', ((getRole() == 'Developer') ? '<>' : '='), ((getRole() == 'Developer') ? NULL : auth()->user()->id)]])->get();
         } else {
             $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified')
                 ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
@@ -80,7 +80,7 @@ class MailTransactionController extends Controller
                 $assets->limit($request['length'])
                     ->offset($request['start']);
             }
-            $assets = $assets->get();
+            $assets = $assets->where([['transaction_mails.user_id', ((getRole() == 'Developer') ? '<>' : '='), ((getRole() == 'Developer') ? NULL : auth()->user()->id)]])->get();
 
             $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified')
                 ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
@@ -105,9 +105,9 @@ class MailTransactionController extends Controller
                 ->orWhere('mt.name', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['order'][0]['name'] . ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
-            $totalFiltered = $totalFiltered->count();
+            $totalFiltered = $totalFiltered->where([['transaction_mails.user_id', ((getRole() == 'Developer') ? '<>' : '='), ((getRole() == 'Developer') ? NULL : auth()->user()->id)]])->count();
         }
         $dataFiltered = [];
         foreach ($assets as $index => $item) {
@@ -247,7 +247,14 @@ class MailTransactionController extends Controller
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
                         $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                        $data_queue = [
+                            'transaction_mail_id' => $current_status->id,
+                            'current_status' => $data['status'],
+                            'last_status' => $current_status->status,
+                            'created_at' => now('Asia/Jakarta'),
+                            'updated_at' => now('Asia/Jakarta'),
+                            'user_id' => auth()->user()->id
+                        ];
                     } else if ($data['status'] == 'FILED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
@@ -330,8 +337,6 @@ class MailTransactionController extends Controller
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
-                                'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
                                 'current_status' => 'FILED',
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
@@ -396,8 +401,6 @@ class MailTransactionController extends Controller
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
-                                'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
                                 'current_status' => 'DISPOSITION',
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
@@ -438,8 +441,6 @@ class MailTransactionController extends Controller
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
-                                'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
                                 'current_status' => $data['status'],
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
@@ -454,8 +455,6 @@ class MailTransactionController extends Controller
                     $where_queue = [['transaction_mail_id', NULL]];
                     $data_queue = [
                         'transaction_mail_id' => $current_status->id,
-                        'request_notified' => true,
-                        'request_notified_at' => now('Asia/Jakarta'),
                         'current_status' =>  'ARCHIVE',
                         'last_status' => $current_status->status,
                         'created_at' => now('Asia/Jakarta'),
@@ -513,7 +512,10 @@ class MailTransactionController extends Controller
                 'request_notified_at' => now('Asia/Jakarta')
             ]);
             DB::commit();
-            $response = ['message' => 'request notified mail successfully, waiting queue '];
+            $response = ['message' => 'request notified mail successfully, waiting queue ' . WhatsappQueue::where([
+                'request_notified' => true,
+                'notified' => false
+            ])->count() . ' to notified'];
             $code = 200;
         } catch (\Throwable $th) {
             $response = ['message' => 'failed request notified mail'];
@@ -539,7 +541,14 @@ class MailTransactionController extends Controller
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
                         $where_queue = [['transaction_mail_id', NULL]];
-                        $data_queue = ['transaction_mail_id' => $current_status->id, 'current_status' => $data['status'], 'last_status' => $current_status->status, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta'), 'user_id' => auth()->user()->id];
+                        $data_queue = [
+                            'transaction_mail_id' => $current_status->id,
+                            'current_status' => $data['status'],
+                            'last_status' => $current_status->status,
+                            'created_at' => now('Asia/Jakarta'),
+                            'updated_at' => now('Asia/Jakarta'),
+                            'user_id' => auth()->user()->id
+                        ];
                     } else if ($data['status'] == 'FILED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
@@ -622,8 +631,6 @@ class MailTransactionController extends Controller
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
-                                'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
                                 'current_status' => 'FILED',
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
@@ -688,8 +695,6 @@ class MailTransactionController extends Controller
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
-                                'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
                                 'current_status' => 'DISPOSITION',
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
@@ -730,8 +735,6 @@ class MailTransactionController extends Controller
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
-                                'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
                                 'current_status' => $data['status'],
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
@@ -746,8 +749,6 @@ class MailTransactionController extends Controller
                     $where_queue = [['transaction_mail_id', NULL]];
                     $data_queue = [
                         'transaction_mail_id' => $current_status->id,
-                        'request_notified' => true,
-                        'request_notified_at' => now('Asia/Jakarta'),
                         'current_status' =>  'ARCHIVE',
                         'last_status' => $current_status->status,
                         'created_at' => now('Asia/Jakarta'),
@@ -774,7 +775,6 @@ class MailTransactionController extends Controller
             $code = 200;
             DB::commit();
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollBack();
             $response = ['message' => 'failed updating status mail'];
             $code = 422;
@@ -786,9 +786,10 @@ class MailTransactionController extends Controller
     {
         return view('report.mail');
     }
-    public function tracking($mail_number)
+
+    public function tracking(Request $request)
     {
-        $data = TransactionMail::with('histories')->where('number', $mail_number);
+        $data = TransactionMail::with('histories', 'histories.user')->where('number', $request->number);
         $response = ['message' => 'we found your mail transaction history', 'data' => $data->get()];
         $code = 200;
         if ($data->count() == 0) {

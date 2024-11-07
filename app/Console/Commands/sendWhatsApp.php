@@ -32,10 +32,10 @@ class sendWhatsApp extends Command implements Isolatable
     {
         $data = TransactionMail::select('transaction_mails.*', 'wq.notified', 'wq.request_notified', 'wq.current_status')->join('whatsapp_queues as wq', 'transaction_mails.id', '=', 'wq.transaction_mail_id')->with('admin', 'agenda', 'type', 'priority')->where([['notified', false], ['request_notified', true]])->orderBy('wq.transaction_mail_id', 'ASC')->find($this->argument('transaction_mail_id'))->toArray();
         $data['sender_phone_number'] = unFormattedPhoneNumber($data['sender_phone_number']);
-        if ($data['current_status'] == 'IN') {
+        if ($data['current_status'] == 'IN'|| $data['current_status'] == 'REPLIED') {
             $response = Http::attach(
                 'file_attachment',
-                file_get_contents(public_path($data['file_attachment'])),
+                file_get_contents(public_path(($data['current_status'] == 'IN')?$data['file_attachment']: $data['reply_file_attachment'])),
                 $data['regarding'] . '.pdf'
             )->post(env('WHATSAPP_URL') . 'mail-status/' . $data['sender_phone_number'] . '/' . $data['current_status'], [
                 'sender' => $data['sender'],
