@@ -127,7 +127,7 @@ Route::middleware('auth')->group(function () {
     });
 });
 Route::middleware('guest')->group(function () {
-    Route::get('/tracking', [FrontendController::class, 'home'])->name('home');
+    Route::get('/tracking', [FrontendController::class, 'home'])->name('fe-home');
     Route::get('/login', [AuthController::class, 'index'])->name('home');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
