@@ -158,7 +158,7 @@ class MailTransactionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'number' => 'required|unique:transaction_mails,number|regex:/[0-9A-Za-z]{1,10}\/[0-9A-Za-z]{2,10}\/[0-9A-Za-z]{2,4}\/[0-9A-Za-z]{4}/i|min:14|max:32',
+            'number' => 'required|unique:transaction_mails,number|min:14|max:32',
             'regarding' => 'required|string|min:5|max:50',
             'agenda_id' => 'required|numeric',
             'priority_id' => 'required|numeric',
@@ -218,7 +218,7 @@ class MailTransactionController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'number' => 'required|unique:transaction_mails,number,' . $id . '|regex:/[0-9A-Za-z]{1,10}\/[0-9A-Za-z]{2,10}\/[0-9A-Za-z]{2,4}\/[0-9A-Za-z]{4}/i|min:14|max:32',
+            'number' => 'required|unique:transaction_mails,number,' . $id . '|min:14|max:32',
             'regarding' => 'required|string|min:5|max:50',
             'agenda_id' => 'required|numeric',
             'priority_id' => 'required|numeric',
