@@ -868,11 +868,6 @@
                     dataType: "json",
                     success: function(response) {
                         $('#sender_phone_number').removeClass('is-invalid');
-                        if (window.state == 'add') {
-                            $('#save-mail-in').removeClass('d-none');
-                        } else {
-                            $('#update-mail-in').removeClass('d-none');
-                        }
                     },
                     error: function(error) {
                         $('#sender_phone_number').addClass('is-invalid');
