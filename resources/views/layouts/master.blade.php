@@ -49,9 +49,6 @@
                 return 'Invalid Indonesian phone number.';
             }
 
-            // Remove the '62' prefix
-            unformattedNumber = unformattedNumber.replace(/^62/, '');
-
             return unformattedNumber;
         }
 

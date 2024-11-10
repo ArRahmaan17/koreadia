@@ -868,6 +868,11 @@
                     dataType: "json",
                     success: function(response) {
                         $('#sender_phone_number').removeClass('is-invalid');
+                        if (window.state == 'add') {
+                            $('#save-mail-in').removeClass('disabled');
+                        } else {
+                            $('#update-mail-in').removeClass('disabled');
+                        }
                     },
                     error: function(error) {
                         $('#sender_phone_number').addClass('is-invalid');
@@ -879,8 +884,8 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        $('#save-mail-in').addClass('d-none');
-                        $('#update-mail-in').addClass('d-none');
+                        $('#save-mail-in').addClass('disabled');
+                        $('#update-mail-in').addClass('disabled');
                     }
                 });
             });
