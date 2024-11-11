@@ -29,7 +29,7 @@
                                     <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="20">
                                 </a>
                             </div>
-                            <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
+                            <p class="mt-3 fs-15 fw-medium">{{ env('APP_NAME') }}</p>
                         </div>
                     </div>
                 </div>
@@ -41,14 +41,14 @@
 
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
-                                    <h5 class="text-primary">Welcome Back !</h5>
-                                    <p class="text-muted">Sign in to continue to {{ env('APP_NAME') }}.</p>
+                                    <h5 class="text-primary">@lang('translation.welcome-back')</h5>
+                                    <p class="text-muted">@lang('translation.please-sign-in') {{ env('APP_NAME') }}.</p>
                                 </div>
                                 <div class="p-2 mt-4">
                                     <form action="{{ route('login') }}" method="POST" id="form-login">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                                            <label for="username" class="form-label">@lang('translation.username') <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control @error('username') is-invalid @enderror"
                                                 value="{{ old('username', 'dev.rahmaan') }}" id="username" name="username" placeholder="Enter username">
                                             @error('username')
@@ -60,13 +60,13 @@
 
                                         <div class="mb-3">
                                             <div class="float-end">
-                                                <a href="" class="text-muted">Forgot password?</a>
+                                                <a href="{{route('forgot-password')}}" class="text-muted">@lang('translation.forgot-password')</a>
                                             </div>
-                                            <label class="form-label" for="password-input">Password <span class="text-danger">*</span></label>
+                                            <label class="form-label" for="password-input">@lang('translation.password') <span class="text-danger">*</span></label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input type="password" class="form-control password-input pe-5 @error('password') is-invalid @enderror"
                                                     name="password" placeholder="Enter password" id="password-input" value="mamanrecing">
-                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon shadow-none"
                                                     type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                 @error('password')
                                                     <span class="invalid-feedback" role="alert">
@@ -78,26 +78,20 @@
 
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="on" name="remember_me" id="remember_me">
-                                            <label class="form-check-label" for="remember_me">Remember me</label>
+                                            <label class="form-check-label" for="remember_me">@lang('translation.remember-me')</label>
                                         </div>
 
                                         <div class="mt-4">
-                                            <button id="btn-login" class="btn btn-success w-100" type="button">Sign In</button>
+                                            <button id="btn-login" class="btn btn-success w-100" type="button">@lang('translation.signin')</button>
                                         </div>
 
                                         <div class="mt-4 text-center">
                                             <div class="signin-other-title">
-                                                <h5 class="fs-13 mb-4 title">Sign In with</h5>
+                                                <h5 class="fs-13 mb-4 title">@lang('translation.sign-in-with')</h5>
                                             </div>
                                             <div>
-                                                <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i
-                                                        class="ri-facebook-fill fs-16"></i></button>
-                                                <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i
-                                                        class="ri-google-fill fs-16"></i></button>
-                                                <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i
-                                                        class="ri-github-fill fs-16"></i></button>
-                                                <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i
-                                                        class="ri-twitter-fill fs-16"></i></button>
+                                                <button type="button" class="btn btn-success btn-icon waves-effect waves-light"><i
+                                                        class="ri-whatsapp-fill fs-16"></i></button>
                                             </div>
                                         </div>
                                     </form>
@@ -108,8 +102,8 @@
                         <!-- end card -->
 
                         <div class="mt-4 text-center">
-                            <p class="mb-0">Don't have an account ? <a href="{{ route('register') }}"
-                                    class="fw-semibold text-primary text-decoration-underline"> Signup </a> </p>
+                            <p class="mb-0">@lang('translation.sign-up-now')<a href="{{ route('register') }}"
+                                    class="fw-semibold text-primary text-decoration-underline"> @lang('translation.signup') </a> </p>
                         </div>
 
                     </div>
@@ -183,9 +177,9 @@
                             buttonsStyling: false,
                             showCloseButton: true
                         }).then((result) => {
-                                setTimeout(() => {
-                                    window.location = `{{ route('home') }}`;
-                                }, 1000);
+                            setTimeout(() => {
+                                window.location = `{{ route('home') }}`;
+                            }, 1000);
                         });
                     },
                     error: function(error) {

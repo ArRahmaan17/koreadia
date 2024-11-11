@@ -29,11 +29,11 @@
                     <thead>
                         <tr>
                             <td>No</td>
-                            <td>Name</td>
+                            <td>@lang('translation.name')</td>
                             <td>Username</td>
                             <td>Phone Number</td>
                             <td>Valid</td>
-                            <td>Action</td>
+                            <td>@lang('translation.action')</td>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.mail-in')
+    @lang('translation.mail_in')
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('build/libs/datatable/dataTables.min.css') }}" />
@@ -22,7 +22,7 @@
     @endcomponent
     <div class="card">
         <div class="card-header align-items-center d-flex">
-            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.mail-in')</h4>
+            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.mail_in')</h4>
             <div class="flex-shrink-0">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-mail-in">@lang('translation.add')</button>
                 <button type="button" class="btn btn-warning" id="reload-mail-in">@lang('translation.reload')</button>
@@ -33,20 +33,20 @@
                 <table class="table table-bordered" id="table-mail-in">
                     <thead>
                         <tr>
-                            <td>No</td>
-                            <td>Number</td>
-                            <td>Regarding</td>
-                            <td>Agenda</td>
-                            <td>Priority</td>
-                            <td>Type</td>
-                            <td>Date</td>
-                            <td>Sender</td>
-                            <td>Sender Phone Number</td>
-                            <td>File Attachment</td>
-                            <td>Status</td>
-                            <td>Date In</td>
-                            <td>Admin</td>
-                            <td>Action</td>
+                            <td>@lang('translation.no')</td>
+                            <td>@lang('translation.mail_number')</td>
+                            <td>@lang('translation.mail_regarding')</td>
+                            <td>@lang('translation.mail_agenda')</td>
+                            <td>@lang('translation.mail_priority')</td>
+                            <td>@lang('translation.mail_type')</td>
+                            <td>@lang('translation.mail_date')</td>
+                            <td>@lang('translation.mail_sender')</td>
+                            <td>@lang('translation.mail_sender_phone_number')</td>
+                            <td>@lang('translation.mail_file_attachment')</td>
+                            <td>@lang('translation.mail_status')</td>
+                            <td>@lang('translation.mail_date_in')</td>
+                            <td>@lang('translation.mail_admin')</td>
+                            <td>@lang('translation.action')</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,7 +59,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-mail-in-label">Add @lang('translation.mail-in')</h5>
+                    <h5 class="modal-title" id="modal-mail-in-label">Add @lang('translation.mail_in')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -69,25 +69,25 @@
                             <input type="hidden" name="id">
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="admin" class="form-label">Admin</label>
+                                    <label for="admin" class="form-label">@lang('translation.mail_admin')</label>
                                     <input type="text" class="form-control" name="admin" value="{{ auth()->user()->name }}" readonly id="admin">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="number" class="form-label">Mail Number</label>
+                                    <label for="number" class="form-label">@lang('translation.mail_number')</label>
                                     <input type="text" class="form-control number-mail" name="number" id="number" placeholder="0001/TEST/PNDK/2024">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="regarding" class="form-label">Mail Regarding</label>
+                                    <label for="regarding" class="form-label">@lang('translation.mail_regarding')</label>
                                     <input type="text" class="form-control" name="regarding" placeholder="Enter your regarding mail" id="regarding">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="agenda_id" class="form-label">Mail Agenda</label>
+                                    <label for="agenda_id" class="form-label">@lang('translation.mail_agenda')</label>
                                     <select name="agenda_id" id="agenda_id" class="form-select select2">
                                         <option value="">PILIH </option>
                                     </select>
@@ -95,7 +95,7 @@
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="priority_id" class="form-label">Mail Priority</label>
+                                    <label for="priority_id" class="form-label">@lang('translation.mail_priority')</label>
                                     <select name="priority_id" id="priority_id" class="form-select select2">
                                         <option value="">PILIH </option>
                                     </select>
@@ -103,7 +103,7 @@
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="type_id" class="form-label">Mail Type</label>
+                                    <label for="type_id" class="form-label">@lang('translation.mail_type')</label>
                                     <select name="type_id" id="type_id" class="form-select select2">
                                         <option value="">PILIH</option>
                                     </select>
@@ -111,21 +111,21 @@
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="date" class="form-label">Mail Date</label>
+                                    <label for="date" class="form-label">@lang('translation.mail_date')</label>
                                     <input type="text" class="form-control flatpikrc" placeholder="Enter mail date" id="date" name="date">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="sender" class="form-label">Mail Sender</label>
+                                    <label for="sender" class="form-label">@lang('translation.mail_sender')</label>
                                     <input type="text" class="form-control" placeholder="Enter mail sender" id="sender" name="sender">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="sender_phone_number" class="form-label">Mail Sender Phone Number</label>
-                                    <input type="text" class="form-control phone_number" placeholder="(+62) 895-451-4512" id="sender_phone_number"
-                                        name="sender_phone_number">
+                                    <label for="sender_phone_number" class="form-label">@lang('translation.mail_sender_phone_number')</label>
+                                    <input type="text" class="form-control phone_number" placeholder="(+62) 895-451-4512" id="sender_phone_number" name="sender_phone_number">
+                                    <div id="emailHelp" class="form-text">@lang('translation.must_valid_wa_number')</div>
                                 </div>
                             </div><!--end col-->
                             <div class="col-6 d-none">
@@ -143,7 +143,7 @@
                             </div><!--end col-->
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label for="file_attachment" class="form-label">Mail File Attachment</label>
+                                    <label for="file_attachment" class="form-label">@lang('translation.mail_file_attachment')</label>
                                     <input type="file" class="filepond-input-multiple" id="file_attachment" name="file_attachment"
                                         aria-describedby="file_attachment_help">
                                     <div id="file_attachment_help" class="form-text d-none">@lang('translation.image_update_help')</div>
@@ -165,7 +165,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-status-mail-in-label">Update Status @lang('translation.mail-in')</h5>
+                    <h5 class="modal-title" id="modal-status-mail-in-label">Update Status @lang('translation.mail_in')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -173,29 +173,29 @@
                         @csrf
                         <input type="hidden" name="id">
                         <input type="hidden" name="status">
-                        <div class="alert alert-warning"><b>Be careful.</b> Status of the mail will change</div>
+                        <div class="alert alert-warning">@lang('translation.mail_warning_status')</div>
                         <div class="mb-3">
-                            <label for="user_id">Processors</label>
+                            <label for="user_id">@lang('translation.mail_processor')</label>
                             <select name="user_id" id="user_id" class="form-select select2"></select>
                         </div>
                         <div class="col-status-process d-none">
                             <div class="mb-3">
-                                <label for="sincerely">Sincerely</label>
+                                <label for="sincerely">@lang('translation.mail_sincerely')</label>
                                 <select name="sincerely" id="sincerely" class="form-select select2multi"></select>
                             </div>
                             <div class="mb-3">
-                                <label for="note">Note</label>
+                                <label for="note">@lang('translation.mail_note')</label>
                                 <input type="text" name="note" id="note" class="form-control">
                             </div>
                         </div>
                         <div class="col-status-disposision d-none">
                             <div class="mb-3">
-                                <label for="reply_file_attachment" class="form-label">Reply File Attachment</label>
+                                <label for="reply_file_attachment" class="form-label">@lang('translation.mail_reply_file_attachment')</label>
                                 <input type="file" class="filepond-input-multiple" id="reply_file_attachment" name="reply_file_attachment"
                                     aria-describedby="file_attachment_help">
                             </div>
                             <div class="mb-3">
-                                <label for="reply_note">Reply Note</label>
+                                <label for="reply_note">@lang('translation.mail_reply_note')</label>
                                 <input type="text" name="reply_note" id="reply_note" class="form-control">
                             </div>
                         </div>
@@ -212,7 +212,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-file-mail-in-label">File @lang('translation.mail-in')</h5>
+                    <h5 class="modal-title" id="modal-file-mail-in-label">File @lang('translation.mail_in')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -229,7 +229,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-file-mail-in-label">Report @lang('translation.mail-in')</h5>
+                    <h5 class="modal-title" id="modal-file-mail-in-label">Report @lang('translation.mail_in')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -275,7 +275,7 @@
                 var data = window.datatableMail.rows('.selected').data()[0];
 
                 $('#modal-mail-in').modal('show');
-                $('#modal-mail-in').find('.modal-title').html(`Edit @lang('translation.mail-in')`);
+                $('#modal-mail-in').find('.modal-title').html(`Edit @lang('translation.mail_in')`);
                 $('#save-mail-in').addClass('d-none');
                 $('#update-mail-in').removeClass('d-none');
                 setTimeout(() => {
@@ -318,7 +318,7 @@
                 }
                 var data = window.datatableMail.rows('.selected').data()[0];
                 $('#modal-file-mail-in').modal('show');
-                $('#modal-file-mail-in').find('.modal-title').html(`File @lang('translation.mail-in')`);
+                $('#modal-file-mail-in').find('.modal-title').html(`File @lang('translation.mail_in')`);
                 $('#modal-file-mail-in').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
             });
             $('.print-report').click(function() {
@@ -329,7 +329,7 @@
                 }
                 var data = window.datatableMail.rows('.selected').data()[0];
                 $('#modal-report-mail-in').modal('show');
-                $('#modal-report-mail-in').find('.modal-title').html(`Report @lang('translation.mail-in')`);
+                $('#modal-report-mail-in').find('.modal-title').html(`Report @lang('translation.mail_in')`);
                 $('#modal-report-mail-in').find('.modal-body iframe').prop('src', `{{ route('mail.in.report') }}/${fileId}`)
             })
             $('.delete').click(function() {
@@ -764,7 +764,7 @@
             $('#modal-mail-in').on('hidden.bs.modal', function() {
                 window.state = 'add';
                 $(this).find('form')[0].reset();
-                $(this).find('.modal-title').html(`Add @lang('translation.mail-in')`);
+                $(this).find('.modal-title').html(`Add @lang('translation.mail_in')`);
                 $('#save-mail-in').removeClass('d-none');
                 $('#update-mail-in').addClass('d-none');
                 $('#modal-mail-in .is-invalid').removeClass('is-invalid')

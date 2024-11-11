@@ -33,9 +33,9 @@
                     <thead>
                         <tr>
                             <td>No</td>
-                            <td>Name</td>
+                            <td>@lang('translation.name')</td>
                             <td>Role</td>
-                            <td>Action</td>
+                            <td>@lang('translation.action')</td>
                         </tr>
                     </thead>
                     <tbody>

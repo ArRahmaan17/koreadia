@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
-    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+    data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default" data-preloader="enable">
 
 <head>
     <meta charset="utf-8" />
@@ -119,21 +119,21 @@
                 definitions: {
                     '*': {
                         validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~\-]",
-                        casing: "lower"
-                    }
+                    casing: "lower"
                 }
-            });
-        }
+            }
+        });
+    }
 
-        function debounce(func, delay) {
-            let timer;
-            return function(...args) {
-                clearTimeout(timer);
-                timer = setTimeout(() => {
-                    func.apply(this, args);
-                }, delay);
-            };
-        }
+    function debounce(func, delay) {
+        let timer;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    }
     </script>
     @if (env('APP_ENV') === 'production')
         <script>

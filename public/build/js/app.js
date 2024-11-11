@@ -14,68 +14,68 @@ File: Main Js File
 	 *  global variables
 	 */
 	var navbarMenuHTML = document.querySelector(".navbar-menu").innerHTML;
-	var horizontalMenuSplit = 7; // after this number all horizontal menus will be moved in More menu options
-	var default_lang = "en"; // set Default Language
-	var language = localStorage.getItem("language");
+	// var horizontalMenuSplit = 7; // after this number all horizontal menus will be moved in More menu options
+	// var default_lang = "id"; // set Default Language
+	// var language = localStorage.getItem("language");
 
-	function initLanguage() {
-		// Set new language
-		(language === null) ? setLanguage(default_lang) : setLanguage(language);
-		var languages = document.getElementsByClassName("language");
-		languages && Array.from(languages).forEach(function (dropdown) {
-			dropdown.addEventListener("click", function (event) {
-				setLanguage(dropdown.getAttribute("data-lang"));
-			});
-		});
-	}
+	// function initLanguage() {
+	// 	// Set new language
+	// 	(language === null) ? setLanguage(default_lang) : setLanguage(language);
+	// 	var languages = document.getElementsByClassName("language");
+	// 	languages && Array.from(languages).forEach(function (dropdown) {
+	// 		dropdown.addEventListener("click", function (event) {
+	// 			setLanguage(dropdown.getAttribute("data-lang"));
+	// 		});
+	// 	});
+	// }
 
-	function setLanguage(lang) {
-		if (document.getElementById("header-lang-img")) {
-			if (lang == "en") {
-				document.getElementById("header-lang-img").src = "build/images/flags/us.svg";
-			} else if (lang == "sp") {
-				document.getElementById("header-lang-img").src = "build/images/flags/spain.svg";
-			} else if (lang == "gr") {
-				document.getElementById("header-lang-img").src = "build/images/flags/germany.svg";
-			} else if (lang == "it") {
-				document.getElementById("header-lang-img").src = "build/images/flags/italy.svg";
-			} else if (lang == "ru") {
-				document.getElementById("header-lang-img").src = "build/images/flags/russia.svg";
-			} else if (lang == "ch") {
-				document.getElementById("header-lang-img").src = "build/images/flags/china.svg";
-			} else if (lang == "fr") {
-				document.getElementById("header-lang-img").src = "build/images/flags/french.svg";
-			} else if (lang == "ar") {
-				document.getElementById("header-lang-img").src = "build/images/flags/ae.svg";
-			}
-			localStorage.setItem("language", lang);
-			language = localStorage.getItem("language");
-			getLanguage();
-		}
-	}
+	// function setLanguage(lang) {
+	// 	if (document.getElementById("header-lang-img")) {
+	// 		if (lang == "en") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/us.svg";
+	// 		} else if (lang == "sp") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/spain.svg";
+	// 		} else if (lang == "gr") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/germany.svg";
+	// 		} else if (lang == "it") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/italy.svg";
+	// 		} else if (lang == "ru") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/russia.svg";
+	// 		} else if (lang == "ch") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/china.svg";
+	// 		} else if (lang == "fr") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/french.svg";
+	// 		} else if (lang == "ar") {
+	// 			document.getElementById("header-lang-img").src = "build/images/flags/ae.svg";
+	// 		}
+	// 		localStorage.setItem("language", lang);
+	// 		language = localStorage.getItem("language");
+	// 		getLanguage();
+	// 	}
+	// }
 
-	// Multi language setting
-	function getLanguage() {
-		language == null ? setLanguage(default_lang) : false;
-		var request = new XMLHttpRequest();
-		// Instantiating the request object
-		request.open("GET", "build/lang/" + language + ".json");
-		// Defining event listener for readystatechange event
-		request.onreadystatechange = function () {
-			// Check if the request is compete and was successful
-			if (this.readyState === 4 && this.status === 200) {
-				var data = JSON.parse(this.responseText);
-				Object.keys(data).forEach(function (key) {
-					var elements = document.querySelectorAll("[data-key='" + key + "']");
-					Array.from(elements).forEach(function (elem) {
-						elem.textContent = data[key];
-					});
-				});
-			}
-		};
-		// Sending the request to the server
-		request.send();
-	}
+	// // Multi language setting
+	// function getLanguage() {
+	// 	language == null ? setLanguage(default_lang) : false;
+	// 	var request = new XMLHttpRequest();
+	// 	// Instantiating the request object
+	// 	request.open("GET", "build/lang/" + language + ".json");
+	// 	// Defining event listener for readystatechange event
+	// 	request.onreadystatechange = function () {
+	// 		// Check if the request is compete and was successful
+	// 		if (this.readyState === 4 && this.status === 200) {
+	// 			var data = JSON.parse(this.responseText);
+	// 			Object.keys(data).forEach(function (key) {
+	// 				var elements = document.querySelectorAll("[data-key='" + key + "']");
+	// 				Array.from(elements).forEach(function (elem) {
+	// 					elem.textContent = data[key];
+	// 				});
+	// 			});
+	// 		}
+	// 	};
+	// 	// Sending the request to the server
+	// 	request.send();
+	// }
 
 	function pluginData() {
 		/**
@@ -919,8 +919,7 @@ File: Main Js File
 		var currentPath = location.pathname == "/" ? "index" : location.pathname.substring(1);
 		currentPath = currentPath.substring(currentPath.lastIndexOf("/") + 1);
 		if (currentPath) {
-			// navbar-nav
-			var a = document.getElementById("navbar-nav").querySelector('[href="' + currentPath + '"]');
+			var a = document.getElementById("navbar-nav").querySelector(`[href="${location.href}"]`);
 			if (a) {
 				a.classList.add("active");
 				var parentCollapseDiv = a.closest(".collapse.menu-dropdown");
@@ -1067,19 +1066,19 @@ File: Main Js File
 				});
 			});
 
-			var removeItem = document.getElementById('removeNotificationModal');
-			removeItem.addEventListener('show.bs.modal', function (event) {
-				document.getElementById("delete-notification").addEventListener("click", function () {
-					Array.from(document.querySelectorAll(".notification-item")).forEach(function (element) {
-						if (element.classList.contains("active")) {
-							element.remove();
-						}
-					});
-					emptyNotification();
+			// var removeItem = document.getElementById('removeNotificationModal');
+			// removeItem.addEventListener('show.bs.modal', function (event) {
+			// 	document.getElementById("delete-notification").addEventListener("click", function () {
+			// 		Array.from(document.querySelectorAll(".notification-item")).forEach(function (element) {
+			// 			if (element.classList.contains("active")) {
+			// 				element.remove();
+			// 			}
+			// 		});
+			// 		emptyNotification();
 
-					document.getElementById("NotificationModalbtn-close").click();
-				})
-			})
+			// 		document.getElementById("NotificationModalbtn-close").click();
+			// 	})
+			// })
 		}
 	}
 
@@ -1825,7 +1824,7 @@ File: Main Js File
 			x.addEventListener("change", function () {
 				document.documentElement.setAttribute(ele, x.value);
 				sessionStorage.setItem(ele, x.value);
-				initLanguage();
+				//initLanguage();
 
 				if (ele == "data-layout-width" && x.value == "boxed") {
 					document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
@@ -1909,7 +1908,7 @@ File: Main Js File
 					// Dispatch the resize event on the window object
 					document.documentElement.setAttribute("data-theme", x.value);
 					document.getElementById("body-img").style.display = (x.value === "galaxy") ? "block" : "none";
-					if (x.value === "galaxy"){
+					if (x.value === "galaxy") {
 						document.documentElement.setAttribute("data-sidebar", "dark");
 						document.documentElement.setAttribute("data-bs-theme", "dark");
 					} else {
@@ -2013,7 +2012,7 @@ File: Main Js File
 		// sidebarUserProfile
 		document.getElementById("sidebarUserProfile")?.addEventListener("click", function (event) {
 			(event.target.checked) ?
-				document.documentElement.setAttribute("data-sidebar-user-show", ""):
+				document.documentElement.setAttribute("data-sidebar-user-show", "") :
 				document.documentElement.removeAttribute("data-sidebar-user-show");
 		});
 	}
@@ -2106,7 +2105,7 @@ File: Main Js File
 		initComponents();
 		resetLayout();
 		pluginData();
-		initLanguage();
+		//initLanguage();
 		isCollapseMenu();
 		initMenuItemScroll();
 	}

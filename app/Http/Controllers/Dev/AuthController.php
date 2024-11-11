@@ -17,6 +17,10 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+    public function forgotPassword()
+    {
+        return view('auth.passwords.reset');
+    }
 
     public function signup()
     {
@@ -71,8 +75,10 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
+        Auth::user()->setRememberToken(null);
+        Auth::logout();
         $request->session()->flush();
-        $request->session()->regenerate();
-        return response()->json([], 200);
+        $request->session()->invalidate();
+        return redirect()->route('login');
     }
 }

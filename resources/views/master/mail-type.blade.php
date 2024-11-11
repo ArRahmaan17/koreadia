@@ -27,9 +27,9 @@
                     <thead>
                         <tr>
                             <td>No</td>
-                            <td>Name</td>
-                            <td>Description</td>
-                            <td>Action</td>
+                            <td>@lang('translation.name')</td>
+                            <td>@lang('translation.description')</td>
+                            <td>@lang('translation.action')</td>
                         </tr>
                     </thead>
                     <tbody>
