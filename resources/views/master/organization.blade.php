@@ -11,7 +11,7 @@
             Master
         @endslot
         @slot('title')
-            Organization
+            @lang('translation.organization')
         @endslot
     @endcomponent
     <div class="card">

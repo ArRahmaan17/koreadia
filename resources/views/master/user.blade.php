@@ -13,7 +13,7 @@
             Master
         @endslot
         @slot('title')
-            User
+            @lang('translation.user')
         @endslot
     @endcomponent
     <div class="card">

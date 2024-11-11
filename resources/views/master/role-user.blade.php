@@ -17,7 +17,7 @@
             Master
         @endslot
         @slot('title')
-            Role User
+            @lang('translation.role-user')
         @endslot
     @endcomponent
     <div class="card">
@@ -34,7 +34,7 @@
                         <tr>
                             <td>No</td>
                             <td>@lang('translation.name')</td>
-                            <td>Role</td>
+                            <td>@lang('translation.role')</td>
                             <td>@lang('translation.action')</td>
                         </tr>
                     </thead>
