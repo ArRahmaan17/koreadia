@@ -50,7 +50,8 @@
                                         <div class="mb-3">
                                             <label for="username" class="form-label">@lang('translation.username') <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control @error('username') is-invalid @enderror"
-                                                value="{{ old('username', 'dev.rahmaan') }}" id="username" name="username" placeholder="Enter username">
+                                                value="{{ old('username', 'dev.rahmaan') }}" id="username" name="username"
+                                                placeholder="@lang('translation.enter') username">
                                             @error('username')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -60,13 +61,14 @@
 
                                         <div class="mb-3">
                                             <div class="float-end">
-                                                <a href="{{route('forgot-password')}}" class="text-muted">@lang('translation.forgot-password')</a>
+                                                <a href="{{ route('forgot-password') }}" class="text-muted">@lang('translation.forgot-password')</a>
                                             </div>
                                             <label class="form-label" for="password-input">@lang('translation.password') <span class="text-danger">*</span></label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input type="password" class="form-control password-input pe-5 @error('password') is-invalid @enderror"
-                                                    name="password" placeholder="Enter password" id="password-input" value="mamanrecing">
-                                                <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon shadow-none"
+                                                    name="password" placeholder="@lang('translation.enter') password" id="password-input" value="mamanrecing">
+                                                <button
+                                                    class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon shadow-none"
                                                     type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                 @error('password')
                                                     <span class="invalid-feedback" role="alert">
@@ -102,8 +104,8 @@
                         <!-- end card -->
 
                         <div class="mt-4 text-center">
-                            <p class="mb-0">@lang('translation.sign-up-now')<a href="{{ route('register') }}"
-                                    class="fw-semibold text-primary text-decoration-underline"> @lang('translation.signup') </a> </p>
+                            <p class="mb-0">@lang('translation.sign-up-now')<a href="{{ route('register') }}" class="fw-semibold text-primary text-decoration-underline">
+                                    @lang('translation.signup') </a> </p>
                         </div>
 
                     </div>
@@ -137,7 +139,6 @@
     <script src="{{ asset('build/libs/particles.js/particles.js') }}"></script>
     <script src="{{ asset('build/js/pages/particles.app.js') }}"></script>
     <script src="{{ asset('build/js/pages/password-addon.init.js') }}"></script>
-    <script src="{{ asset('build/js/pages/plugins/jquery.min.js') }}"></script>
     <script src="{{ asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         function serializeObject(node) {
@@ -187,7 +188,7 @@
                             title: error.responseJSON.status,
                             text: error.responseJSON.message,
                             icon: 'error',
-                            confirmButtonText: error.responseJSON.button,
+                            confirmButtonText: error.responseJSON.button ?? `@lang('translation.reload')`,
                             customClass: {
                                 confirmButton: 'btn btn-danger w-xs mt-2',
                             },

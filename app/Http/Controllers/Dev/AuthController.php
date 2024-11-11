@@ -31,17 +31,16 @@ class AuthController extends Controller
     {
         $request->validate([
             'username' => 'unique:users,username|required',
-            'password' => 'required'
+            'phone_number' => 'unique:users,phone_number|required|min:18|max:19',
+            'password' => 'required|same:confirm_password',
+            'confirm_password' => 'required|same:password',
         ]);
         DB::beginTransaction();
         try {
-            if ($request->organisasi) {
-            } else {
-                $data = $request->except('_token');
-                $data['password'] = Hash::make($data['password']);
-                $user = User::create($data);
-                RoleUser::create(['user_id' => $user->id, 'role_id' => 1]);
-            }
+            $data = $request->except('_token', 'confirm-password');
+            $data['password'] = Hash::make($data['password']);
+            $user = User::create($data);
+            // RoleUser::create(['user_id' => $user->id, 'role_id' => 1]);
             $response = ['message' => 'User berhasil di buat', 'button' => 'Login'];
             $code = 200;
             DB::commit();
@@ -59,7 +58,7 @@ class AuthController extends Controller
             'username' => "required",
             'password' => 'required'
         ]);
-        $response = ['status' => 'Gagal', 'message' => 'kombinasi username dan password tidak terdaftar di aplikasi kita', 'button' => 'Coba lagi'];
+        $response = ['status' => 'Gagal', 'button' => trans('translation.reload'), 'message' => 'kombinasi username dan password tidak terdaftar di aplikasi kita', 'button' => 'Coba lagi'];
         $code = 401;
         if (Auth::attempt([
             'username' => $request->username,
@@ -68,10 +67,23 @@ class AuthController extends Controller
             return $user->valid;
         }, $request->has('remember_me') ? true : false)) {
             $request->session()->regenerate();
-            $response = ['status' => 'Berhasil', 'message' => 'kombinasi username dan password ditemukan', 'button' => 'Masuk Aplikasi'];
+            $response = ['status' => 'Berhasil', 'button' => trans('translation.signin'), 'message' => 'kombinasi username dan password ditemukan', 'button' => 'Masuk Aplikasi'];
             $code = 200;
         }
         return response()->json($response, $code);
+    }
+    public function executeResetPassword(Request $request)
+    {
+        $request->validate([
+            'phone_number' => 'required|min:18|max:19|exists:users,phone_number',
+            'password' => 'required|same:confirm_password',
+            'confirm_password' => 'required|same:password',
+        ]);
+        try {
+            //code...
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
     public function logout(Request $request)
     {

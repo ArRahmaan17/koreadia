@@ -2,6 +2,9 @@
 @section('title')
     @lang('translation.signup')
 @endsection
+@section('css')
+    <link href="{{ asset('build/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
 @section('content')
     <div class="auth-page-wrapper pt-5">
         <!-- auth page bg -->
@@ -42,97 +45,48 @@
                                     <p class="text-muted">Get your free {{ env('APP_NAME') }} account now</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form class="needs-validation" novalidate method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                                    <form id="form-register">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                                                value="{{ old('email') }}" id="useremail" placeholder="Enter email address" required>
-                                            @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                            <div class="invalid-feedback">
-                                                Please enter email
-                                            </div>
+                                            <label for="username" class="form-label"> @lang('translation.username') <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="username" value="{{ old('username') }}" id="username"
+                                                placeholder="@lang('translation.enter') @lang('translation.username')">
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                                                value="{{ old('name') }}" id="username" placeholder="Enter username" required>
-                                            @error('name')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                            <div class="invalid-feedback">
-                                                Please enter username
-                                            </div>
+                                            <label for="phone_number" class="form-label">@lang('translation.phone_number') <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control phone_number" name="phone_number" value="{{ old('phone_number') }}"
+                                                id="phone_number" placeholder="@lang('translation.enter') @lang('translation.phone_number')">
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="userpassword" class="form-label">Password <span class="text-danger">*</span></label>
-                                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                                                id="userpassword" placeholder="Enter password" required>
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                            <div class="invalid-feedback">
-                                                Please enter password
-                                            </div>
+                                            <label for="password" class="form-label"> @lang('translation.password') <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" name="password" id="password"
+                                                placeholder="@lang('translation.enter') @lang('translation.password')">
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="input-password">Confirm Password <span class="text-danger">*</span></label>
-                                            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
-                                                name="password_confirmation" id="input-password" placeholder="Enter Confirm Password" required>
-
-                                            <div class="form-floating-icon">
-                                                <i data-feather="lock"></i>
-                                            </div>
+                                            <label for="confirm_password"> @lang('translation.confirm-password') <span class="text-danger">*</span></label>
+                                            <input type="password" class="form-control" name="confirm_password" id="confirm_password"
+                                                placeholder="@lang('translation.enter') @lang('translation.confirm-password')">
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="input-avatar">Avatar <span class="text-danger">*</span></label>
-                                            <input type="file" class="form-control @error('avatar') is-invalid @enderror" name="avatar" id="input-avatar"
-                                                required>
-                                            @error('avatar')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                            <div class="">
-                                                <i data-feather="file"></i>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <p class="mb-0 fs-12 text-muted fst-italic">By registering you agree to the
-                                                {{ env('APP_NAME') }} <a href="#"
-                                                    class="text-primary text-decoration-underline fst-normal fw-medium">Terms
-                                                    of Use</a></p>
+                                            <p class="mb-0 fs-12 text-muted fst-italic">@lang('translation.consequence-warning') <a href="#"
+                                                    class="text-primary text-decoration-underline fst-normal fw-medium">@lang('translation.tou')</a></p>
                                         </div>
 
                                         <div class="mt-3">
-                                            <button class="btn btn-success w-100" type="submit">Sign Up</button>
-                                        </div>
-
-                                        <div class="mt-3 text-center">
-                                            <div class="signin-other-title">
-                                                <h5 class="fs-13 mb-4 title text-muted">Create account with</h5>
-                                            </div>
-
-                                            <div>
-                                                <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i
-                                                        class="ri-facebook-fill fs-16"></i></button>
-                                                <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i
-                                                        class="ri-google-fill fs-16"></i></button>
-                                                <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i
-                                                        class="ri-github-fill fs-16"></i></button>
-                                                <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i
-                                                        class="ri-twitter-fill fs-16"></i></button>
-                                            </div>
+                                            <button class="btn btn-success w-100" type="button" id="btn-register">@lang('translation.signup')</button>
                                         </div>
                                     </form>
 
@@ -143,8 +97,8 @@
                         <!-- end card -->
 
                         <div class="mt-4 text-center">
-                            <p class="mb-0">Already have an account ? <a href="{{ route('login') }}"
-                                    class="fw-semibold text-primary text-decoration-underline"> Signin </a> </p>
+                            <p class="mb-0">@lang('translation.sign-in-now') <a href="{{ route('login') }}" class="fw-semibold text-primary text-decoration-underline">
+                                    @lang('translation.signin') </a> </p>
                         </div>
 
                     </div>
@@ -176,5 +130,77 @@
 @section('script')
     <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
-    <script src="{{ URL::asset('build/js/pages/form-validation.init.js') }}"></script>
+    <script src="{{ asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script>
+        $(function() {
+            formattedInput();
+            $('#phone_number').change(function() {
+                if (this.value != '') {
+                    $.ajax({
+                        type: "GET",
+                        url: `{{ env('WHATSAPP_URL') }}phone-check/${unFormattedPhoneNumber(this.value)}`,
+                        dataType: "json",
+                        success: function(response) {
+                            $('#sender_phone_number').removeClass('is-invalid');
+                            if (window.state == 'add') {
+                                $('#save-mail-in').removeClass('disabled');
+                            } else {
+                                $('#update-mail-in').removeClass('disabled');
+                            }
+                        },
+                        error: function(error) {
+                            $('#sender_phone_number').addClass('is-invalid');
+                            iziToast.error({
+                                id: 'alert-mail-in-form',
+                                title: 'Error',
+                                message: error.responseJSON.message,
+                                position: 'topRight',
+                                layout: 2,
+                                displayMode: 'replace'
+                            });
+                            $('#save-mail-in').addClass('disabled');
+                            $('#update-mail-in').addClass('disabled');
+                        }
+                    });
+                }
+            });
+            $('#btn-register').click(function() {
+                let data = serializeObject($('#form-register'));
+                $.ajax({
+                    type: "POST",
+                    url: `{{ route('register') }}`,
+                    data: {
+                        ...data
+                    },
+                    dataType: "JSON",
+                    success: function(response) {
+                        Swal.fire({
+                            title: response.status,
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: response.button,
+                            customClass: {
+                                confirmButton: 'btn btn-success w-xs mt-2',
+                            },
+                            buttonsStyling: false,
+                            showCloseButton: true
+                        }).then((result) => {
+                            // setTimeout(() => {
+                            //     window.location = `{{ route('home') }}`;
+                            // }, 1000);
+                        });
+                    },
+                    error: function(error) {
+                        $.each(error.responseJSON.errors, function(indexInArray,
+                            valueOfElement) {
+                            $('#form-register').find('[name=' + indexInArray +
+                                ']').addClass('is-invalid');
+                            $('#form-register').find('[name=' + indexInArray +
+                                ']').siblings('.invalid-feedback').find('strong').html(valueOfElement[0]);
+                        });
+                    }
+                });
+            })
+        });
+    </script>
 @endsection

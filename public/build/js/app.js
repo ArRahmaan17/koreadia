@@ -13,7 +13,10 @@ File: Main Js File
 	/**
 	 *  global variables
 	 */
-	var navbarMenuHTML = document.querySelector(".navbar-menu").innerHTML;
+	var navbarMenuHTML = document.querySelector(".navbar-menu");
+	if (document.querySelector(".navbar-menu")) {
+		navbarMenuHTML = document.querySelector(".navbar-menu").innerHTML;
+	}
 	// var horizontalMenuSplit = 7; // after this number all horizontal menus will be moved in More menu options
 	// var default_lang = "id"; // set Default Language
 	// var language = localStorage.getItem("language");
@@ -392,7 +395,7 @@ File: Main Js File
 			});
 			var currentPath = location.pathname == "/" ? "index" : location.pathname.substring(1);
 			currentPath = currentPath.substring(currentPath.lastIndexOf("/") + 1);
-			if (currentPath) {
+			if (currentPath && document.querySelector(".navbar-menu")) {
 				// navbar-nav
 				var a = document.getElementById("navbar-nav").querySelector('[href="' + currentPath + '"]');
 
@@ -918,7 +921,7 @@ File: Main Js File
 	function initActiveMenu() {
 		var currentPath = location.pathname == "/" ? "index" : location.pathname.substring(1);
 		currentPath = currentPath.substring(currentPath.lastIndexOf("/") + 1);
-		if (currentPath) {
+		if (currentPath && document.querySelector(".navbar-menu")) {
 			var a = document.getElementById("navbar-nav").querySelector(`[href="${location.href}"]`);
 			if (a) {
 				a.classList.add("active");
@@ -1245,15 +1248,17 @@ File: Main Js File
 
 	// add listener Sidebar Hover icon on change layout from setting
 	function addEventListenerOnSmHoverMenu() {
-		document.getElementById("vertical-hover").addEventListener("click", function () {
-			if (document.documentElement.getAttribute("data-sidebar-size") === "sm-hover") {
-				document.documentElement.setAttribute("data-sidebar-size", "sm-hover-active");
-			} else if (document.documentElement.getAttribute("data-sidebar-size") === "sm-hover-active") {
-				document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
-			} else {
-				document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
-			}
-		});
+		if (document.getElementById("vertical-hover")) {
+			document.getElementById("vertical-hover").addEventListener("click", function () {
+				if (document.documentElement.getAttribute("data-sidebar-size") === "sm-hover") {
+					document.documentElement.setAttribute("data-sidebar-size", "sm-hover-active");
+				} else if (document.documentElement.getAttribute("data-sidebar-size") === "sm-hover-active") {
+					document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
+				} else {
+					document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
+				}
+			});
+		}
 	}
 	// set full layout
 	function layoutSwitch(isLayoutAttributes) {

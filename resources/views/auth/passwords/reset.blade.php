@@ -27,7 +27,7 @@
                                     <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="20">
                                 </a>
                             </div>
-                            <p class="mt-3 fs-15 fw-medium">Premium Admin & Dashboard Template</p>
+                            <p class="mt-3 fs-15 fw-medium">{{ env('APP_NAME') }}</p>
                         </div>
                     </div>
                 </div>
@@ -39,25 +39,25 @@
 
                             <div class="card-body p-4">
                                 <div class="text-center mt-2">
-                                    <h5 class="text-primary">Forgot Password?</h5>
+                                    <h5 class="text-primary">@lang('translation.forgot-password')</h5>
                                     <p class="text-muted">Reset password with {{ env('APP_NAME') }}</p>
-                                    <lord-icon src="https://cdn.lordicon.com/fjuachvi.json" trigger="in" delay="1000" state="morph-circle"
+                                    <lord-icon src="https://cdn.lordicon.com/fjuachvi.json" trigger="loop" delay="2000" state="hover-draw"
                                         style="width:100px;height:100px">
                                     </lord-icon>
                                 </div>
 
                                 <div class="alert border-0 alert-warning text-center mb-2 mx-2" role="alert">
-                                    Enter your email and instructions will be sent to you!
+                                    @lang('translation.reset-instructions')
                                 </div>
                                 <div class="p-2">
                                     <form class="form-horizontal" method="POST" action="{{ route('password-update') }}">
                                         @csrf
-                                        {{-- <input type="hidden" name="token" value="{{ $token }}"> --}}
                                         <div class="mb-3">
-                                            <label for="useremail" class="form-label">Email</label>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="useremail" name="email"
-                                                placeholder="Enter email" value="{{ $email ?? old('email') }}" id="email">
-                                            @error('email')
+                                            <label for="phone_number" class="form-label">@lang('translation.phone_number')</label>
+                                            <input type="text" class="form-control phone_number @error('phone_number') is-invalid @enderror"
+                                                id="phone_number" name="phone_number" placeholder="@lang('translation.enter') @lang('translation.phone_number')"
+                                                value="{{ $phone_number ?? old('phone_number') }}" id="phone_number">
+                                            @error('phone_number')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -65,9 +65,9 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="userpassword">Password</label>
+                                            <label for="userpassword">@lang('translation.password')</label>
                                             <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                                                id="userpassword" placeholder="Enter password">
+                                                id="userpassword" placeholder="@lang('translation.enter') @lang('translation.password')">
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -76,9 +76,11 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="userpassword">Confirm Password</label>
+                                            <label for="userpassword">
+                                                @lang('translation.confirm-password')
+                                            </label>
                                             <input id="password-confirm" type="password" name="password_confirmation" class="form-control"
-                                                placeholder="Enter confirm password">
+                                                placeholder="@lang('translation.enter')  @lang('translation.confirm-password')">
                                         </div>
 
                                         <div class="text-end">
@@ -126,4 +128,39 @@
 @section('script')
     <script src="{{ URL::asset('build/libs/particles.js/particles.js') }}"></script>
     <script src="{{ URL::asset('build/js/pages/particles.app.js') }}"></script>
+    <script>
+        $(function() {
+            formattedInput();
+            $('#phone_number').change(function() {
+                if (this.value != '') {
+                    $.ajax({
+                        type: "GET",
+                        url: `{{ env('WHATSAPP_URL') }}phone-check/${unFormattedPhoneNumber(this.value)}`,
+                        dataType: "json",
+                        success: function(response) {
+                            $('#sender_phone_number').removeClass('is-invalid');
+                            if (window.state == 'add') {
+                                $('#save-mail-in').removeClass('disabled');
+                            } else {
+                                $('#update-mail-in').removeClass('disabled');
+                            }
+                        },
+                        error: function(error) {
+                            $('#sender_phone_number').addClass('is-invalid');
+                            iziToast.error({
+                                id: 'alert-mail-in-form',
+                                title: 'Error',
+                                message: error.responseJSON.message,
+                                position: 'topRight',
+                                layout: 2,
+                                displayMode: 'replace'
+                            });
+                            $('#save-mail-in').addClass('disabled');
+                            $('#update-mail-in').addClass('disabled');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 @endsection
