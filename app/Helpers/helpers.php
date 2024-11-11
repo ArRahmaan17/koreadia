@@ -87,16 +87,16 @@ if (! function_exists('checkPermissionMenu')) {
 
 if (! function_exists('buildMenu')) {
 
-    function buildMenu(array &$elements, $place = 0)
+    function buildMenu(array &$elements, $place = 0, $state = 'parent')
     {
         $html = '';
         foreach ($elements as $element) {
             if (getRole() == 'Developer' || checkPermissionMenu($element['id'], auth()->user()->role->id)) {
                 if ($place == 0) {
                     if (isset($element['children'])) {
-                        $children = buildMenu($element['children']);
-                        $html .= '<li class="menu-item">
-                        <a class="nav-link menu-link" href="#sideBar' . $element['id'] . '" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        $children = buildMenu($element['children'], $place, 'child');
+                        $html .= '<li class="nav-item">
+                        <a class="nav-link '.(($state == 'parent')?"menu-link":"").' collapsed" href="#sideBar' . $element['id'] . '" data-bs-toggle="collapse" role="button" aria-expanded="false"
                         aria-controls="sideBar' . $element['id'] . '">
                         <i class="ri-apps-2-line"></i> <span>' . trans($element['name']) . '</span>
                     </a>
@@ -108,8 +108,8 @@ if (! function_exists('buildMenu')) {
                     </li>';
                     } else {
                         $html .= '<li class="nav-item">
-                            <a href="' . (Route::has($element['route']) ? route($element['route']) : $element['route']) . '" class="nav-link menu-link">
-                                <i class="' . $element['icon'] . ' align-middle me-1"></i> 
+                            <a href="' . (Route::has($element['route']) ? route($element['route']) : $element['route']) . '" class="nav-link '.(($state == 'parent')?"menu-link":"").'">
+                                <i class="' . $element['icon'] . ' align-middle"></i> 
                                 <span>' . trans($element['name']) . '</span>
                             </a>
                         </li>';
