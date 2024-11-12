@@ -106,7 +106,7 @@ class UserController extends Controller
             'phone_number' => 'required|min:18|max:19|unique:users,phone_number',
             'avatar' => 'required',
             'role' => 'required|exists:roles,id',
-            'organization' => 'required|exists:organizations,id',
+            'organization' => 'numeric|exists:organizations,id',
         ]);
         DB::beginTransaction();
         try {
@@ -120,7 +120,9 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
             $user = User::create($data);
             RoleUser::insert(['user_id' => $user->id, 'role_id' => $request->role, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
-            OrganizationUser::insert(['user_id' => $user->id, 'organization_id' => $request->organization, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
+            if ($request->has('organization')) {
+                OrganizationUser::insert(['user_id' => $user->id, 'organization_id' => $request->organization, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
+            }
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
             DB::commit();
@@ -161,7 +163,7 @@ class UserController extends Controller
             'confirm_password' => 'string|same:password',
             'phone_number' => 'required|min:18|max:19|unique:users,phone_number,' . $id,
             'role' => 'required|exists:roles,id',
-            'organization' => 'required|exists:organizations,id',
+            'organization' => 'numeric|exists:organizations,id',
         ]);
         DB::beginTransaction();
         try {
@@ -177,12 +179,13 @@ class UserController extends Controller
             }
             User::find($id)->update($data);
             RoleUser::where('user_id', $id)->update(['role_id' => $request->role]);
-            OrganizationUser::where('user_id', $id)->update(['organization_id' => $request->organization]);
+            if ($request->has('organization')) {
+                OrganizationUser::where('user_id', $id)->update(['organization_id' => $request->organization]);
+            }
             $response = ['message' => 'updating resources successfully'];
             $code = 200;
             DB::commit();
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollBack();
             $response = ['message' => 'failed updating resources'];
             $code = 422;
