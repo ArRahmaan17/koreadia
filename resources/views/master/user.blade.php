@@ -28,10 +28,10 @@
                 <table class="table table-bordered" id="table-user">
                     <thead>
                         <tr>
-                            <td>No</td>
+                            <td>@lang('translation.no')</td>
                             <td>@lang('translation.name')</td>
-                            <td>Username</td>
-                            <td>Phone Number</td>
+                            <td>@lang('translation.username')</td>
+                            <td>@lang('translation.phone_number')</td>
                             <td>Valid</td>
                             <td>@lang('translation.action')</td>
                         </tr>
@@ -61,8 +61,8 @@
                             <label for="avatar">Avatar</label>
                             <div class="col-3 mx-auto">
                                 <input type="file" class="form-control" id="avatar" name="avatar" placeholder="Enter your name user mail">
-                                <div id="avatar_help" class="form-text d-none">@lang('translation.image_update_help')</div>
                             </div>
+                            <div id="avatar_help" class="form-text text-center text-danger d-none">@lang('translation.image_update_help')</div>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name user mail">
@@ -70,12 +70,12 @@
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="username" name="username" placeholder="Enter your name user mail">
-                            <label for="username">Username</label>
+                            <label for="username">@lang('translation.username')</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control phone_number" id="phone_number" name="phone_number"
                                 placeholder="Enter your name user mail">
-                            <label for="phone_number">Phone Number</label>
+                            <label for="phone_number">@lang('translation.phone_number')</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Enter your name user mail">
@@ -86,15 +86,19 @@
                             <label for="confirm_password">Confirm Password</label>
                         </div>
                         <div class="mb-3">
-                            <label for="role">Role User</label>
-                            <select name="role" id="role" class="form-select select2"></select>
+                            <label for="role">@lang('translation.role')</label>
+                            <select name="role" id="role" class="form-select"></select>
+                        </div>
+                        <div class="mb-3 d-none container-organization">
+                            <label for="organization">@lang('translation.organization')</label>
+                            <select name="organization" id="organization" class="form-select"></select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-success disabled" id="save-user">@lang('translation.save') Changes</button>
-                    <button type="button" class="btn btn-soft-warning d-none" id="update-user">@lang('translation.update') Changes</button>
+                    <button type="button" class="btn btn-soft-success disabled" id="save-user">@lang('translation.save') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-warning d-none" id="update-user">@lang('translation.update') @lang('translation.changes')</button>
                 </div>
             </div>
         </div>
@@ -381,7 +385,8 @@
                 $('#update-user').addClass('d-none');
                 $('#modal-user .is-invalid').removeClass('is-invalid')
                 $('#table-user tbody').find('tr').removeClass('selected');
-                $('#avatar_help').addClass('d-none')
+                $('#avatar_help').addClass('d-none');
+                $('.container-organization').addClass('d-none');
             });
             $('#modal-user').on('shown.bs.modal', function() {
                 $.ajax({
@@ -390,6 +395,21 @@
                     dataType: "json",
                     success: function(response) {
                         $('#role').html(dataToOption(response.data))
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: `{{ route('master.organization.all') }}`,
+                    dataType: "json",
+                    success: function(response) {
+                        $('#organization').html(dataToOption(response.data))
+                    }
+                });
+                $('#role').change(function() {
+                    if ($(this).val() == '3') {
+                        $('.container-organization').val('').removeClass('d-none');
+                    } else {
+                        $('.container-organization').val('').addClass('d-none');
                     }
                 });
             });

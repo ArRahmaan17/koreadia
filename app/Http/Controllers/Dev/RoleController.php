@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dev;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\RoleMenu;
+use App\Models\RoleUser;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -138,7 +140,7 @@ class RoleController extends Controller
         ]);
         DB::beginTransaction();
         try {
-            Role::find($id)->update($request->except('_token'));
+            Role::find($id)->update($request->except('_token', 'name'));
             $response = ['message' => 'updating resources successfully'];
             $code = 200;
             DB::commit();
@@ -158,6 +160,9 @@ class RoleController extends Controller
     {
         DB::beginTransaction();
         try {
+            if (RoleUser::where('role_id', $id)->count() > 0) {
+                throw new Exception("failed destroying resources");
+            }
             Role::find($id)->delete();
             DB::commit();
             $response = ['message' => 'destroying resources successfully'];

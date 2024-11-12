@@ -124,7 +124,8 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="sender_phone_number" class="form-label">@lang('translation.mail_sender_phone_number')</label>
-                                    <input type="text" class="form-control phone_number" placeholder="(+62) 895-451-4512" id="sender_phone_number" name="sender_phone_number">
+                                    <input type="text" class="form-control phone_number" placeholder="(+62) 895-451-4512" id="sender_phone_number"
+                                        name="sender_phone_number">
                                     <div id="emailHelp" class="form-text">@lang('translation.must_valid_wa_number')</div>
                                 </div>
                             </div><!--end col-->
@@ -154,8 +155,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-success" id="save-mail-in">@lang('translation.save') Changes</button>
-                    <button type="button" class="btn btn-soft-warning d-none" id="update-mail-in">@lang('translation.update') Changes</button>
+                    <button type="button" class="btn btn-soft-success" id="save-mail-in">@lang('translation.save') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-warning d-none" id="update-mail-in">@lang('translation.update') @lang('translation.changes')</button>
                 </div>
             </div>
         </div>
@@ -203,7 +204,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-warning" id="update-status-mail-in">@lang('translation.update') Changes</button>
+                    <button type="button" class="btn btn-soft-warning" id="update-status-mail-in">@lang('translation.update') @lang('translation.changes')</button>
                 </div>
             </div>
         </div>
@@ -448,6 +449,7 @@
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
+                console.log(window.datatableMail.rows('.selected').data()[0])
                 let idMail = $(this).data("mailsin");
                 var data = window.datatableMail.rows('.selected').data()[0];
                 iziToast.question({
@@ -468,35 +470,84 @@
                             instance.hide({
                                 transitionOut: 'fadeOut'
                             }, toast, 'button');
-                            $.ajax({
-                                type: "PUT",
-                                url: "{{ route('mail.in.request-notified') }}/" +
-                                    idMail,
-                                data: {
-                                    _token: `{{ csrf_token() }}`,
-                                },
-                                dataType: "json",
-                                success: function(response) {
-                                    iziToast.success({
-                                        id: 'alert-mail-in-form',
-                                        title: 'Success',
-                                        message: response.message,
-                                        position: 'topRight',
-                                        layout: 2,
-                                        displayMode: 'replace'
-                                    });
-                                    window.datatableMail.ajax.reload()
-                                },
-                                error: function(error) {
-                                    iziToast.error({
-                                        id: 'alert-mail-in-action',
-                                        title: 'Error',
-                                        message: error.responseJSON.message,
-                                        position: 'topRight',
-                                        layout: 2,
-                                        displayMode: 'replace'
-                                    });
-                                }
+                            let isRegisteredPhoneNumber = new Promise((resolve, reject) => {
+                                $.ajax({
+                                    type: "GET",
+                                    url: `{{ env('WHATSAPP_URL') }}phone-check/${unFormattedPhoneNumber(data.sender_phone_number)}`,
+                                    // url: `{{ env('WHATSAPP_URL') }}phone-check/6289522983271`,
+                                    dataType: "json",
+                                    success: function(response) {
+                                        return resolve(true);
+                                    },
+                                    error: function(error) {
+                                        return reject(false)
+                                    }
+                                });
+                            });
+                            isRegisteredPhoneNumber.then(result => {
+                                $.ajax({
+                                    type: "PUT",
+                                    url: "{{ route('mail.in.request-notified') }}/" +
+                                        idMail,
+                                    data: {
+                                        _token: `{{ csrf_token() }}`,
+                                        skip: !result,
+                                    },
+                                    dataType: "json",
+                                    success: function(response) {
+                                        iziToast.success({
+                                            id: 'alert-mail-in-form',
+                                            title: 'Success',
+                                            message: response.message,
+                                            position: 'topRight',
+                                            layout: 2,
+                                            displayMode: 'replace'
+                                        });
+                                        window.datatableMail.ajax.reload()
+                                    },
+                                    error: function(error) {
+                                        iziToast.error({
+                                            id: 'alert-mail-in-action',
+                                            title: 'Error',
+                                            message: error.responseJSON.message,
+                                            position: 'topRight',
+                                            layout: 2,
+                                            displayMode: 'replace'
+                                        });
+                                    }
+                                });
+                            }).catch(error => {
+                                $.ajax({
+                                    type: "PUT",
+                                    url: "{{ route('mail.in.request-notified') }}/" +
+                                        idMail,
+                                    data: {
+                                        _token: `{{ csrf_token() }}`,
+                                        skip: !result,
+                                    },
+                                    dataType: "json",
+                                    success: function(response) {
+                                        iziToast.success({
+                                            id: 'alert-mail-in-form',
+                                            title: 'Success',
+                                            message: response.message,
+                                            position: 'topRight',
+                                            layout: 2,
+                                            displayMode: 'replace'
+                                        });
+                                        window.datatableMail.ajax.reload()
+                                    },
+                                    error: function(error) {
+                                        iziToast.error({
+                                            id: 'alert-mail-in-action',
+                                            title: 'Error',
+                                            message: error.responseJSON.message,
+                                            position: 'topRight',
+                                            layout: 2,
+                                            displayMode: 'replace'
+                                        });
+                                    }
+                                });
                             });
                         }, true],
                         ['<button>CANCEL</button>', function(instance, toast) {
@@ -861,34 +912,34 @@
                 $('#modal-status-mail-in input[name=status]').val('OUT')
                 $('#modal-status-mail-in input[name=note]').val('')
             });
-            $('#sender_phone_number').change(function() {
-                $.ajax({
-                    type: "GET",
-                    url: `{{ env('WHATSAPP_URL') }}phone-check/${unFormattedPhoneNumber(this.value)}`,
-                    dataType: "json",
-                    success: function(response) {
-                        $('#sender_phone_number').removeClass('is-invalid');
-                        if (window.state == 'add') {
-                            $('#save-mail-in').removeClass('disabled');
-                        } else {
-                            $('#update-mail-in').removeClass('disabled');
-                        }
-                    },
-                    error: function(error) {
-                        $('#sender_phone_number').addClass('is-invalid');
-                        iziToast.error({
-                            id: 'alert-mail-in-form',
-                            title: 'Error',
-                            message: error.responseJSON.message,
-                            position: 'topRight',
-                            layout: 2,
-                            displayMode: 'replace'
-                        });
-                        $('#save-mail-in').addClass('disabled');
-                        $('#update-mail-in').addClass('disabled');
-                    }
-                });
-            });
+            // $('#sender_phone_number').change(function() {
+            //     $.ajax({
+            //         type: "GET",
+            //         url: `{{ env('WHATSAPP_URL') }}phone-check/${unFormattedPhoneNumber(this.value)}`,
+            //         dataType: "json",
+            //         success: function(response) {
+            //             $('#sender_phone_number').removeClass('is-invalid');
+            //             if (window.state == 'add') {
+            //                 $('#save-mail-in').removeClass('disabled');
+            //             } else {
+            //                 $('#update-mail-in').removeClass('disabled');
+            //             }
+            //         },
+            //         error: function(error) {
+            //             $('#sender_phone_number').addClass('is-invalid');
+            //             iziToast.error({
+            //                 id: 'alert-mail-in-form',
+            //                 title: 'Error',
+            //                 message: error.responseJSON.message,
+            //                 position: 'topRight',
+            //                 layout: 2,
+            //                 displayMode: 'replace'
+            //             });
+            //             $('#save-mail-in').addClass('disabled');
+            //             $('#update-mail-in').addClass('disabled');
+            //         }
+            //     });
+            // });
             $('#reload-mail-in').click(debounce(function() {
                 window.datatableMail.ajax.reload();
             }, 1000));

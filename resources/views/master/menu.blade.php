@@ -130,8 +130,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-success" id="save-menu">@lang('translation.save') Changes</button>
-                    <button type="button" class="btn btn-soft-warning d-none" id="update-menu">@lang('translation.update') Changes</button>
+                    <button type="button" class="btn btn-soft-success" id="save-menu">@lang('translation.save') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-warning d-none" id="update-menu">@lang('translation.update') @lang('translation.changes')</button>
                 </div>
             </div>
         </div>

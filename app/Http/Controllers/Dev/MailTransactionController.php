@@ -8,6 +8,7 @@ use App\Models\WhatsappQueue;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class MailTransactionController extends Controller
 {
@@ -186,6 +187,12 @@ class MailTransactionController extends Controller
             }
             $transaction_mail = TransactionMail::create($data);
             $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id];
+            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+            if ($registered->status() > 300) {
+                $data_queue['request_notified'] = true;
+                $data_queue['request_notified_at'] = now('Asia/Jakarta');
+                $data_queue['notified'] = true;
+            }
             WhatsappQueue::create($data_queue);
             DB::commit();
             $response = ['message' => 'creating resources successfully'];
@@ -243,6 +250,8 @@ class MailTransactionController extends Controller
             }
             $current_status = TransactionMail::find($id);
             TransactionMail::find($id)->update($data);
+            $where_queue = [['transaction_mail_id', NULL]];
+            $data_queue = [];
             switch ($current_status->status) {
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
@@ -328,8 +337,6 @@ class MailTransactionController extends Controller
                             ],
                         ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'PROCESS':
                     if ($data['status'] == 'FILED') {
@@ -392,8 +399,6 @@ class MailTransactionController extends Controller
                             ],
                         ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'FILED':
                     if ($data['status'] == 'DISPOSITION') {
@@ -432,8 +437,6 @@ class MailTransactionController extends Controller
                             ],
                         ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'DISPOSITION':
                     $where_queue = [['transaction_mail_id', NULL]];
@@ -448,8 +451,6 @@ class MailTransactionController extends Controller
                                 'user_id' => auth()->user()->id
                             ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'REPLIED':
                     $where_queue = [['transaction_mail_id', NULL]];
@@ -461,12 +462,26 @@ class MailTransactionController extends Controller
                         'updated_at' => now('Asia/Jakarta'),
                         'user_id' => auth()->user()->id
                     ];
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 default:
                     break;
             }
+            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+            if ($registered->status() > 300) {
+                if (count($data_queue) > 1) {
+                    foreach ($data_queue as $key => $value) {
+                        $data_queue[$key]['request_notified'] = true;
+                        $data_queue[$key]['request_notified_at'] = now('Asia/Jakarta');
+                        $data_queue[$key]['notified'] = true;
+                    }
+                } else {
+                    $data_queue['request_notified'] = true;
+                    $data_queue['request_notified_at'] = now('Asia/Jakarta');
+                    $data_queue['notified'] = true;
+                }
+            }
+            WhatsappQueue::where($where_queue)->delete();
+            WhatsappQueue::insert($data_queue);
             DB::commit();
             $response = ['message' => 'updating resources successfully'];
             $code = 200;
@@ -499,7 +514,7 @@ class MailTransactionController extends Controller
         return response()->json($response, $code);
     }
 
-    public function requestedNotified($id)
+    public function requestedNotified($id, Request $request)
     {
         DB::beginTransaction();
         try {
@@ -509,7 +524,8 @@ class MailTransactionController extends Controller
                 'request_notified_at' => NULL
             ])->update([
                 'request_notified' => true,
-                'request_notified_at' => now('Asia/Jakarta')
+                'request_notified_at' => now('Asia/Jakarta'),
+                'notified' => $request->skip
             ]);
             DB::commit();
             $response = ['message' => 'request notified mail successfully, waiting queue ' . WhatsappQueue::where([
@@ -537,6 +553,8 @@ class MailTransactionController extends Controller
         try {
             $current_status = TransactionMail::find($id);
             $data = $request->except('_token');
+            $where_queue = [['transaction_mail_id', NULL]];
+            $data_queue = [];
             switch ($current_status->status) {
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
@@ -622,8 +640,6 @@ class MailTransactionController extends Controller
                             ],
                         ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'PROCESS':
                     if ($data['status'] == 'FILED') {
@@ -686,8 +702,6 @@ class MailTransactionController extends Controller
                             ],
                         ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'FILED':
                     if ($data['status'] == 'DISPOSITION') {
@@ -726,8 +740,6 @@ class MailTransactionController extends Controller
                             ],
                         ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'DISPOSITION':
                     $where_queue = [['transaction_mail_id', NULL]];
@@ -742,8 +754,6 @@ class MailTransactionController extends Controller
                                 'user_id' => auth()->user()->id
                             ];
                     }
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 case 'REPLIED':
                     $where_queue = [['transaction_mail_id', NULL]];
@@ -755,12 +765,27 @@ class MailTransactionController extends Controller
                         'updated_at' => now('Asia/Jakarta'),
                         'user_id' => auth()->user()->id
                     ];
-                    WhatsappQueue::where($where_queue)->delete();
-                    WhatsappQueue::insert($data_queue);
                     break;
                 default:
                     break;
             }
+            $data_mail = TransactionMail::find($id);
+            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data_mail['sender_phone_number']));
+            if ($registered->status() > 300) {
+                if (count($data_queue) > 1) {
+                    foreach ($data_queue as $key => $value) {
+                        $data_queue[$key]['request_notified'] = true;
+                        $data_queue[$key]['request_notified_at'] = now('Asia/Jakarta');
+                        $data_queue[$key]['notified'] = true;
+                    }
+                } else {
+                    $data_queue['request_notified'] = true;
+                    $data_queue['request_notified_at'] = now('Asia/Jakarta');
+                    $data_queue['notified'] = true;
+                }
+            }
+            WhatsappQueue::where($where_queue)->delete();
+            WhatsappQueue::insert($data_queue);
             if ($request->has('reply_file_attachment')) {
                 $file_attachment = json_decode($request->reply_file_attachment);
                 $file_name = 'reply_file_attachment/' . $file_attachment->id . '.pdf';
@@ -773,7 +798,7 @@ class MailTransactionController extends Controller
             TransactionMail::find($id)->update($data);
             $response = ['message' => 'updating status mail successfully'];
             $code = 200;
-            DB::commit();
+            // DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
             $response = ['message' => 'failed updating status mail'];

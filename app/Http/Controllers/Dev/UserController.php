@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
+use App\Models\OrganizationUser;
 use App\Models\RoleUser;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -97,13 +99,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:mail_agendas,name',
+            'name' => 'required|unique:users,name',
             'username' => 'required|min:5|max:15|unique:users,username',
             'password' => 'required|same:confirm_password',
             'confirm_password' => 'required|same:password',
             'phone_number' => 'required|min:18|max:19|unique:users,phone_number',
             'avatar' => 'required',
-            'role' => 'required',
+            'role' => 'required|exists:roles,id',
+            'organization' => 'required|exists:organizations,id',
         ]);
         DB::beginTransaction();
         try {
@@ -117,11 +120,11 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
             $user = User::create($data);
             RoleUser::insert(['user_id' => $user->id, 'role_id' => $request->role, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
+            OrganizationUser::insert(['user_id' => $user->id, 'organization_id' => $request->organization, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
             DB::commit();
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollBack();
             $response = ['message' => 'failed creating resources'];
             $code = 422;
@@ -152,12 +155,13 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:mail_agendas,name,' . $id,
+            'name' => 'required|unique:users,name,' . $id,
             'username' => 'required|min:5|max:15|unique:users,username,' . $id,
-            'password' => 'required|same:confirm_password',
-            'confirm_password' => 'required|same:password',
+            'password' => 'string|same:confirm_password',
+            'confirm_password' => 'string|same:password',
             'phone_number' => 'required|min:18|max:19|unique:users,phone_number,' . $id,
-            'role' => 'required',
+            'role' => 'required|exists:roles,id',
+            'organization' => 'required|exists:organizations,id',
         ]);
         DB::beginTransaction();
         try {
@@ -168,9 +172,12 @@ class UserController extends Controller
                 file_put_contents(public_path($file_name), base64_decode($avatar->data));
                 $data['avatar'] = $file_name;
             }
-            $data['password'] = Hash::make($data['password']);
+            if ($data['password'] != '') {
+                $data['password'] = Hash::make($data['password']);
+            }
             User::find($id)->update($data);
             RoleUser::where('user_id', $id)->update(['role_id' => $request->role]);
+            OrganizationUser::where('user_id', $id)->update(['organization_id' => $request->organization]);
             $response = ['message' => 'updating resources successfully'];
             $code = 200;
             DB::commit();
@@ -192,7 +199,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             User::find($id)->delete();
-            RoleUser::where('user_id',$id)->delete();
+            RoleUser::where('user_id', $id)->delete();
             DB::commit();
             $response = ['message' => 'destroying resources successfully'];
             $code = 200;
