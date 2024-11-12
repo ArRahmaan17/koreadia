@@ -19,7 +19,7 @@ return [
     'forgot-password' => 'Lupa sandi?',
     'enter' => 'Masukan',
     'role' => 'Peran aplikasi',
-    'role-user' => 'Peran user',
+    'role-user' => 'Peran pengguna',
     'user' => 'Pengguna',
     'organization' => 'Organisasi',
     'user_valided' => 'Pengguna yang anda tambahan di sini tidak memerlukan veririkasi nomer Whatsapp',

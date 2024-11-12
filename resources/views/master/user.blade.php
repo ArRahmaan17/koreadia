@@ -32,6 +32,7 @@
                             <td>@lang('translation.name')</td>
                             <td>@lang('translation.username')</td>
                             <td>@lang('translation.phone_number')</td>
+                            <td>@lang('translation.role-user')</td>
                             <td>Valid</td>
                             <td>@lang('translation.action')</td>
                         </tr>
@@ -279,8 +280,17 @@
                     render: (data, type, row, meta) => {
                         return `<div class='text-wrap'>${data}</div>`
                     }
-                }, {
+                },{
                     target: 4,
+                    name: 'role',
+                    data: 'role',
+                    orderable: true,
+                    searchable: true,
+                    render: (data, type, row, meta) => {
+                        return `<div class='text-wrap'>${data}</div>`
+                    }
+                }, {
+                    target: 5,
                     name: 'valid',
                     data: 'valid',
                     orderable: true,
@@ -289,7 +299,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 5,
+                    target: 6,
                     name: 'action',
                     data: 'action',
                     orderable: false,

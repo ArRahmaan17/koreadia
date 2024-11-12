@@ -23,11 +23,12 @@ class UserController extends Controller
 
     public function dataTable(Request $request)
     {
-        $totalData = User::orderBy('id', 'asc')
-            ->count();
+        $totalData = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')->orderBy('id', 'asc')
+            ->select('users.*', 'roles.name as role')->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = User::select('*');
+            $assets = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')
+                ->select('users.*', 'roles.name as role');
 
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -38,7 +39,8 @@ class UserController extends Controller
             }
             $assets = $assets->get();
         } else {
-            $assets = User::select('*')
+            $assets = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')
+                ->select('users.*', 'roles.name as role')
                 ->where('name', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('username', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
@@ -52,7 +54,8 @@ class UserController extends Controller
             }
             $assets = $assets->get();
 
-            $totalFiltered = User::select('*')
+            $totalFiltered = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')
+                ->select('users.*', 'roles.name as role')
                 ->where('name', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('username', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
@@ -69,6 +72,7 @@ class UserController extends Controller
             $row['name'] = $item->name;
             $row['username'] = $item->username;
             $row['phone_number'] = $item->phone_number;
+            $row['role'] = $item->role;
             $row['valid'] = $item->valid ? 'Valid' : 'Belum Valid';
             $row['action'] = "<button class='btn btn-icon btn-warning edit' data-user='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-user='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
