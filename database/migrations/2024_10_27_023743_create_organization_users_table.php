@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('organization_users', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('role_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('organization_id')->unsigned();
-            $table->foreign('role_id')
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('roles')
+                ->on('users')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->foreign('organization_id')
