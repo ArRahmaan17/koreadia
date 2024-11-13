@@ -29,24 +29,24 @@
             </div>
         </div><!-- end card header -->
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-responsive p-2">
                 <table class="table table-bordered" id="table-mail-in">
                     <thead>
                         <tr>
-                            <td>@lang('translation.no')</td>
-                            <td>@lang('translation.mail_number')</td>
-                            <td>@lang('translation.mail_regarding')</td>
-                            <td>@lang('translation.mail_agenda')</td>
-                            <td>@lang('translation.mail_priority')</td>
-                            <td>@lang('translation.mail_type')</td>
-                            <td>@lang('translation.mail_date')</td>
-                            <td>@lang('translation.mail_sender')</td>
-                            <td>@lang('translation.mail_sender_phone_number')</td>
-                            <td>@lang('translation.mail_file_attachment')</td>
-                            <td>@lang('translation.mail_status')</td>
-                            <td>@lang('translation.mail_date_in')</td>
-                            <td>@lang('translation.mail_admin')</td>
-                            <td>@lang('translation.action')</td>
+                            <th>@lang('translation.no')</th>
+                            <th>@lang('translation.mail_number')</th>
+                            <th>@lang('translation.mail_regarding')</th>
+                            <th>@lang('translation.mail_agenda')</th>
+                            <th>@lang('translation.mail_priority')</th>
+                            <th>@lang('translation.mail_type')</th>
+                            <th>@lang('translation.mail_date')</th>
+                            <th>@lang('translation.mail_sender')</th>
+                            <th>@lang('translation.mail_sender_phone_number')</th>
+                            <th>@lang('translation.mail_file_attachment')</th>
+                            <th>@lang('translation.mail_status')</th>
+                            <th>@lang('translation.mail_date_in')</th>
+                            <th>@lang('translation.mail_admin')</th>
+                            <th>@lang('translation.action')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -561,7 +561,8 @@
         }
         $(function() {
             window.datatableMail = $('#table-mail-in').DataTable({
-                scrollY: '100%',
+                // scrollY: '100%',
+                // scrollX: '100%',
                 ajax: "{{ route('mail.in.data-table') }}",
                 processing: true,
                 serverSide: true,

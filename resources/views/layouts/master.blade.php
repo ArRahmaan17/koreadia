@@ -23,7 +23,7 @@
         <!-- ============================================================== -->
         <div class="main-content">
             <div class="page-content">
-                <div class="container-fluid">
+                <div class="container-fluid"  data-simplebar-track="primary">
                     @yield('content')
                 </div>
                 <!-- container-fluid -->

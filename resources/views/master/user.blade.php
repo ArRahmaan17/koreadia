@@ -24,17 +24,17 @@
             </div>
         </div><!-- end card header -->
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-responsive p-2">
                 <table class="table table-bordered" id="table-user">
                     <thead>
                         <tr>
-                            <td>@lang('translation.no')</td>
-                            <td>@lang('translation.name')</td>
-                            <td>@lang('translation.username')</td>
-                            <td>@lang('translation.phone_number')</td>
-                            <td>@lang('translation.role-user')</td>
-                            <td>Valid</td>
-                            <td>@lang('translation.action')</td>
+                            <th>@lang('translation.no')</th>
+                            <th>@lang('translation.name')</th>
+                            <th>@lang('translation.username')</th>
+                            <th>@lang('translation.phone_number')</th>
+                            <th>@lang('translation.role-user')</th>
+                            <th>Valid</th>
+                            <th>@lang('translation.action')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -237,7 +237,8 @@
         }
         $(function() {
             window.datatableUser = $('#table-user').DataTable({
-                scrollY: '100%',
+                // scrollY: '100%',
+                // scrollX: '100%',
                 ajax: "{{ route('master.user.data-table') }}",
                 processing: true,
                 serverSide: true,

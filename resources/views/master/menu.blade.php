@@ -22,14 +22,14 @@
             </div>
         </div><!-- end card header -->
         <div class="card-body">
-            <div class="table-responsive">
+            <div class="table-responsive p-2">
                 <table class="table table-bordered" id="table-menu">
                     <thead>
                         <tr>
-                            <td>No</td>
-                            <td>@lang('translation.name')</td>
-                            <td>@lang('translation.description')</td>
-                            <td>@lang('translation.action')</td>
+                            <th>@lang('translation.no')</th>
+                            <th>@lang('translation.name')</th>
+                            <th>@lang('translation.description')</th>
+                            <th>@lang('translation.action')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -309,7 +309,8 @@
         }
         $(function() {
             window.dataTableMenu = $('#table-menu').DataTable({
-                scrollY: '100%',
+                // scrollY: '100%',
+                // scrollX: '100%',
                 ajax: "{{ route('master.menu.data-table') }}",
                 processing: true,
                 serverSide: true,
