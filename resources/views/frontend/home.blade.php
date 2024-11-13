@@ -52,7 +52,7 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <a class="btn-getstarted" href="/login">{{ auth()->user() ? 'Dashboard' : 'Login' }}</a>
+            <a class="btn-getstarted" href="{{ route('login') }}">{{ auth()->user() ? 'Dashboard' : 'Login' }}</a>
 
         </div>
     </header>

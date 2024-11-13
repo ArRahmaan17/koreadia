@@ -127,14 +127,14 @@ Route::middleware('check.auth')->group(function () {
         });
     });
 });
-Route::middleware(['check.un-auth', 'throttle:5,1'])->group(function () {
+Route::middleware(['check.un-auth'])->group(function () {
     Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-    Route::post('/process-password', [AuthController::class, 'executeResetPassword'])->name('process-password');
+    Route::post('/process-password', [AuthController::class, 'executeResetPassword'])->name('process-password')->middleware('throttle:5,1');
     Route::post('/password-update', [AuthController::class, 'passwordUpdate'])->name('password-update');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('throttle:5,1');
     Route::get('/register', [AuthController::class, 'signup'])->name('signup');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('throttle:5,1');
 });
 Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
-Route::get('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking');
+Route::get('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking')->middleware('throttle:5,1');
