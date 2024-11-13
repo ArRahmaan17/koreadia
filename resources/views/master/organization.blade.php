@@ -190,8 +190,6 @@
         }
         $(function() {
             window.datatableOrganization = $('#table-organization').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('master.organization.data-table') }}",
                 processing: true,
                 serverSide: true,

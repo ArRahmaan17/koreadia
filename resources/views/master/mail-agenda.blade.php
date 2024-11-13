@@ -190,8 +190,6 @@
         }
         $(function() {
             window.datatableAgenda = $('#table-agenda').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('master.agenda.data-table') }}",
                 processing: true,
                 serverSide: true,

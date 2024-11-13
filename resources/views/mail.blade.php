@@ -561,8 +561,6 @@
         }
         $(function() {
             window.datatableMail = $('#table-mail-in').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('mail.in.data-table') }}",
                 processing: true,
                 serverSide: true,

@@ -190,8 +190,6 @@
         }
         $(function() {
             window.priority = $('#table-priority').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('master.priority.data-table') }}",
                 processing: true,
                 serverSide: true,

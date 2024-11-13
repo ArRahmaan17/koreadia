@@ -23,12 +23,18 @@ class UserController extends Controller
 
     public function dataTable(Request $request)
     {
-        $totalData = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')->orderBy('id', 'asc')
-            ->select('users.*', 'roles.name as role')->count();
+        $totalData = User::join('role_users', 'role_users.user_id', '=', 'users.id')
+            ->join('roles', 'role_users.role_id', '=', 'roles.id')->orderBy('id', 'asc')
+            ->leftJoin('organization_users', 'organization_users.user_id', '=', 'users.id')
+            ->leftJoin('organizations', 'organization_users.organization_id', '=', 'organizations.id')
+            ->select('users.*', 'roles.name as role', 'organizations.name as organization')->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')
-                ->select('users.*', 'roles.name as role');
+            $assets = User::join('role_users', 'role_users.user_id', '=', 'users.id')
+                ->join('roles', 'role_users.role_id', '=', 'roles.id')
+                ->leftJoin('organization_users', 'organization_users.user_id', '=', 'users.id')
+                ->leftJoin('organizations', 'organization_users.organization_id', '=', 'organizations.id')
+                ->select('users.*', 'roles.name as role', 'organizations.name as organization');
 
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -39,8 +45,11 @@ class UserController extends Controller
             }
             $assets = $assets->get();
         } else {
-            $assets = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')
-                ->select('users.*', 'roles.name as role')
+            $assets = User::join('role_users', 'role_users.user_id', '=', 'users.id')
+                ->join('roles', 'role_users.role_id', '=', 'roles.id')
+                ->leftJoin('organization_users', 'organization_users.user_id', '=', 'users.id')
+                ->leftJoin('organizations', 'organization_users.organization_id', '=', 'organizations.id')
+                ->select('users.*', 'roles.name as role', 'organizations.name as organization')
                 ->where('name', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('username', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
@@ -54,14 +63,17 @@ class UserController extends Controller
             }
             $assets = $assets->get();
 
-            $totalFiltered = User::join('role_users', 'role_users.user_id', '=', 'users.id')->join('roles', 'role_users.role_id', '=', 'roles.id')
-                ->select('users.*', 'roles.name as role')
+            $totalFiltered = User::join('role_users', 'role_users.user_id', '=', 'users.id')
+                ->join('roles', 'role_users.role_id', '=', 'roles.id')
+                ->leftJoin('organization_users', 'organization_users.user_id', '=', 'users.id')
+                ->leftJoin('organizations', 'organization_users.organization_id', '=', 'organizations.id')
+                ->select('users.*', 'roles.name as role', 'organizations.name as organization')
                 ->where('name', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('username', 'like', '%' . $request['search']['value'] . '%')
                 ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['order'][0]['name'] . ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name']. ' ' . $request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -73,6 +85,7 @@ class UserController extends Controller
             $row['username'] = $item->username;
             $row['phone_number'] = $item->phone_number;
             $row['role'] = $item->role;
+            $row['organization'] = $item->organization?? trans('Kosong');
             $row['valid'] = $item->valid ? 'Valid' : 'Belum Valid';
             $row['action'] = "<button class='btn btn-icon btn-warning edit' data-user='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-user='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
@@ -110,7 +123,7 @@ class UserController extends Controller
             'phone_number' => 'required|min:18|max:19|unique:users,phone_number',
             'avatar' => 'required',
             'role' => 'required|exists:roles,id',
-            'organization' => 'numeric|exists:organizations,id',
+            'organization' => 'exists:organizations,id',
         ]);
         DB::beginTransaction();
         try {

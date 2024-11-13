@@ -309,8 +309,6 @@
         }
         $(function() {
             window.dataTableMenu = $('#table-menu').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('master.menu.data-table') }}",
                 processing: true,
                 serverSide: true,

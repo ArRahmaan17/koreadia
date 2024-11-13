@@ -69,7 +69,7 @@ class RoleUserController extends Controller
                 ->orWhere('r.name', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['order'][0]['name'] . ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name']. ' ' . $request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }

@@ -190,8 +190,6 @@
         }
         $(function() {
             window.datatableRole = $('#table-role').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('master.role.data-table') }}",
                 processing: true,
                 serverSide: true,

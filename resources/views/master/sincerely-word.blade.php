@@ -190,8 +190,6 @@
         }
         $(function() {
             window.datatableSincerelyWord = $('#table-sincerely-word').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('master.sincerely-word.data-table') }}",
                 processing: true,
                 serverSide: true,

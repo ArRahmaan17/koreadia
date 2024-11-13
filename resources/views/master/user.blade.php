@@ -33,6 +33,7 @@
                             <th>@lang('translation.username')</th>
                             <th>@lang('translation.phone_number')</th>
                             <th>@lang('translation.role-user')</th>
+                            <th>@lang('translation.organization')</th>
                             <th>Valid</th>
                             <th>@lang('translation.action')</th>
                         </tr>
@@ -237,8 +238,6 @@
         }
         $(function() {
             window.datatableUser = $('#table-user').DataTable({
-                // scrollY: '100%',
-                // scrollX: '100%',
                 ajax: "{{ route('master.user.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -292,6 +291,15 @@
                     }
                 }, {
                     target: 5,
+                    name: 'organization',
+                    data: 'organization',
+                    orderable: true,
+                    searchable: true,
+                    render: (data, type, row, meta) => {
+                        return `<div class='text-wrap'>${data}</div>`
+                    }
+                },{
+                    target: 6,
                     name: 'valid',
                     data: 'valid',
                     orderable: true,
@@ -300,7 +308,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 6,
+                    target: 7,
                     name: 'action',
                     data: 'action',
                     orderable: false,

@@ -71,7 +71,7 @@
         }
 
         function dataToOption(allData, attr = false) {
-            let html = "<option>Mohon Pilih</option>";
+            let html = "<option value=''>Mohon Pilih</option>";
 
             allData.forEach(data => {
                 if (attr) {

@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Doglex',
             'username' => 'dev.rahmaan',
             'password' => Hash::make('mamanrecing'),
-            'avatar' => 'avatar-1.jpg',
+            'avatar' => 'images/avatar-1.jpg',
             'phone_number' => '(+62) 895-229-83270',
             'valid' => TRUE,
             'created_at' => now(),
@@ -183,6 +183,68 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => '2024-10-26 19:45:22'
             ],
             [
+                'role_id' => '1',
+                'menu_id' => '2',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],
+            [
+                'role_id' => '1',
+                'menu_id' => '3',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '4',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '5',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '6',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '7',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '8',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '9',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '10',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '11',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '12',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],[
+                'role_id' => '1',
+                'menu_id' => '13',
+                'created_at' => '2024-10-26 19:45:22',
+                'updated_at' => '2024-10-26 19:45:22'
+            ],
+            [
                 'role_id' => '2',
                 'menu_id' => '1',
                 'created_at' => '2024-10-27 02:46:40',
@@ -201,112 +263,10 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => '2024-10-27 02:47:29'
             ],
             [
-                'role_id' => '1',
-                'menu_id' => '2',
-                'created_at' => '2024-10-27 09:48:13',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '2',
-                'menu_id' => '2',
-                'created_at' => '2024-10-27 09:48:13',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '3',
-                'created_at' => '2024-10-27 09:49:12',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '4',
-                'created_at' => '2024-10-27 09:49:54',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '2',
-                'menu_id' => '4',
-                'created_at' => '2024-10-27 09:49:54',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '5',
-                'created_at' => '2024-10-27 09:50:49',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '2',
-                'menu_id' => '5',
-                'created_at' => '2024-10-27 09:50:49',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '6',
-                'created_at' => '2024-10-27 09:52:08',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '2',
-                'menu_id' => '6',
-                'created_at' => '2024-10-27 09:52:08',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '8',
-                'created_at' => '2024-10-27 09:54:39',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '9',
-                'created_at' => '2024-10-27 09:56:32',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '2',
-                'menu_id' => '9',
-                'created_at' => '2024-10-27 09:56:32',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '10',
-                'created_at' => '2024-10-27 10:02:20',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '2',
-                'menu_id' => '10',
-                'created_at' => '2024-10-27 10:02:20',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '3',
-                'menu_id' => '10',
-                'created_at' => '2024-10-27 10:02:20',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '4',
-                'menu_id' => '10',
-                'created_at' => '2024-10-27 10:02:20',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '11',
-                'created_at' => '2024-10-27 10:15:57',
-                'updated_at' => null
-            ],
-            [
-                'role_id' => '1',
-                'menu_id' => '12',
-                'created_at' => '2024-10-27 10:48:42',
-                'updated_at' => null
+                'role_id' => '5',
+                'menu_id' => '1',
+                'created_at' => '2024-10-27 02:47:29',
+                'updated_at' => '2024-10-27 02:47:29'
             ]
         ]);
         \App\Models\RoleUser::insert([
