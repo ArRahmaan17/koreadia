@@ -91,7 +91,7 @@ class SincerelyWordController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:mail_agendas,name',
+            'name' => 'required|unique:sincerely_words,name',
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();
@@ -131,7 +131,7 @@ class SincerelyWordController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:mail_agendas,name,' . $id,
+            'name' => 'required|unique:sincerely_words,name,' . $id,
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();

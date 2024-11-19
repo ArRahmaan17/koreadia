@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.mail_in')
+    @lang('translation.mail_out')
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('build/libs/datatable/dataTables.min.css') }}" />
@@ -17,20 +17,20 @@
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            Mail
+            Mail Out
         @endslot
     @endcomponent
     <div class="card">
         <div class="card-header align-items-center d-flex">
-            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.mail_in')</h4>
+            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.mail_out')</h4>
             <div class="flex-shrink-0">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-mail-in">@lang('translation.add')</button>
-                <button type="button" class="btn btn-warning" id="reload-mail-in">@lang('translation.reload')</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-mail-out">@lang('translation.add')</button>
+                <button type="button" class="btn btn-warning" id="reload-mail-out">@lang('translation.reload')</button>
             </div>
         </div><!-- end card header -->
         <div class="card-body">
             <div class="table-responsive p-2">
-                <table class="table table-bordered" id="table-mail-in">
+                <table class="table table-bordered" id="table-mail-out">
                     <thead>
                         <tr>
                             <th>@lang('translation.no')</th>
@@ -55,15 +55,15 @@
             </div>
         </div>
     </div>
-    <div id="modal-mail-in" class="modal fade" tabindex="-1" aria-labelledby="modal-mail-in-label" aria-hidden="true" style="display: none;">
+    <div id="modal-mail-out" class="modal fade" tabindex="-1" aria-labelledby="modal-mail-out-label" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-mail-in-label">@lang('translation.add') @lang('translation.mail_in')</h5>
+                    <h5 class="modal-title" id="modal-mail-out-label">@lang('translation.add') @lang('translation.mail_out')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-mail-in">
+                    <form id="form-mail-out">
                         <div class="row">
                             @csrf
                             <input type="hidden" name="id">
@@ -155,22 +155,22 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-success" id="save-mail-in">@lang('translation.save') @lang('translation.changes')</button>
-                    <button type="button" class="btn btn-soft-warning d-none" id="update-mail-in">@lang('translation.update') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-success" id="save-mail-out">@lang('translation.save') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-warning d-none" id="update-mail-out">@lang('translation.update') @lang('translation.changes')</button>
                 </div>
             </div>
         </div>
     </div>
-    <div id="modal-status-mail-in" class="modal fade" tabindex="-1" aria-labelledby="modal-status-mail-in-label" aria-hidden="true"
+    <div id="modal-status-mail-out" class="modal fade" tabindex="-1" aria-labelledby="modal-status-mail-out-label" aria-hidden="true"
         style="display: none;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-status-mail-in-label">Update Status @lang('translation.mail_in')</h5>
+                    <h5 class="modal-title" id="modal-status-mail-out-label">Update Status @lang('translation.mail_out')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-status-mail-in">
+                    <form id="form-status-mail-out">
                         @csrf
                         <input type="hidden" name="id">
                         <input type="hidden" name="status">
@@ -204,16 +204,16 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-warning" id="update-status-mail-in">@lang('translation.update') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-warning" id="update-status-mail-out">@lang('translation.update') @lang('translation.changes')</button>
                 </div>
             </div>
         </div>
     </div>
-    <div id="modal-file-mail-in" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-in-label" aria-hidden="true" style="display: none;">
+    <div id="modal-file-mail-out" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-out-label" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-file-mail-in-label">File @lang('translation.mail_in')</h5>
+                    <h5 class="modal-title" id="modal-file-mail-out-label">File @lang('translation.mail_out')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -225,12 +225,12 @@
             </div>
         </div>
     </div>
-    <div id="modal-report-mail-in" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-in-label" aria-hidden="true"
+    <div id="modal-report-mail-out" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-out-label" aria-hidden="true"
         style="display: none;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-file-mail-in-label">Report @lang('translation.mail_in')</h5>
+                    <h5 class="modal-title" id="modal-file-mail-out-label">Report @lang('translation.mail_out')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -267,18 +267,18 @@
             $('.edit').click(function() {
                 window.state = 'update';
                 let idMail = $(this).data("mailsin");
-                $("#update-mail-in").data("mailsin", idMail);
+                $("#update-mail-out").data("mailsin", idMail);
                 if (window.datatableMail.rows('.selected').data().length == 0) {
-                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $('#table-mail-out tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
                 var data = window.datatableMail.rows('.selected').data()[0];
 
-                $('#modal-mail-in').modal('show');
-                $('#modal-mail-in').find('.modal-title').html(`@lang('translation.edit') @lang('translation.mail_in')`);
-                $('#save-mail-in').addClass('d-none');
-                $('#update-mail-in').removeClass('d-none');
+                $('#modal-mail-out').modal('show');
+                $('#modal-mail-out').find('.modal-title').html(`@lang('translation.edit') @lang('translation.mail_out')`);
+                $('#save-mail-out').addClass('d-none');
+                $('#update-mail-out').removeClass('d-none');
                 setTimeout(() => {
                     $.ajax({
                         type: "GET",
@@ -286,7 +286,7 @@
                         dataType: "json",
                         success: function(response) {
                             $('select').parents('.col-6.d-none').removeClass('d-none')
-                            $('#modal-mail-in').find("form")
+                            $('#modal-mail-out').find("form")
                                 .find('input, select').map(function(index, element) {
                                     if (element.name != 'file_attachment' && element.name != '_token') {
                                         if (response.data[element.name] != undefined) {
@@ -298,7 +298,7 @@
                         },
                         error: function(error) {
                             iziToast.error({
-                                id: 'alert-mail-in-action',
+                                id: 'alert-mail-out-action',
                                 title: 'Error',
                                 message: error.responseJSON.message,
                                 position: 'topRight',
@@ -312,30 +312,30 @@
             $('.file').click(function() {
                 window.state = 'update';
                 let fileId = $(this).data("file");
-                $("#update-mail-in").data("file", fileId);
+                $("#update-mail-out").data("file", fileId);
                 if (window.datatableMail.rows('.selected').data().length == 0) {
-                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $('#table-mail-out tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 var data = window.datatableMail.rows('.selected').data()[0];
-                $('#modal-file-mail-in').modal('show');
-                $('#modal-file-mail-in').find('.modal-title').html(`File @lang('translation.mail_in')`);
-                $('#modal-file-mail-in').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
+                $('#modal-file-mail-out').modal('show');
+                $('#modal-file-mail-out').find('.modal-title').html(`File @lang('translation.mail_out')`);
+                $('#modal-file-mail-out').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
             });
             $('.print-report').click(function() {
                 let fileId = $(this).data("mailsin");
                 if (window.datatableMail.rows('.selected').data().length == 0) {
-                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $('#table-mail-out tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 var data = window.datatableMail.rows('.selected').data()[0];
-                $('#modal-report-mail-in').modal('show');
-                $('#modal-report-mail-in').find('.modal-title').html(`Report @lang('translation.mail_in')`);
-                $('#modal-report-mail-in').find('.modal-body iframe').prop('src', `{{ route('mail.in.report') }}/${fileId}`)
+                $('#modal-report-mail-out').modal('show');
+                $('#modal-report-mail-out').find('.modal-title').html(`Report @lang('translation.mail_out')`);
+                $('#modal-report-mail-out').find('.modal-body iframe').prop('src', `{{ route('mail.in.report') }}/${fileId}`)
             })
             $('.delete').click(function() {
                 if (window.datatableMail.rows('.selected').data().length == 0) {
-                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $('#table-mail-out tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idMail = $(this).data("mailsin");
@@ -368,7 +368,7 @@
                                 dataType: "json",
                                 success: function(response) {
                                     iziToast.success({
-                                        id: 'alert-mail-in-form',
+                                        id: 'alert-mail-out-form',
                                         title: 'Success',
                                         message: response.message,
                                         position: 'topRight',
@@ -379,7 +379,7 @@
                                 },
                                 error: function(error) {
                                     iziToast.error({
-                                        id: 'alert-mail-in-action',
+                                        id: 'alert-mail-out-action',
                                         title: 'Error',
                                         message: error.responseJSON.message,
                                         position: 'topRight',
@@ -399,12 +399,12 @@
             });
             $('.update-status').click(function() {
                 if (window.datatableMail.rows('.selected').data().length == 0) {
-                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $('#table-mail-out tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idMail = $(this).data("mailsin");
                 var data = window.datatableMail.rows('.selected').data()[0];
-                $('#modal-status-mail-in').modal('show');
+                $('#modal-status-mail-out').modal('show');
                 $('input[name=id]').val(idMail);
                 $.ajax({
                     type: "GET",
@@ -424,7 +424,7 @@
                                 url: `{{ route('master.sincerely-word.all') }}`,
                                 dataType: "json",
                                 success: function(response) {
-                                    $('#modal-status-mail-in select[name=sincerely]').html(dataToOption(response.data))
+                                    $('#modal-status-mail-out select[name=sincerely]').html(dataToOption(response.data))
                                 }
                             });
                         } else if (data.status == 'FILED') {
@@ -440,13 +440,13 @@
                             $('.col-status-process').addClass('d-none');
                             $('.col-status-disposision').addClass('d-none');
                         }
-                        $('#modal-status-mail-in select[name=user_id]').html(dataToOption(response.data))
+                        $('#modal-status-mail-out select[name=user_id]').html(dataToOption(response.data))
                     }
                 });
             });
             $('.request-notify').click(function() {
                 if (window.datatableMail.rows('.selected').data().length == 0) {
-                    $('#table-mail-in tbody').find('tr').removeClass('selected');
+                    $('#table-mail-out tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 console.log(window.datatableMail.rows('.selected').data()[0])
@@ -496,7 +496,7 @@
                                     dataType: "json",
                                     success: function(response) {
                                         iziToast.success({
-                                            id: 'alert-mail-in-form',
+                                            id: 'alert-mail-out-form',
                                             title: 'Success',
                                             message: response.message,
                                             position: 'topRight',
@@ -507,7 +507,7 @@
                                     },
                                     error: function(error) {
                                         iziToast.error({
-                                            id: 'alert-mail-in-action',
+                                            id: 'alert-mail-out-action',
                                             title: 'Error',
                                             message: error.responseJSON.message,
                                             position: 'topRight',
@@ -528,7 +528,7 @@
                                     dataType: "json",
                                     success: function(response) {
                                         iziToast.success({
-                                            id: 'alert-mail-in-form',
+                                            id: 'alert-mail-out-form',
                                             title: 'Success',
                                             message: response.message,
                                             position: 'topRight',
@@ -539,7 +539,7 @@
                                     },
                                     error: function(error) {
                                         iziToast.error({
-                                            id: 'alert-mail-in-action',
+                                            id: 'alert-mail-out-action',
                                             title: 'Error',
                                             message: error.responseJSON.message,
                                             position: 'topRight',
@@ -560,7 +560,7 @@
             });
         }
         $(function() {
-            window.datatableMail = $('#table-mail-in').DataTable({
+            window.datatableMail = $('#table-mail-out').DataTable({
                 ajax: "{{ route('mail.in.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -698,17 +698,17 @@
             window.datatableMail.on('draw.dt', function() {
                 actionData();
             });
-            $('#save-mail-in').click(function() {
-                let data = serializeObject($('#form-mail-in'));
+            $('#save-mail-out').click(function() {
+                let data = serializeObject($('#form-mail-out'));
                 $.ajax({
                     type: "POST",
                     url: `{{ route('mail.in.store') }}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-mail-in').modal('hide')
+                        $('#modal-mail-out').modal('hide')
                         iziToast.success({
-                            id: 'alert-mail-in-form',
+                            id: 'alert-mail-out-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
@@ -718,14 +718,14 @@
                         window.datatableMail.ajax.reload();
                     },
                     error: function(error) {
-                        $('#modal-mail-in .is-invalid').removeClass('is-invalid')
+                        $('#modal-mail-out .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-mail-in').find('[name=' + indexInArray +
+                            $('#modal-mail-out').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-mail-in-form',
+                            id: 'alert-mail-out-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -735,17 +735,17 @@
                     }
                 });
             });
-            $('#update-mail-in').click(function() {
-                let data = serializeObject($('#form-mail-in'));
+            $('#update-mail-out').click(function() {
+                let data = serializeObject($('#form-mail-out'));
                 $.ajax({
                     type: "PUT",
                     url: `{{ route('mail.in.update') }}/${data.id}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-mail-in').modal('hide')
+                        $('#modal-mail-out').modal('hide')
                         iziToast.success({
-                            id: 'alert-mail-in-form',
+                            id: 'alert-mail-out-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
@@ -756,14 +756,14 @@
                         $('select[name=status]').parents('.col-6').addClass('d-none')
                     },
                     error: function(error) {
-                        $('#modal-mail-in .is-invalid').removeClass('is-invalid')
+                        $('#modal-mail-out .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-mail-in').find('[name=' + indexInArray +
+                            $('#modal-mail-out').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-mail-in-form',
+                            id: 'alert-mail-out-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -773,17 +773,17 @@
                     }
                 });
             });
-            $('#update-status-mail-in').click(function() {
-                let data = serializeObject($('#form-status-mail-in'));
+            $('#update-status-mail-out').click(function() {
+                let data = serializeObject($('#form-status-mail-out'));
                 $.ajax({
                     type: "PUT",
                     url: `{{ route('mail.in.status-update') }}/${data.id}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-status-mail-in').modal('hide')
+                        $('#modal-status-mail-out').modal('hide')
                         iziToast.success({
-                            id: 'alert-mail-in-form',
+                            id: 'alert-mail-out-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
@@ -794,14 +794,14 @@
                         $('select[name=status]').parents('.col-6').addClass('d-none')
                     },
                     error: function(error) {
-                        $('#modal-status-mail-in .is-invalid').removeClass('is-invalid')
+                        $('#modal-status-mail-out .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-status-mail-in').find('[name=' + indexInArray +
+                            $('#modal-status-mail-out').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-mail-in-form',
+                            id: 'alert-mail-out-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -811,17 +811,17 @@
                     }
                 });
             });
-            $('#modal-mail-in').on('hidden.bs.modal', function() {
+            $('#modal-mail-out').on('hidden.bs.modal', function() {
                 window.state = 'add';
                 $(this).find('form')[0].reset();
-                $(this).find('.modal-title').html(`@lang('translation.add') @lang('translation.mail_in')`);
-                $('#save-mail-in').removeClass('d-none');
-                $('#update-mail-in').addClass('d-none');
-                $('#modal-mail-in .is-invalid').removeClass('is-invalid')
-                $('#table-mail-in tbody').find('tr').removeClass('selected');
+                $(this).find('.modal-title').html(`@lang('translation.add') @lang('translation.mail_out')`);
+                $('#save-mail-out').removeClass('d-none');
+                $('#update-mail-out').addClass('d-none');
+                $('#modal-mail-out .is-invalid').removeClass('is-invalid')
+                $('#table-mail-out tbody').find('tr').removeClass('selected');
                 $('#file_attachment_help').addClass('d-none')
             });
-            $('#modal-mail-in').on('shown.bs.modal', function() {
+            $('#modal-mail-out').on('shown.bs.modal', function() {
                 if (window.state == 'update') {
                     $('#file_attachment_help').removeClass('d-none')
                 }
@@ -832,7 +832,7 @@
                     success: function(response) {
                         $("#agenda_id").html(dataToOption(response.data));
                         $('.select2').select2({
-                            dropdownParent: $('#modal-mail-in'),
+                            dropdownParent: $('#modal-mail-out'),
                         })
                     }
                 });
@@ -843,7 +843,7 @@
                     success: function(response) {
                         $("#priority_id").html(dataToOption(response.data));
                         $('.select2').select2({
-                            dropdownParent: $('#modal-mail-in'),
+                            dropdownParent: $('#modal-mail-out'),
                         });
                     }
                 });
@@ -854,25 +854,25 @@
                     success: function(response) {
                         $("#type_id").html(dataToOption(response.data));
                         $('.select2').select2({
-                            dropdownParent: $('#modal-mail-in'),
+                            dropdownParent: $('#modal-mail-out'),
                         })
                     }
                 });
             });
-            $('#modal-status-mail-in').on('shown.bs.modal', function() {
+            $('#modal-status-mail-out').on('shown.bs.modal', function() {
                 $('.select2').select2({
-                    dropdownParent: $('#modal-status-mail-in'),
+                    dropdownParent: $('#modal-status-mail-out'),
                 });
                 $('.select2multi').select2({
-                    dropdownParent: $('#modal-status-mail-in'),
+                    dropdownParent: $('#modal-status-mail-out'),
                     multiple: true,
                 })
             });
-            $('#modal-status-mail-in').on('hidden.bs.modal', function() {
-                $('#form-status-mail-in')[0].reset();
+            $('#modal-status-mail-out').on('hidden.bs.modal', function() {
+                $('#form-status-mail-out')[0].reset();
             });
-            $('#modal-file-mail-in').on('hidden.bs.modal', function() {
-                $('#modal-file-mail-in').find('.modal-body iframe').prop('src', ``)
+            $('#modal-file-mail-out').on('hidden.bs.modal', function() {
+                $('#modal-file-mail-out').find('.modal-body iframe').prop('src', ``)
             });
             $(".flatpikrc").flatpickr({
                 "locale": "id"
@@ -905,11 +905,11 @@
                 acceptedFileTypes: ['application/pdf'],
             });
             window.file_pond_reply_file_attachment.on('addfile', function() {
-                $('#modal-status-mail-in input[name=status]').val('REPLIED')
+                $('#modal-status-mail-out input[name=status]').val('REPLIED')
             });
             window.file_pond_reply_file_attachment.on('removefile', function() {
-                $('#modal-status-mail-in input[name=status]').val('OUT')
-                $('#modal-status-mail-in input[name=note]').val('')
+                $('#modal-status-mail-out input[name=status]').val('OUT')
+                $('#modal-status-mail-out input[name=note]').val('')
             });
             // $('#sender_phone_number').change(function() {
             //     $.ajax({
@@ -919,27 +919,27 @@
             //         success: function(response) {
             //             $('#sender_phone_number').removeClass('is-invalid');
             //             if (window.state == 'add') {
-            //                 $('#save-mail-in').removeClass('disabled');
+            //                 $('#save-mail-out').removeClass('disabled');
             //             } else {
-            //                 $('#update-mail-in').removeClass('disabled');
+            //                 $('#update-mail-out').removeClass('disabled');
             //             }
             //         },
             //         error: function(error) {
             //             $('#sender_phone_number').addClass('is-invalid');
             //             iziToast.error({
-            //                 id: 'alert-mail-in-form',
+            //                 id: 'alert-mail-out-form',
             //                 title: 'Error',
             //                 message: error.responseJSON.message,
             //                 position: 'topRight',
             //                 layout: 2,
             //                 displayMode: 'replace'
             //             });
-            //             $('#save-mail-in').addClass('disabled');
-            //             $('#update-mail-in').addClass('disabled');
+            //             $('#save-mail-out').addClass('disabled');
+            //             $('#update-mail-out').addClass('disabled');
             //         }
             //     });
             // });
-            $('#reload-mail-in').click(debounce(function() {
+            $('#reload-mail-out').click(debounce(function() {
                 window.datatableMail.ajax.reload();
             }, 1000));
         });

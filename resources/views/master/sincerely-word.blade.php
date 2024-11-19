@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.sincerely-word')
+    @lang('translation.sincerely_word')
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('build/libs/datatable/dataTables.min.css') }}" />
@@ -16,7 +16,7 @@
     @endcomponent
     <div class="card">
         <div class="card-header align-items-center d-flex">
-            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.sincerely-word')</h4>
+            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.sincerely_word')</h4>
             <div class="flex-shrink-0">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-sincerely-word">@lang('translation.add')</button>
             </div>
@@ -42,7 +42,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-sincerely-word-label">Add @lang('translation.sincerely-word')</h5>
+                    <h5 class="modal-title" id="modal-sincerely-word-label">@lang('translation.add') @lang('translation.sincerely_word')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -51,11 +51,11 @@
                         <input type="hidden" name="id">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name sincerely-word mail">
-                            <label for="name">Name</label>
+                            <label for="name">@lang('translation.name')</label>
                         </div>
                         <div class="form-floating mb-3">
                             <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description sincerely-word mail"></textarea>
-                            <label for="description">Description</label>
+                            <label for="description">@lang('translation.description')</label>
                         </div>
                     </form>
                 </div>
@@ -93,7 +93,7 @@
                 var data = window.datatableSincerelyWord.rows('.selected').data()[0];
 
                 $('#modal-sincerely-word').modal('show');
-                $('#modal-sincerely-word').find('.modal-title').html(`Edit @lang('translation.sincerely-word')`);
+                $('#modal-sincerely-word').find('.modal-title').html(`Edit @lang('translation.sincerely_word')`);
                 $('#save-sincerely-word').addClass('d-none');
                 $('#update-sincerely-word').removeClass('d-none');
 
@@ -316,7 +316,7 @@
             $('#modal-sincerely-word').on('hidden.bs.modal', function() {
                 window.state = 'add';
                 $(this).find('form')[0].reset();
-                $(this).find('.modal-title').html(`Add @lang('translation.sincerely-word')`);
+                $(this).find('.modal-title').html(`Add @lang('translation.sincerely_word')`);
                 $('#save-sincerely-word').removeClass('d-none');
                 $('#update-sincerely-word').addClass('d-none');
                 $('#modal-sincerely-word .is-invalid').removeClass('is-invalid')

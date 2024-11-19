@@ -48,6 +48,8 @@ return [
     'mail_reply_note' => 'Catatan balasan',
     'mail_warning_status' => '<b>Hati-hati.</b> Status surat akan berubah',
     'mail_in' => 'Surat masuk',
+    'mail_out' => 'Surat keluar',
+    'sincerely_word' => 'Kata kata permohonan',
     'must_valid_wa_number' => 'nomor telepon harus nomor WhatsApp yang valid',
     'action' => 'Tindakan',
     'update' => 'Perbarui',

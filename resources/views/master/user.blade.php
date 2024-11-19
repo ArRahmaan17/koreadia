@@ -48,7 +48,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-user-label">Add @lang('translation.user')</h5>
+                    <h5 class="modal-title" id="modal-user-label">@lang('translation.add') @lang('translation.user')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name user mail">
-                            <label for="name">Name</label>
+                            <label for="name">@lang('translation.name')</label>
                         </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="username" name="username" placeholder="Enter your name user mail">

@@ -42,7 +42,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-type-label">Add @lang('translation.mail_type')</h5>
+                    <h5 class="modal-title" id="modal-type-label">@lang('translation.add') @lang('translation.mail_type')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -51,11 +51,11 @@
                         <input type="hidden" name="id">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name type mail">
-                            <label for="name">Name</label>
+                            <label for="name">@lang('translation.name')</label>
                         </div>
                         <div class="form-floating mb-3">
                             <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description type mail"></textarea>
-                            <label for="description">Description</label>
+                            <label for="description">@lang('translation.description')</label>
                         </div>
                     </form>
                 </div>

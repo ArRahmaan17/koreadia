@@ -4,6 +4,7 @@ use App\Http\Controllers\Dev\AuthController;
 use App\Http\Controllers\Dev\Mail\AgendaController;
 use App\Http\Controllers\Dev\Mail\PriorityController;
 use App\Http\Controllers\Dev\Mail\TypeController;
+use App\Http\Controllers\Dev\MailOutController;
 use App\Http\Controllers\Dev\MailTransactionController;
 use App\Http\Controllers\Dev\MenuController;
 use App\Http\Controllers\Dev\OrganizationController;
@@ -41,6 +42,14 @@ Route::middleware('check.auth')->group(function () {
             Route::put('/{id?}', [MailTransactionController::class, 'update'])->name('update');
             Route::delete('/{id?}', [MailTransactionController::class, 'destroy'])->name('destroy');
             Route::post('/', [MailTransactionController::class, 'store'])->name('store');
+        });
+        Route::prefix('out')->name('out.')->group(function () {
+            Route::get('/', [MailOutController::class, 'index'])->name('index');
+            Route::get('/data-table', [MailOutController::class, 'dataTable'])->name('data-table');
+            Route::get('/{id?}', [MailOutController::class, 'show'])->name('show');
+            Route::put('/{id?}', [MailOutController::class, 'update'])->name('update');
+            Route::delete('/{id?}', [MailOutController::class, 'destroy'])->name('destroy');
+            Route::post('/', [MailOutController::class, 'store'])->name('store');
         });
     });
     Route::prefix('master')->name('master.')->group(function () {
