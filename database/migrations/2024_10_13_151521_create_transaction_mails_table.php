@@ -26,6 +26,7 @@ return new class extends Migration
                 'FILED',
                 'DISPOSITION',
                 'REPLIED',
+                'OUT',
             ]);
             $table->dateTime('date_in')->comment('Mail in date');
             $table->bigInteger('agenda_id')->unsigned();
