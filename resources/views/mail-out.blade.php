@@ -282,7 +282,7 @@
                 setTimeout(() => {
                     $.ajax({
                         type: "GET",
-                        url: "{{ route('mail.in.show') }}/" + idMail,
+                        url: "{{ route('mail.out.show') }}/" + idMail,
                         dataType: "json",
                         success: function(response) {
                             $('select').parents('.col-6.d-none').removeClass('d-none')
@@ -322,17 +322,6 @@
                 $('#modal-file-mail-out').find('.modal-title').html(`File @lang('translation.mail_out')`);
                 $('#modal-file-mail-out').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
             });
-            $('.print-report').click(function() {
-                let fileId = $(this).data("mailsin");
-                if (window.datatableMail.rows('.selected').data().length == 0) {
-                    $('#table-mail-out tbody').find('tr').removeClass('selected');
-                    $(this).parents('tr').addClass('selected')
-                }
-                var data = window.datatableMail.rows('.selected').data()[0];
-                $('#modal-report-mail-out').modal('show');
-                $('#modal-report-mail-out').find('.modal-title').html(`Report @lang('translation.mail_out')`);
-                $('#modal-report-mail-out').find('.modal-body iframe').prop('src', `{{ route('mail.in.report') }}/${fileId}`)
-            })
             $('.delete').click(function() {
                 if (window.datatableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-out tbody').find('tr').removeClass('selected');
@@ -360,7 +349,7 @@
                             }, toast, 'button');
                             $.ajax({
                                 type: "DELETE",
-                                url: "{{ route('mail.in.destroy') }}/" +
+                                url: "{{ route('mail.out.destroy') }}/" +
                                     idMail,
                                 data: {
                                     _token: `{{ csrf_token() }}`,
@@ -561,7 +550,7 @@
         }
         $(function() {
             window.datatableMail = $('#table-mail-out').DataTable({
-                ajax: "{{ route('mail.in.data-table') }}",
+                ajax: "{{ route('mail.out.data-table') }}",
                 processing: true,
                 serverSide: true,
                 order: [
@@ -702,7 +691,7 @@
                 let data = serializeObject($('#form-mail-out'));
                 $.ajax({
                     type: "POST",
-                    url: `{{ route('mail.in.store') }}`,
+                    url: `{{ route('mail.out.store') }}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
@@ -739,7 +728,7 @@
                 let data = serializeObject($('#form-mail-out'));
                 $.ajax({
                     type: "PUT",
-                    url: `{{ route('mail.in.update') }}/${data.id}`,
+                    url: `{{ route('mail.out.update') }}/${data.id}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {

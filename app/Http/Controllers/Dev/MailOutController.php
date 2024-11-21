@@ -38,7 +38,10 @@ class MailOutController extends Controller
                     ],
                     ['transaction_mails.status', '=', 'OUT']
                 ]
-            )->orWhere([['wq.user_id', auth()->user()->id]])->orWhere([['transaction_mails.creator_id', auth()->user()->id]])
+            )->where(function ($query) {
+                $query->where('wq.user_id', auth()->user()->id)
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+            })
             ->orderBy('id', 'asc')
             ->count();
         $totalFiltered = $totalData;
@@ -59,14 +62,19 @@ class MailOutController extends Controller
             if (isset($request['order'][0]['column'])) {
                 $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
-            $assets = $assets->where([
+            $assets = $assets->where(
                 [
-                    'transaction_mails.user_id',
-                    ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
-                ],
-                ['transaction_mails.status', '=', 'OUT']
-            ])->orWhere([['wq.user_id', auth()->user()->id]])->orWhere([['transaction_mails.creator_id', auth()->user()->id]])->get();
+                    [
+                        'transaction_mails.user_id',
+                        ((getRole() == 'Developer') ? '<>' : '='),
+                        ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ],
+                    ['transaction_mails.status', '=', 'OUT']
+                ]
+            )->where(function ($query) {
+                $query->where('wq.user_id', auth()->user()->id)
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+            })->get();
         } else {
             $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
                 ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
@@ -106,7 +114,10 @@ class MailOutController extends Controller
                     ],
                     ['transaction_mails.status', '=', 'OUT']
                 ]
-            )->orWhere([['wq.user_id', auth()->user()->id]])->orWhere([['transaction_mails.creator_id', auth()->user()->id]])->get();
+            )->where(function ($query) {
+                $query->where('wq.user_id', auth()->user()->id)
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+            })->get();
 
             $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
                 ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
@@ -142,7 +153,10 @@ class MailOutController extends Controller
                     ],
                     ['transaction_mails.status', '=', 'OUT']
                 ]
-            )->orWhere([['wq.user_id', auth()->user()->id]])->orWhere([['transaction_mails.creator_id', auth()->user()->id]])->count();
+            )->where(function ($query) {
+                $query->where('wq.user_id', auth()->user()->id)
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+            })->count();
         }
         $dataFiltered = [];
         foreach ($assets as $index => $item) {

@@ -115,6 +115,15 @@ class DatabaseSeeder extends Seeder
                     'updated_at' => '2024-10-27 03:02:20'
                 ],
                 [
+                    'name' => 'Mail Out',
+                    'route' => 'mail.out.index',
+                    'icon' => 'bx bx-mail-send',
+                    'parent' => 0,
+                    'place' => 0,
+                    'created_at' => '2024-10-27 03:02:20',
+                    'updated_at' => '2024-10-27 03:02:20'
+                ],
+                [
                     'name' => 'Role User',
                     'route' => 'master.role-user.index',
                     'icon' => 'bx bxs-user-voice',
@@ -193,52 +202,62 @@ class DatabaseSeeder extends Seeder
                 'menu_id' => '3',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '4',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '5',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '6',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '7',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '8',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '9',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '10',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '11',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '12',
                 'created_at' => '2024-10-26 19:45:22',
                 'updated_at' => '2024-10-26 19:45:22'
-            ],[
+            ],
+            [
                 'role_id' => '1',
                 'menu_id' => '13',
                 'created_at' => '2024-10-26 19:45:22',
