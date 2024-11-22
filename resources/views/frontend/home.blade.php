@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - QuickStart Bootstrap Template</title>
+    <title>KOREDIA</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -37,17 +37,17 @@
 
             <a href="index.html" class="logo d-flex align-items-center me-auto">
                 <img src=" {{ asset('frontend/assets/img/logo.png') }}" alt="">
-                <h1 class="sitename">QuickStart</h1>
+                <h1 class="sitename">KOREDIA</h1>
             </a>
 
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="#hero" class="active">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about">Tentang Kami</a></li>
+                    <li><a href="#features">Fitur</a></li>
+                    <li><a href="#services">Kirim Surat</a></li>
+                    <li><a href="{{ route('tracking') }}">Lacak Surat</a></li>
+                    <li><a href="#contact">Kontak Kami</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
@@ -66,12 +66,11 @@
             </div>
             <div class="container text-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <h1 data-aos="fade-up">Welcome to <span>QuickStart</span></h1>
-                    <p data-aos="fade-up" data-aos-delay="100">Quickly start your project now and set the stage for
-                        success<br></p>
+                    <h1 data-aos="fade-up">Welcome to <span>Koredia</span></h1>
+                    <p data-aos="fade-up" data-aos-delay="100">Korespondensi Administrasi dan Informasi<br></p>
                     <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
                         <a href="#about" class="btn-get-started">Get Started</a>
-                        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i
+                        <a href="https://www.youtube.com/watch?v=A43wkKeH9PA" class="glightbox btn-watch-video d-flex align-items-center"><i
                                 class="bi bi-play-circle"></i><span>Watch Video</span></a>
                     </div>
                     <img src=" {{ asset('frontend/assets/img/hero-services-img.webp') }}" class="img-fluid hero-img" alt="" data-aos="zoom-out"
@@ -92,9 +91,8 @@
                         <div class="service-item d-flex">
                             <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
                             <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Lorem Ipsum</a></h4>
-                                <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas
-                                    molestias excepturi</p>
+                                <h4 class="title"><a href="#" class="stretched-link">Pengelolaan Surat Digital</a></h4>
+                                <p class="description">Mengelola seluruh surat dan dokumen secara efisien dalam satu platform yang terpusat, memudahkan pencarian dan pengarsipan.</p>
                             </div>
                         </div>
                     </div>
@@ -104,9 +102,8 @@
                         <div class="service-item d-flex">
                             <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
                             <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Dolor Sitema</a></h4>
-                                <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                    aliquip exa</p>
+                                <h4 class="title"><a href="#" class="stretched-link">Notifikasi dan Tindak Lanjut Cepat</a></h4>
+                                <p class="description">Menyediakan notifikasi otomatis untuk setiap perubahan status dokumen, sehingga proses tindak lanjut lebih terorganisir.</p>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
@@ -115,10 +112,9 @@
                         <div class="service-item d-flex">
                             <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
                             <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Sed ut perspiciatis</a>
+                                <h4 class="title"><a href="#" class="stretched-link">Dokumen</a>
                                 </h4>
-                                <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum</p>
+                                <p class="description">Kelola dan cari dokumen dengan mudah menggunakan fitur pencarian, membantu menyimpan data secara terstruktur dan efisien.</p>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
@@ -137,21 +133,18 @@
                 <div class="row gy-4">
 
                     <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
-                        <p class="who-we-are">Who We Are</p>
-                        <h3>Unleashing Potential with Creative Strategy</h3>
+                        <p class="who-we-are">Tentang Kami</p>
+                        <h3> KOREDIA: Solusi Administrasi Modern Papua Barat Daya</h3>
                         <p class="fst-italic">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore
-                            magna aliqua.
+
+Kata "Koredia" dalam ujaran Papua memiliki arti "sentuh, pegang," atau dalam makna sehari-hari, "terlihat hebat." Filosofi ini mencerminkan semangat bekerja dengan baik untuk menciptakan perubahan yang nyata, menjadikan administrasi lebih profesional dan efektif.
+
+Sebagai singkatan dari Korespondensi, Informasi, dan Administrasi, KOREDIA hadir untuk memberikan:
                         </p>
                         <ul>
-                            <li><i class="bi bi-check-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat.</span></li>
-                            <li><i class="bi bi-check-circle"></i> <span>Duis aute irure dolor in reprehenderit in
-                                    voluptate velit.</span></li>
-                            <li><i class="bi bi-check-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate trideta
-                                    storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Efisiensi dalam pengelolaan surat dan dokumen</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Transparansi dalam pelacakan dan pengarsipan</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Kemudahan komunikasi antar OPD dalam satu platform terpadu</span></li>
                         </ul>
                         <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
                     </div>
@@ -159,15 +152,15 @@
                     <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
                         <div class="row gy-4">
                             <div class="col-lg-6">
-                                <img src=" {{ asset('frontend/assets/img/about-company-1.jpg') }}" class="img-fluid" alt="">
+                                <img src=" {{ asset('frontend/assets/img/koredia1.png') }}" class="img-fluid" alt="">
                             </div>
                             <div class="col-lg-6">
                                 <div class="row gy-4">
                                     <div class="col-lg-12">
-                                        <img src=" {{ asset('frontend/assets/img/about-company-2.jpg') }}" class="img-fluid" alt="">
+                                        <img src=" {{ asset('frontend/assets/img/koredia2.png') }}" class="img-fluid" alt="">
                                     </div>
                                     <div class="col-lg-12">
-                                        <img src=" {{ asset('frontend/assets/img/about-company-3.jpg') }}" class="img-fluid" alt="">
+                                        <img src=" {{ asset('frontend/assets/img/koredia3.png') }}" class="img-fluid" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -222,8 +215,8 @@
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Features</h2>
-                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+                <h2>FITUR UNGGULAN</h2>
+                <p>KOREDIA dirancang untuk mempermudah dan meningkatkan efisiensi korespondensi administrasi</p>
             </div><!-- End Section Title -->
 
             <div class="container">
@@ -234,13 +227,11 @@
                         <ul class="nav nav-tabs" data-aos="fade-up" data-aos-delay="100">
                             <li class="nav-item">
                                 <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1">
-                                    <i class="bi bi-binoculars"></i>
+                                    <i class="bi bi-envelope-paper"></i>
                                     <div>
-                                        <h4 class="d-none d-lg-block">Modi sit est dela pireda nest</h4>
+                                        <h4 class="d-none d-lg-block">Pengelolaan Surat Terpusat</h4>
                                         <p>
-                                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                                            dolor in reprehenderit in voluptate
-                                            velit esse cillum dolore eu fugiat nulla pariatur
+                                            Memungkinkan pengelolaan surat masuk dan keluar secara digital, terstruktur, dan mudah diakses.
                                         </p>
                                     </div>
                                 </a>
@@ -249,11 +240,9 @@
                                 <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2">
                                     <i class="bi bi-box-seam"></i>
                                     <div>
-                                        <h4 class="d-none d-lg-block">Unde praesenti mara setra le</h4>
+                                        <h4 class="d-none d-lg-block">Pelacakan Surat Real-Time</h4>
                                         <p>
-                                            Recusandae atque nihil. Delectus vitae non similique magnam molestiae
-                                            sapiente similique
-                                            tenetur aut voluptates sed voluptas ipsum voluptas
+                                            Memantau status surat kapan saja, sehingga transparansi dapat terjaga.
                                         </p>
                                     </div>
                                 </a>
@@ -262,11 +251,9 @@
                                 <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3">
                                     <i class="bi bi-brightness-high"></i>
                                     <div>
-                                        <h4 class="d-none d-lg-block">Pariatur explica nitro dela</h4>
+                                        <h4 class="d-none d-lg-block">Notifikasi Otomatis</h4>
                                         <p>
-                                            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                                            deserunt mollit anim id est laborum
-                                            Debitis nulla est maxime voluptas dolor aut
+                                            Memberikan pemberitahuan otomatis untuk setiap pembaruan status surat atau dokumen.
                                         </p>
                                     </div>
                                 </a>
@@ -280,15 +267,15 @@
                         <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
 
                             <div class="tab-pane fade active show" id="features-tab-1">
-                                <img src=" {{ asset('frontend/assets/img/tabs-1.jpg') }}" alt="" class="img-fluid">
+                                <img src=" {{ asset('frontend/assets/img/fitur.jpg') }}" alt="" class="img-fluid">
                             </div><!-- End Tab Content Item -->
 
                             <div class="tab-pane fade" id="features-tab-2">
-                                <img src=" {{ asset('frontend/assets/img/tabs-2.jpg') }}" alt="" class="img-fluid">
+                                <img src=" {{ asset('frontend/assets/img/fitur3.jpg') }}" alt="" class="img-fluid">
                             </div><!-- End Tab Content Item -->
 
                             <div class="tab-pane fade" id="features-tab-3">
-                                <img src=" {{ asset('frontend/assets/img/tabs-3.jpg') }}" alt="" class="img-fluid">
+                                <img src=" {{ asset('frontend/assets/img/fitur2.jpg') }}" alt="" class="img-fluid">
                             </div><!-- End Tab Content Item -->
                         </div>
 
@@ -301,7 +288,7 @@
         </section><!-- /Features Section -->
 
         <!-- Features Details Section -->
-        <section id="features-details" class="features-details section">
+        {{-- <section id="features-details" class="features-details section">
 
             <div class="container">
 
@@ -355,10 +342,10 @@
 
             </div>
 
-        </section><!-- /Features Details Section -->
+        </section><!-- /Features Details Section --> --}}
 
         <!-- Services Section -->
-        <section id="services" class="services section light-background">
+        {{-- <section id="services" class="services section light-background">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -446,10 +433,10 @@
 
             </div>
 
-        </section><!-- /Services Section -->
+        </section><!-- /Services Section --> --}}
 
         <!-- More Features Section -->
-        <section id="more-features" class="more-features section">
+        {{-- <section id="more-features" class="more-features section">
 
             <div class="container">
 
@@ -506,10 +493,10 @@
 
             </div>
 
-        </section><!-- /More Features Section -->
+        </section><!-- /More Features Section --> --}}
 
         <!-- Pricing Section -->
-        <section id="pricing" class="pricing section">
+        {{-- <section id="pricing" class="pricing section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -594,7 +581,7 @@
 
             </div>
 
-        </section><!-- /Pricing Section -->
+        </section><!-- /Pricing Section --> --}}
 
         <!-- Faq Section -->
         <section id="faq" class="faq section">
@@ -613,65 +600,63 @@
                         <div class="faq-container">
 
                             <div class="faq-item faq-active">
-                                <h3>Non consectetur a erat nam at lectus urna duis?</h3>
+                                <h3>Apa itu Koredia?</h3>
                                 <div class="faq-content">
-                                    <p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus
-                                        laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor
-                                        rhoncus dolor purus non.</p>
-                                </div>
-                                <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item-->
-
-                            <div class="faq-item">
-                                <h3>Feugiat scelerisque varius morbi enim nunc faucibus?</h3>
-                                <div class="faq-content">
-                                    <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id
-                                        interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus
-                                        scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim.
-                                        Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
-                                </div>
-                                <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item-->
-
-                            <div class="faq-item">
-                                <h3>Dolor sit amet consectetur adipiscing elit pellentesque?</h3>
-                                <div class="faq-content">
-                                    <p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci.
-                                        Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl
-                                        suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis
-                                        convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis
+                                    <p>Koredia adalah aplikasi digital yang dirancang untuk mempermudah korespondensi, administrasi, dan informasi antar Organisasi Perangkat Daerah (OPD) di lingkungan Pemerintah Provinsi Papua Barat Daya. Selain itu, Koredia juga memungkinkan masyarakat untuk mengirim surat langsung ke Pemerintah Provinsi secara online.
                                     </p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?</h3>
+                                <h3>Bagaimana masyarakat dapat mengirim surat ke Pemerintah melalui Koredia ?</h3>
                                 <div class="faq-content">
-                                    <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id
-                                        interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus
-                                        scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim.
-                                        Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+                                    <p>Masyarakat dapat mengirim surat melalui fitur Kirim Surat Masyarakat yang tersedia di halaman utama Koredia. Prosesnya meliputi:
+                                        <br>
+                                        1. Mengisi formulir online dengan data lengkap (nama, alamat, kontak).
+                                        <br>
+                                        2. Menulis isi surat/pengaduan.
+                                        <br>
+                                        3. Mengunggah dokumen pendukung (jika ada).
+                                        <br>
+                                        4. Surat akan diteruskan ke OPD terkait untuk diproses lebih lanjut.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Tempus quam pellentesque nec nam aliquam sem et tortor?</h3>
+                                <h3> Apakah saya bisa melacak surat yang saya kirim ke Pemerintah?</h3>
                                 <div class="faq-content">
-                                    <p>Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse
-                                        in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl
-                                        suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in
+                                    <p>Ya, Koredia memiliki fitur pelacakan status surat, sehingga masyarakat dapat mengetahui status pengaduan atau surat mereka, apakah sedang diproses, memerlukan tindak lanjut, atau telah selesai.
                                     </p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
 
                             <div class="faq-item">
-                                <h3>Perspiciatis quod quo quos nulla quo illum ullam?</h3>
+                                <h3>Bagaimana cara mengakses Koredia untuk masyarakat?</h3>
                                 <div class="faq-content">
-                                    <p>Enim ea facilis quaerat voluptas quidem et dolorem. Quis et consequatur non sed
-                                        in suscipit sequi. Distinctio ipsam dolore et.</p>
+                                    <p>Masyarakat dapat mengakses fitur Kirim Surat Masyarakat melalui website resmi Koredia. Tidak diperlukan akun khusus, namun Anda harus memastikan data dan kontak yang diisi sudah benar agar dapat menerima respon dari Pemerintah.</p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div><!-- End Faq item-->
+
+                            <div class="faq-item">
+                                <h3>Berapa lama waktu yang dibutuhkan untuk mendapatkan respon?</h3>
+                                <div class="faq-content">
+                                    <p>Waktu respon tergantung pada jenis surat dan kompleksitas isu yang diajukan. Namun, Koredia memastikan semua surat masyarakat akan mendapat respon dalam waktu tertentu yang telah ditentukan oleh Pemerintah Provinsi.
+                                    </p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div><!-- End Faq item-->
+
+                            <div class="faq-item">
+                                <h3>Bagaimana jika saya membutuhkan bantuan dalam menggunakan Koredia?</h3>
+                                <div class="faq-content">
+                                    <p>Jika Anda mengalami kesulitan, Anda dapat:
+                                        Menghubungi layanan bantuan di website Koredia.
+                                        Mengirim email ke support@koredia.papuabaratdayaprov.go.id.
+                                        Mengunjungi Biro Umum untuk mendapatkan panduan langsung.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
                             </div><!-- End Faq item-->
@@ -687,7 +672,7 @@
         </section><!-- /Faq Section -->
 
         <!-- Testimonials Section -->
-        <section id="testimonials" class="testimonials section light-background">
+        {{-- <section id="testimonials" class="testimonials section light-background">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -831,15 +816,15 @@
 
             </div>
 
-        </section><!-- /Testimonials Section -->
+        </section><!-- /Testimonials Section --> --}}
 
         <!-- Contact Section -->
         <section id="contact" class="contact section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Contact</h2>
-                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+                <h2>KONTAK KAMI</h2>
+                <p></p>
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -850,7 +835,7 @@
                         <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
                             <i class="bi bi-geo-alt"></i>
                             <h3>Address</h3>
-                            <p>A108 Adam Street, New York, NY 535022</p>
+                            <p>Jl. Kurana No. 1 Remu, Distrik Sorong, Kota Sorong 98416</p>
                         </div>
                     </div><!-- End Info Item -->
 
@@ -858,7 +843,7 @@
                         <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
                             <i class="bi bi-telephone"></i>
                             <h3>Call Us</h3>
-                            <p>+1 5589 55488 55</p>
+                            <p>+62 852-5119-9441</p>
                         </div>
                     </div><!-- End Info Item -->
 
@@ -866,51 +851,21 @@
                         <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
                             <i class="bi bi-envelope"></i>
                             <h3>Email Us</h3>
-                            <p>info@example.com</p>
+                            <p>koredia@example.com</p>
                         </div>
                     </div><!-- End Info Item -->
 
                 </div>
 
                 <div class="row gy-4 mt-1">
-                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.951986812019!2d131.28746324211764!3d-0.8810445059758975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d5955a173a2c673%3A0x21e6ce849913aeea!2sKantor%20Gubernur%20Papua%20Barat%20Daya!5e0!3m2!1sid!2sid!4v1732306726986!5m2!1sid!2sid"
                             frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div><!-- End Google Maps -->
 
-                    <div class="col-lg-6">
-                        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="400">
-                            <div class="row gy-4">
 
-                                <div class="col-md-6">
-                                    <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                                </div>
-
-                                <div class="col-md-6 ">
-                                    <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                                </div>
-
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                                </div>
-
-                                <div class="col-md-12">
-                                    <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                                </div>
-
-                                <div class="col-md-12 text-center">
-                                    <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                                    <button type="submit">Send Message</button>
-                                </div>
-
-                            </div>
-                        </form>
-                    </div><!-- End Contact Form -->
 
                 </div>
 
