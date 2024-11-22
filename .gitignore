@@ -1,8 +1,9 @@
 /.phpunit.cache
 /node_modules
 /public/assets/media/news/asset/*
-/public/file_attachment
-/public/reply_file_attachment
+/public/file_attachment/*
+/public/reply_file_attachment/*
+/public/out_file_attachment/*
 /public/assets/media/news/temp/*
 /public/assets/media/news/thumbnail/*
 /public/hot

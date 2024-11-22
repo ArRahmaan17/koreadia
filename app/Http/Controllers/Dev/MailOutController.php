@@ -246,6 +246,7 @@ class MailOutController extends Controller
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
         } catch (\Throwable $th) {
+dd($th);
             $response = ['message' => 'failed creating resources'];
             $code = 422;
             DB::rollBack();
