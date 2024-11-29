@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->date('date');
-            $table->string('location');
+            $table->string('recipient');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')
                 ->on('users')

@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dev\AuthController;
+use App\Http\Controllers\Dev\EventScheduleController;
+use App\Http\Controllers\Dev\Mail\AgendaController;
+use App\Http\Controllers\Dev\Mail\PriorityController;
+use App\Http\Controllers\Dev\Mail\TypeController;
+use App\Http\Controllers\Dev\MailOutController;
+use App\Http\Controllers\Dev\MailTransactionController;
 use App\Http\Controllers\Dev\MenuController;
 use App\Http\Controllers\Dev\RoleController;
 use App\Http\Controllers\Dev\UserController;
@@ -53,6 +59,14 @@ Route::middleware('check.auth')->group(function () {
             Route::delete('/{id?}', [MailOutController::class, 'destroy'])->name('destroy');
             Route::post('/', [MailOutController::class, 'store'])->name('store');
         });
+    });
+    Route::prefix('event')->name('event.')->group(function () {
+        Route::get('/', [EventScheduleController::class, 'index'])->name('index');
+        Route::get('/data-table', [EventScheduleController::class, 'dataTable'])->name('data-table');
+        Route::get('/{id?}', [EventScheduleController::class, 'show'])->name('show');
+        Route::put('/{id?}', [EventScheduleController::class, 'update'])->name('update');
+        Route::delete('/{id?}', [EventScheduleController::class, 'destroy'])->name('destroy');
+        Route::post('/', [EventScheduleController::class, 'store'])->name('store');
     });
     Route::prefix('master')->name('master.')->group(function () {
         Route::prefix('agenda')->name('agenda.')->group(function () {

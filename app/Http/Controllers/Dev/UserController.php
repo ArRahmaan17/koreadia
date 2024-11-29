@@ -73,7 +73,7 @@ class UserController extends Controller
                 ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name']. ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -85,7 +85,7 @@ class UserController extends Controller
             $row['username'] = $item->username;
             $row['phone_number'] = $item->phone_number;
             $row['role'] = $item->role;
-            $row['organization'] = $item->organization?? trans('Kosong');
+            $row['organization'] = $item->organization ?? trans('Kosong');
             $row['valid'] = $item->valid ? 'Valid' : 'Belum Valid';
             $row['action'] = "<button class='btn btn-icon btn-warning edit' data-user='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-user='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
@@ -191,7 +191,7 @@ class UserController extends Controller
                 file_put_contents(public_path($file_name), base64_decode($avatar->data));
                 $data['avatar'] = $file_name;
             }
-            if ($data['password'] != '') {
+            if (!empty($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
             }
             User::find($id)->update($data);
@@ -203,6 +203,7 @@ class UserController extends Controller
             $code = 200;
             DB::commit();
         } catch (\Throwable $th) {
+            dd($th);
             DB::rollBack();
             $response = ['message' => 'failed updating resources'];
             $code = 422;

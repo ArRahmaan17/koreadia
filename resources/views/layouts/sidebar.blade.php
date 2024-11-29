@@ -30,7 +30,7 @@
             aria-expanded="false">
             <span class="d-flex align-items-center gap-2">
                 <img class="rounded header-profile-user"
-                    src="@if (Auth::user()->avatar != '') {{ asset('images/' . Auth::user()->avatar) }}@else{{ asset('build/images/users/avatar-1.jpg') }} @endif"
+                    src="@if (Auth::user()->avatar != '') {{ asset( Auth::user()->avatar) }}@else{{ asset('build/images/users/avatar-1.jpg') }} @endif"
                     alt="Header Avatar">
                 <span class="text-start">
                     <span class="d-block fw-medium sidebar-user-name-text">{{ Auth::user()->name }}</span>
