@@ -16,6 +16,7 @@ use App\Http\Controllers\Dev\SincerelyWordController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\TrackingController;
 use App\Http\Controllers\Dev\MailTransactionController;
+use App\Http\Controllers\Frontend\MailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,3 +150,4 @@ Route::middleware(['check.un-auth'])->group(function () {
 Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
 Route::post('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking');
 Route::get('/tracking', [TrackingController::class, 'tracking'])->name('fe-tracking');
+Route::get('/mail', [MailController::class, 'index'])->name('sendMail');
