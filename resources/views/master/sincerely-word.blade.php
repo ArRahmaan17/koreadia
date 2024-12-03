@@ -77,7 +77,7 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
-        window.datatableSincerelyWord = null;
+        window.dataTableSincerelyWord = null;
         window.state = 'add';
 
         function actionData() {
@@ -85,12 +85,12 @@
                 window.state = 'update';
                 let idSincerelyWord = $(this).data("sincerely-word");
                 $("#update-sincerely-word").data("sincerely-word", idSincerelyWord);
-                if (window.datatableSincerelyWord.rows('.selected').data().length == 0) {
+                if (window.dataTableSincerelyWord.rows('.selected').data().length == 0) {
                     $('#table-sincerely-word tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableSincerelyWord.rows('.selected').data()[0];
+                var data = window.dataTableSincerelyWord.rows('.selected').data()[0];
 
                 $('#modal-sincerely-word').modal('show');
                 $('#modal-sincerely-word').find('.modal-title').html(`Edit @lang('translation.sincerely_word')`);
@@ -124,12 +124,12 @@
             })
 
             $('.delete').click(function() {
-                if (window.datatableSincerelyWord.rows('.selected').data().length == 0) {
+                if (window.dataTableSincerelyWord.rows('.selected').data().length == 0) {
                     $('#table-sincerely-word tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idSincerelyWord = $(this).data("sincerely-word");
-                var data = window.datatableSincerelyWord.rows('.selected').data()[0];
+                var data = window.dataTableSincerelyWord.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -165,7 +165,7 @@
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableSincerelyWord.ajax.reload()
+                                    window.dataTableSincerelyWord.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
@@ -189,7 +189,7 @@
             });
         }
         $(function() {
-            window.datatableSincerelyWord = $('#table-sincerely-word').DataTable({
+            window.dataTableSincerelyWord = $('#table-sincerely-word').DataTable({
                 ajax: "{{ route('master.sincerely-word.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -234,7 +234,7 @@
                     }
                 }]
             });
-            window.datatableSincerelyWord.on('draw.dt', function() {
+            window.dataTableSincerelyWord.on('draw.dt', function() {
                 actionData();
             });
             $('#save-sincerely-word').click(function() {
@@ -254,7 +254,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableSincerelyWord.ajax.reload();
+                        window.dataTableSincerelyWord.ajax.reload();
 
                     },
                     error: function(error) {
@@ -292,7 +292,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableSincerelyWord.ajax.reload();
+                        window.dataTableSincerelyWord.ajax.reload();
 
                     },
                     error: function(error) {

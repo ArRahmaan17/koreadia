@@ -19,6 +19,7 @@ class RoleController extends Controller
     {
         return view('master.role');
     }
+
     public function all()
     {
         $data = Role::all();
@@ -28,8 +29,10 @@ class RoleController extends Controller
             $code = 404;
             $response = ['message' => 'failed showing all resources', 'data' => $data];
         }
+
         return response()->json($response, $code);
     }
+
     public function dataTable(Request $request)
     {
         $totalData = Role::orderBy('id', 'asc')
@@ -43,16 +46,16 @@ class RoleController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $assets = $assets->get();
         } else {
             $assets = Role::select('*')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -61,11 +64,11 @@ class RoleController extends Controller
             $assets = $assets->get();
 
             $totalFiltered = Role::select('*')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name']. ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -75,7 +78,7 @@ class RoleController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-role='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-role='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-role='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-role='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -135,7 +138,7 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:roles,name,' . $id,
+            'name' => 'required|unique:roles,name,'.$id,
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();
@@ -161,7 +164,7 @@ class RoleController extends Controller
         DB::beginTransaction();
         try {
             if (RoleUser::where('role_id', $id)->count() > 0) {
-                throw new Exception("failed destroying resources");
+                throw new Exception('failed destroying resources');
             }
             Role::find($id)->delete();
             DB::commit();

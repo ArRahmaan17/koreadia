@@ -77,7 +77,7 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
-        window.datatableAgenda = null;
+        window.dataTableAgenda = null;
         window.state = 'add';
 
         function actionData() {
@@ -85,12 +85,12 @@
                 window.state = 'update';
                 let idAgenda = $(this).data("agenda");
                 $("#update-agenda").data("agenda", idAgenda);
-                if (window.datatableAgenda.rows('.selected').data().length == 0) {
+                if (window.dataTableAgenda.rows('.selected').data().length == 0) {
                     $('#table-agenda tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableAgenda.rows('.selected').data()[0];
+                var data = window.dataTableAgenda.rows('.selected').data()[0];
 
                 $('#modal-agenda').modal('show');
                 $('#modal-agenda').find('.modal-title').html(`Edit @lang('translation.mail_agenda')`);
@@ -124,12 +124,12 @@
             })
 
             $('.delete').click(function() {
-                if (window.datatableAgenda.rows('.selected').data().length == 0) {
+                if (window.dataTableAgenda.rows('.selected').data().length == 0) {
                     $('#table-agenda tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idAgenda = $(this).data("agenda");
-                var data = window.datatableAgenda.rows('.selected').data()[0];
+                var data = window.dataTableAgenda.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -165,7 +165,7 @@
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableAgenda.ajax.reload()
+                                    window.dataTableAgenda.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
@@ -189,7 +189,7 @@
             });
         }
         $(function() {
-            window.datatableAgenda = $('#table-agenda').DataTable({
+            window.dataTableAgenda = $('#table-agenda').DataTable({
                 ajax: "{{ route('master.agenda.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -234,7 +234,7 @@
                     }
                 }]
             });
-            window.datatableAgenda.on('draw.dt', function() {
+            window.dataTableAgenda.on('draw.dt', function() {
                 actionData();
             });
             $('#save-agenda').click(function() {
@@ -254,7 +254,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableAgenda.ajax.reload();
+                        window.dataTableAgenda.ajax.reload();
 
                     },
                     error: function(error) {
@@ -292,7 +292,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableAgenda.ajax.reload();
+                        window.dataTableAgenda.ajax.reload();
 
                     },
                     error: function(error) {

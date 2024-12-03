@@ -17,7 +17,7 @@ class UnAuthorized
     {
         if (empty(auth()->user())) {
             return $next($request);
-        } else if (!auth()->user()->valid) {
+        } elseif (! auth()->user()->valid) {
             return redirect()->route('validation-process');
         } else {
             return redirect()->route('home');

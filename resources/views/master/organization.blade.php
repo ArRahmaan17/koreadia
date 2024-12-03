@@ -77,7 +77,7 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
-        window.datatableOrganization = null;
+        window.dataTableOrganization = null;
         window.state = 'add';
 
         function actionData() {
@@ -85,12 +85,12 @@
                 window.state = 'update';
                 let idOrganization = $(this).data("organization");
                 $("#update-organization").data("organization", idOrganization);
-                if (window.datatableOrganization.rows('.selected').data().length == 0) {
+                if (window.dataTableOrganization.rows('.selected').data().length == 0) {
                     $('#table-organization tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableOrganization.rows('.selected').data()[0];
+                var data = window.dataTableOrganization.rows('.selected').data()[0];
 
                 $('#modal-organization').modal('show');
                 $('#modal-organization').find('.modal-title').html(`Edit @lang('translation.organization')`);
@@ -124,12 +124,12 @@
             });
 
             $('.delete').click(function() {
-                if (window.datatableOrganization.rows('.selected').data().length == 0) {
+                if (window.dataTableOrganization.rows('.selected').data().length == 0) {
                     $('#table-organization tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idOrganization = $(this).data("organization");
-                var data = window.datatableOrganization.rows('.selected').data()[0];
+                var data = window.dataTableOrganization.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -165,7 +165,7 @@
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableOrganization.ajax.reload()
+                                    window.dataTableOrganization.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
@@ -189,7 +189,7 @@
             });
         }
         $(function() {
-            window.datatableOrganization = $('#table-organization').DataTable({
+            window.dataTableOrganization = $('#table-organization').DataTable({
                 ajax: "{{ route('master.organization.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -234,7 +234,7 @@
                     }
                 }]
             });
-            window.datatableOrganization.on('draw.dt', function() {
+            window.dataTableOrganization.on('draw.dt', function() {
                 actionData();
             });
             $('#save-organization').click(function() {
@@ -254,7 +254,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableOrganization.ajax.reload();
+                        window.dataTableOrganization.ajax.reload();
 
                     },
                     error: function(error) {
@@ -292,7 +292,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableOrganization.ajax.reload();
+                        window.dataTableOrganization.ajax.reload();
 
                     },
                     error: function(error) {

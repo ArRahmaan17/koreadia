@@ -17,17 +17,20 @@ class RoleUserController extends Controller
     {
         return view('master.role-user');
     }
+
     public function allUser(Request $request)
     {
-        $data = User::whereRaw('id not in (' . (($request->all) ? '0' : 'select user_id from role_users') . ')')->get();
+        $data = User::whereRaw('id not in ('.(($request->all) ? '0' : 'select user_id from role_users').')')->get();
         $response = ['message' => 'showing all resource successfully', 'data' => $data];
         $code = 200;
         if (empty($data)) {
             $code = 404;
             $response = ['message' => 'failed showing all resource', 'data' => $data];
         }
+
         return response()->json($response, $code);
     }
+
     public function dataTable(Request $request)
     {
         $totalData = RoleUser::orderBy('id', 'asc')
@@ -43,18 +46,18 @@ class RoleUserController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $assets = $assets->get();
         } else {
             $assets = RoleUser::select('role_users.id', 'u.name as name', 'r.name as role')
                 ->join('roles as r', 'r.id', '=', 'role_users.role_id')
                 ->join('users as u', 'u.id', '=', 'role_users.user_id')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('r.name', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('r.name', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -65,11 +68,11 @@ class RoleUserController extends Controller
             $totalFiltered = RoleUser::select('u.name as name', 'r.name as role')
                 ->join('roles as r', 'r.id', '=', 'role_users.role_id')
                 ->join('users as u', 'u.id', '=', 'role_users.user_id')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('r.name', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('r.name', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name']. ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -79,7 +82,7 @@ class RoleUserController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['role'] = $item->role;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-roleuser='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-roleuser='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-roleuser='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-roleuser='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -100,8 +103,10 @@ class RoleUserController extends Controller
             $response = ['message' => 'failed showing all resources', 'data' => RoleUser::all()];
             $code = 422;
         }
+
         return response()->json($response, $code);
     }
+
     /**
      * Store a newly created resource in storage.
      */

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
-use App\Models\Organization;
 use App\Models\OrganizationUser;
 use App\Models\RoleUser;
 use App\Models\User;
@@ -41,7 +40,7 @@ class UserController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $assets = $assets->get();
         } else {
@@ -50,12 +49,12 @@ class UserController extends Controller
                 ->leftJoin('organization_users', 'organization_users.user_id', '=', 'users.id')
                 ->leftJoin('organizations', 'organization_users.organization_id', '=', 'organizations.id')
                 ->select('users.*', 'roles.name as role', 'organizations.name as organization')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('username', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('username', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('phone_number', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -68,12 +67,12 @@ class UserController extends Controller
                 ->leftJoin('organization_users', 'organization_users.user_id', '=', 'users.id')
                 ->leftJoin('organizations', 'organization_users.organization_id', '=', 'organizations.id')
                 ->select('users.*', 'roles.name as role', 'organizations.name as organization')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('username', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('username', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('phone_number', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -87,7 +86,7 @@ class UserController extends Controller
             $row['role'] = $item->role;
             $row['organization'] = $item->organization ?? trans('Kosong');
             $row['valid'] = $item->valid ? 'Valid' : 'Belum Valid';
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-user='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-user='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-user='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-user='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -108,8 +107,10 @@ class UserController extends Controller
             $response = ['message' => 'failed showing all resources', 'data' => User::where('id', '!=', auth()->user()->id)->get()];
             $code = 422;
         }
+
         return response()->json($response, $code);
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -130,7 +131,7 @@ class UserController extends Controller
             $data = $request->except('_token', 'confirm_password');
             if ($request->has('avatar')) {
                 $avatar = json_decode($request->avatar);
-                $file_name = 'images/' . $avatar->id . '.jpg';
+                $file_name = 'images/'.$avatar->id.'.jpg';
                 file_put_contents(public_path($file_name), base64_decode($avatar->data));
                 $data['avatar'] = $file_name;
             }
@@ -174,11 +175,11 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:users,name,' . $id,
-            'username' => 'required|min:5|max:15|unique:users,username,' . $id,
+            'name' => 'required|unique:users,name,'.$id,
+            'username' => 'required|min:5|max:15|unique:users,username,'.$id,
             'password' => 'string|same:confirm_password',
             'confirm_password' => 'string|same:password',
-            'phone_number' => 'required|min:18|max:19|unique:users,phone_number,' . $id,
+            'phone_number' => 'required|min:18|max:19|unique:users,phone_number,'.$id,
             'role' => 'required|exists:roles,id',
             'organization' => 'numeric|exists:organizations,id',
         ]);
@@ -187,11 +188,11 @@ class UserController extends Controller
             $data = $request->except('_token', 'confirm_password');
             if ($request->has('avatar')) {
                 $avatar = json_decode($request->avatar);
-                $file_name = 'images/' . $avatar->id . '.jpg';
+                $file_name = 'images/'.$avatar->id.'.jpg';
                 file_put_contents(public_path($file_name), base64_decode($avatar->data));
                 $data['avatar'] = $file_name;
             }
-            if (!empty($data['password'])) {
+            if (! empty($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
             }
             User::find($id)->update($data);

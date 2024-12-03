@@ -23,10 +23,6 @@ return new class extends Migration
                 ->references('id')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->boolean('request_broadcast')->default(false);
-            $table->boolean('broadcast')->default(false);
-            $table->dateTimeTz('request_broadcasted_at')->nullable(true);
-            $table->dateTimeTz('broadcasted_at')->nullable(true);
             $table->timestamps();
         });
     }

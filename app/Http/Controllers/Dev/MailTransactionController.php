@@ -34,9 +34,9 @@ class MailTransactionController extends Controller
                 [
                     'transaction_mails.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
-                ['transaction_mails.status', '!=', 'OUT']
+                ['transaction_mails.status', '!=', 'OUT'],
             ])->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id);
@@ -59,15 +59,15 @@ class MailTransactionController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $assets = $assets->where([
                 [
                     'transaction_mails.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
-                ['transaction_mails.status', '!=', 'OUT']
+                ['transaction_mails.status', '!=', 'OUT'],
             ])->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id);
@@ -82,21 +82,21 @@ class MailTransactionController extends Controller
                     $join->on('transaction_mails.id', '=', 'wq.transaction_mail_id')
                         ->on('transaction_mails.status', '=', 'wq.current_status');
                 })
-                ->where('number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('regarding', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender_phone_number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('file_attachment', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('status', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date_in', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('u.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('ma.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mp.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mt.name', 'like', '%' . $request['search']['value'] . '%');
+                ->where('number', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('regarding', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('date', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('sender', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('sender_phone_number', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('file_attachment', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('status', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('date_in', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('u.name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('ma.name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('mp.name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('mt.name', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -106,9 +106,9 @@ class MailTransactionController extends Controller
                 [
                     'transaction_mails.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
-                ['transaction_mails.status', '!=', 'OUT']
+                ['transaction_mails.status', '!=', 'OUT'],
             ])->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id);
@@ -122,29 +122,29 @@ class MailTransactionController extends Controller
                     $join->on('transaction_mails.id', '=', 'wq.transaction_mail_id')
                         ->on('transaction_mails.status', '=', 'wq.current_status');
                 })
-                ->where('number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('regarding', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender_phone_number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('file_attachment', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('status', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date_in', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('u.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('ma.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mp.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mt.name', 'like', '%' . $request['search']['value'] . '%');
+                ->where('number', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('regarding', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('date', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('sender', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('sender_phone_number', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('file_attachment', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('status', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('date_in', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('u.name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('ma.name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('mp.name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('mt.name', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->where([
                 [
                     'transaction_mails.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
-                ['transaction_mails.status', '!=', 'OUT']
+                ['transaction_mails.status', '!=', 'OUT'],
             ])->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id);
@@ -159,10 +159,10 @@ class MailTransactionController extends Controller
             $row['date'] = $item->date;
             $row['sender'] = $item->sender;
             $row['sender_phone_number'] = $item->sender_phone_number;
-            if ($item->reply_file_attachment == NULL) {
-                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->file_attachment . "'><i class='bx bxs-file-pdf' ></i></button>";
+            if ($item->reply_file_attachment == null) {
+                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='".$item->file_attachment."'><i class='bx bxs-file-pdf' ></i></button>";
             } else {
-                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->reply_file_attachment . "'><i class='bx bxs-file-pdf' ></i></button>";
+                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='".$item->reply_file_attachment."'><i class='bx bxs-file-pdf' ></i></button>";
             }
             $row['status'] = $item->status;
             $row['date_in'] = $item->date_in;
@@ -171,15 +171,15 @@ class MailTransactionController extends Controller
             $row['priority'] = $item->priority;
             $row['type'] = $item->type;
             if ((getRole() == 'Developer' || $item->creator_id == auth()->user()->id) && $item->notified && ($item->status == 'REPLIED' || $item->status == 'OUT')) {
-                $row['action'] = "<button class='btn btn-icon btn-warning update-status' data-mailsIn='" . $item->id . "' ><i class='bx bx-check-double'></i></button>";
-            } else if ((getRole() == 'Developer' || $item->user_id == auth()->user()->id) && $item->notified && ($item->status != 'REPLIED' && $item->status != 'OUT' && $item->status != 'ARCHIVE')) {
-                $row['action'] = "<button class='btn btn-icon btn-info update-status' data-mailsIn='" . $item->id . "' ><i class='bx bxs-chevrons-up'></i></button><button class='btn btn-icon btn-warning edit' data-mailsIn='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-mailsIn='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
-            } else if ((getRole() == 'Developer' || $item->processor_id == auth()->user()->id) && $item->status != 'ARCHIVE' && $item->request_notified == false && $item->notified == false) {
-                $row['action'] = "<button class='btn btn-icon btn-success request-notify' data-mailsIn='" . $item->id . "' ><i class='bx bxl-whatsapp'></i></button>";
-            } else if (($item->creator_id == auth()->user()->id && $item->status != 'ARCHIVE') || ($item->request_notified == true && $item->notified == false)) {
-                $row['action'] = "<button class='btn btn-icon btn-secondary disabled' data-mailsIn='" . $item->id . "' ><i class='bx bx-loader-circle' ></i></button>";
+                $row['action'] = "<button class='btn btn-icon btn-warning update-status' data-mailsIn='".$item->id."' ><i class='bx bx-check-double'></i></button>";
+            } elseif ((getRole() == 'Developer' || $item->user_id == auth()->user()->id) && $item->notified && ($item->status != 'REPLIED' && $item->status != 'OUT' && $item->status != 'ARCHIVE')) {
+                $row['action'] = "<button class='btn btn-icon btn-info update-status' data-mailsIn='".$item->id."' ><i class='bx bxs-chevrons-up'></i></button><button class='btn btn-icon btn-warning edit' data-mailsIn='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-mailsIn='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            } elseif ((getRole() == 'Developer' || $item->processor_id == auth()->user()->id) && $item->status != 'ARCHIVE' && $item->request_notified == false && $item->notified == false) {
+                $row['action'] = "<button class='btn btn-icon btn-success request-notify' data-mailsIn='".$item->id."' ><i class='bx bxl-whatsapp'></i></button>";
+            } elseif (($item->creator_id == auth()->user()->id && $item->status != 'ARCHIVE') || ($item->request_notified == true && $item->notified == false)) {
+                $row['action'] = "<button class='btn btn-icon btn-secondary disabled' data-mailsIn='".$item->id."' ><i class='bx bx-loader-circle' ></i></button>";
             } else {
-                $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='" . $item->id . "' ><i class='bx bxs-show'></i></button><button class='btn btn-icon btn-success print-report' data-mailsIn='" . $item->id . "' ><i class='bx bxs-printer'></i></button>";
+                $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='".$item->id."' ><i class='bx bxs-show'></i></button><button class='btn btn-icon btn-success print-report' data-mailsIn='".$item->id."' ><i class='bx bxs-printer'></i></button>";
             }
             $dataFiltered[] = $row;
         }
@@ -221,13 +221,13 @@ class MailTransactionController extends Controller
             $data['status'] = 'IN';
             if ($request->has('file_attachment')) {
                 $file_attachment = json_decode($request->file_attachment);
-                $file_name = 'file_attachment/' . $file_attachment->id . '.pdf';
+                $file_name = 'file_attachment/'.$file_attachment->id.'.pdf';
                 file_put_contents(public_path($file_name), base64_decode($file_attachment->data));
                 $data['file_attachment'] = $file_name;
             }
             $transaction_mail = TransactionMail::create($data);
             $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id];
-            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+            $registered = Http::get(env('WHATSAPP_URL').'phone-check/'.unFormattedPhoneNumber($data['sender_phone_number']));
             if ($registered->status() > 300) {
                 $data_queue['request_notified'] = true;
                 $data_queue['request_notified_at'] = now('Asia/Jakarta');
@@ -242,6 +242,7 @@ class MailTransactionController extends Controller
             $code = 422;
             DB::rollBack();
         }
+
         return response()->json($response, $code);
     }
 
@@ -256,6 +257,7 @@ class MailTransactionController extends Controller
             $response = ['message' => 'failed showing resources', 'data' => TransactionMail::find($id)];
             $code = 404;
         }
+
         return response()->json($response, $code);
     }
 
@@ -265,7 +267,7 @@ class MailTransactionController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'number' => 'required|unique:transaction_mails,number,' . $id . '|min:14|max:32',
+            'number' => 'required|unique:transaction_mails,number,'.$id.'|min:14|max:32',
             'regarding' => 'required|string|min:5|max:50',
             'agenda_id' => 'required|numeric',
             'priority_id' => 'required|numeric',
@@ -284,27 +286,27 @@ class MailTransactionController extends Controller
             $data = $request->except('_token', 'file_attachment', 'admin');
             if ($request->has('file_attachment')) {
                 $file_attachment = json_decode($request->file_attachment);
-                $file_name = 'file_attachment/' . $file_attachment->id . '.pdf';
+                $file_name = 'file_attachment/'.$file_attachment->id.'.pdf';
                 file_put_contents(public_path($file_name), base64_decode($file_attachment->data));
                 $data['file_attachment'] = $file_name;
             }
             $current_status = TransactionMail::find($id);
             TransactionMail::find($id)->update($data);
-            $where_queue = [['transaction_mail_id', NULL]];
+            $where_queue = [['transaction_mail_id', null]];
             $data_queue = [];
             switch ($current_status->status) {
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
-                        $where_queue = [['transaction_mail_id', NULL]];
+                        $where_queue = [['transaction_mail_id', null]];
                         $data_queue = [
                             'transaction_mail_id' => $current_status->id,
                             'current_status' => $data['status'],
                             'last_status' => $current_status->status,
                             'created_at' => now('Asia/Jakarta'),
                             'updated_at' => now('Asia/Jakarta'),
-                            'user_id' => auth()->user()->id
+                            'user_id' => auth()->user()->id,
                         ];
-                    } else if ($data['status'] == 'FILED') {
+                    } elseif ($data['status'] == 'FILED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
                             [
@@ -315,20 +317,20 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
-                    } else if ($data['status'] == 'DISPOSITION') {
+                    } elseif ($data['status'] == 'DISPOSITION') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
                             [
@@ -339,20 +341,20 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
-                    } else if ($data['status'] == 'REPLIED') {
+                    } elseif ($data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
                             [
@@ -363,17 +365,17 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
                     }
@@ -388,9 +390,9 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ];
-                    } else if ($data['status'] == 'DISPOSITION') {
+                    } elseif ($data['status'] == 'DISPOSITION') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
                         $data_queue = [
                             [
@@ -401,20 +403,20 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
-                    } else if ($data['status'] == 'REPLIED') {
+                    } elseif ($data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
                         $data_queue = [
                             [
@@ -425,24 +427,24 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
                     }
                     break;
                 case 'FILED':
                     if ($data['status'] == 'DISPOSITION') {
-                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', NULL]];
+                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', null]];
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -450,9 +452,9 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ];
-                    } else if ($data['status'] == 'REPLIED') {
+                    } elseif ($data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS'], ['current_status', '!=', 'FILED']];
                         $data_queue = [
                             [
@@ -463,23 +465,23 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
                     }
                     break;
                 case 'DISPOSITION':
-                    $where_queue = [['transaction_mail_id', NULL]];
+                    $where_queue = [['transaction_mail_id', null]];
                     if ($data['status'] == 'REPLIED') {
                         $data_queue =
                             [
@@ -488,25 +490,25 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ];
                     }
                     break;
                 case 'REPLIED':
-                    $where_queue = [['transaction_mail_id', NULL]];
+                    $where_queue = [['transaction_mail_id', null]];
                     $data_queue = [
                         'transaction_mail_id' => $current_status->id,
-                        'current_status' =>  'ARCHIVE',
+                        'current_status' => 'ARCHIVE',
                         'last_status' => $current_status->status,
                         'created_at' => now('Asia/Jakarta'),
                         'updated_at' => now('Asia/Jakarta'),
-                        'user_id' => auth()->user()->id
+                        'user_id' => auth()->user()->id,
                     ];
                     break;
                 default:
                     break;
             }
-            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+            $registered = Http::get(env('WHATSAPP_URL').'phone-check/'.unFormattedPhoneNumber($data['sender_phone_number']));
             if ($registered->status() > 300) {
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
@@ -530,6 +532,7 @@ class MailTransactionController extends Controller
             $code = 422;
             DB::rollBack();
         }
+
         return response()->json($response, $code);
     }
 
@@ -561,17 +564,17 @@ class MailTransactionController extends Controller
             WhatsappQueue::where([
                 'transaction_mail_id' => $id,
                 'request_notified' => false,
-                'request_notified_at' => NULL
+                'request_notified_at' => null,
             ])->update([
                 'request_notified' => true,
                 'request_notified_at' => now('Asia/Jakarta'),
-                'notified' => $request->skip
+                'notified' => $request->skip,
             ]);
             DB::commit();
-            $response = ['message' => 'request notified mail successfully, waiting queue ' . WhatsappQueue::where([
+            $response = ['message' => 'request notified mail successfully, waiting queue '.WhatsappQueue::where([
                 'request_notified' => true,
-                'notified' => false
-            ])->count() . ' to notified'];
+                'notified' => false,
+            ])->count().' to notified'];
             $code = 200;
         } catch (\Throwable $th) {
             $response = ['message' => 'failed request notified mail'];
@@ -585,29 +588,29 @@ class MailTransactionController extends Controller
     public function statusUpdate($id, Request $request)
     {
         $request->validate([
-            'user_id' => 'required|numeric'
+            'user_id' => 'required|numeric',
         ], [
-            'user_id.numeric' => 'The processor must selected.'
+            'user_id.numeric' => 'The processor must selected.',
         ]);
         DB::beginTransaction();
         try {
             $current_status = TransactionMail::find($id);
             $data = $request->except('_token');
-            $where_queue = [['transaction_mail_id', NULL]];
+            $where_queue = [['transaction_mail_id', null]];
             $data_queue = [];
             switch ($current_status->status) {
                 case 'IN':
                     if ($data['status'] == 'PROCESS') {
-                        $where_queue = [['transaction_mail_id', NULL]];
+                        $where_queue = [['transaction_mail_id', null]];
                         $data_queue = [
                             'transaction_mail_id' => $current_status->id,
                             'current_status' => $data['status'],
                             'last_status' => $current_status->status,
                             'created_at' => now('Asia/Jakarta'),
                             'updated_at' => now('Asia/Jakarta'),
-                            'user_id' => auth()->user()->id
+                            'user_id' => auth()->user()->id,
                         ];
-                    } else if ($data['status'] == 'FILED') {
+                    } elseif ($data['status'] == 'FILED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
                             [
@@ -618,20 +621,20 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
-                    } else if ($data['status'] == 'DISPOSITION') {
+                    } elseif ($data['status'] == 'DISPOSITION') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
                             [
@@ -642,20 +645,20 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
-                    } else if ($data['status'] == 'REPLIED') {
+                    } elseif ($data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
                         $data_queue = [
                             [
@@ -666,17 +669,17 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
                     }
@@ -691,9 +694,9 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ];
-                    } else if ($data['status'] == 'DISPOSITION') {
+                    } elseif ($data['status'] == 'DISPOSITION') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
                         $data_queue = [
                             [
@@ -704,20 +707,20 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
-                    } else if ($data['status'] == 'REPLIED') {
+                    } elseif ($data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
                         $data_queue = [
                             [
@@ -728,24 +731,24 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
                     }
                     break;
                 case 'FILED':
                     if ($data['status'] == 'DISPOSITION') {
-                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', NULL]];
+                        $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', null]];
                         $data_queue =
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -753,9 +756,9 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ];
-                    } else if ($data['status'] == 'REPLIED') {
+                    } elseif ($data['status'] == 'REPLIED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS'], ['current_status', '!=', 'FILED']];
                         $data_queue = [
                             [
@@ -766,23 +769,23 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => false,
-                                'request_notified_at' => NULL,
+                                'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ],
                         ];
                     }
                     break;
                 case 'DISPOSITION':
-                    $where_queue = [['transaction_mail_id', NULL]];
+                    $where_queue = [['transaction_mail_id', null]];
                     if ($data['status'] == 'REPLIED') {
                         $data_queue =
                             [
@@ -791,26 +794,26 @@ class MailTransactionController extends Controller
                                 'last_status' => $current_status->status,
                                 'created_at' => now('Asia/Jakarta'),
                                 'updated_at' => now('Asia/Jakarta'),
-                                'user_id' => auth()->user()->id
+                                'user_id' => auth()->user()->id,
                             ];
                     }
                     break;
                 case 'REPLIED':
-                    $where_queue = [['transaction_mail_id', NULL]];
+                    $where_queue = [['transaction_mail_id', null]];
                     $data_queue = [
                         'transaction_mail_id' => $current_status->id,
-                        'current_status' =>  'ARCHIVE',
+                        'current_status' => 'ARCHIVE',
                         'last_status' => $current_status->status,
                         'created_at' => now('Asia/Jakarta'),
                         'updated_at' => now('Asia/Jakarta'),
-                        'user_id' => auth()->user()->id
+                        'user_id' => auth()->user()->id,
                     ];
                     break;
                 default:
                     break;
             }
             $data_mail = TransactionMail::find($id);
-            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data_mail['sender_phone_number']));
+            $registered = Http::get(env('WHATSAPP_URL').'phone-check/'.unFormattedPhoneNumber($data_mail['sender_phone_number']));
             if ($registered->status() > 300) {
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
@@ -828,7 +831,7 @@ class MailTransactionController extends Controller
             WhatsappQueue::insert($data_queue);
             if ($request->has('reply_file_attachment')) {
                 $file_attachment = json_decode($request->reply_file_attachment);
-                $file_name = 'reply_file_attachment/' . $file_attachment->id . '.pdf';
+                $file_name = 'reply_file_attachment/'.$file_attachment->id.'.pdf';
                 file_put_contents(public_path($file_name), base64_decode($file_attachment->data));
                 $data['reply_file_attachment'] = $file_name;
             }
@@ -844,6 +847,7 @@ class MailTransactionController extends Controller
             $response = ['message' => 'failed updating status mail'];
             $code = 422;
         }
+
         return response()->json($response, $code);
     }
 
@@ -861,6 +865,7 @@ class MailTransactionController extends Controller
             $response = ['message' => "unexpectedly we can't found your mail transaction history", 'data' => $data->get()];
             $code = 404;
         }
+
         return response()->json($response, $code);
     }
 }

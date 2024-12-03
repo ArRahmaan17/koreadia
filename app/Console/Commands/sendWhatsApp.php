@@ -3,13 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\TransactionMail;
-use App\Models\WhatsappQueue;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 
-class sendWhatsApp extends Command implements Isolatable
+class sendWhatsApp extends Command
 {
     /**
      * The name and signature of the console command.
@@ -32,12 +29,12 @@ class sendWhatsApp extends Command implements Isolatable
     {
         $data = TransactionMail::select('transaction_mails.*', 'wq.notified', 'wq.request_notified', 'wq.current_status')->join('whatsapp_queues as wq', 'transaction_mails.id', '=', 'wq.transaction_mail_id')->with('admin', 'agenda', 'type', 'priority')->where([['notified', false], ['request_notified', true]])->orderBy('wq.transaction_mail_id', 'ASC')->find($this->argument('transaction_mail_id'))->toArray();
         $data['sender_phone_number'] = unFormattedPhoneNumber($data['sender_phone_number']);
-        if ($data['current_status'] == 'IN'|| $data['current_status'] == 'REPLIED') {
+        if ($data['current_status'] == 'IN' || $data['current_status'] == 'REPLIED') {
             $response = Http::attach(
                 'file_attachment',
-                file_get_contents(public_path(($data['current_status'] == 'IN')?$data['file_attachment']: $data['reply_file_attachment'])),
-                $data['regarding'] . '.pdf'
-            )->post(env('WHATSAPP_URL') . 'mail-status/' . $data['sender_phone_number'] . '/' . $data['current_status'], [
+                file_get_contents(public_path(($data['current_status'] == 'IN') ? $data['file_attachment'] : $data['reply_file_attachment'])),
+                $data['regarding'].'.pdf'
+            )->post(env('WHATSAPP_URL').'mail-status/'.$data['sender_phone_number'].'/'.$data['current_status'], [
                 'sender' => $data['sender'],
                 'number' => $data['number'],
                 'admin' => $data['admin']['name'],
@@ -46,7 +43,7 @@ class sendWhatsApp extends Command implements Isolatable
                 'priority' => $data['priority']['name'],
             ]);
         } else {
-            $response = Http::post(env('WHATSAPP_URL') . 'mail-status/' . $data['sender_phone_number'] . '/' . $data['current_status'], [
+            $response = Http::post(env('WHATSAPP_URL').'mail-status/'.$data['sender_phone_number'].'/'.$data['current_status'], [
                 'sender' => $data['sender'],
                 'number' => $data['number'],
                 'admin' => $data['admin']['name'],
@@ -58,7 +55,7 @@ class sendWhatsApp extends Command implements Isolatable
         if ($response->status() == 200) {
             $this->info('Notified Mail Sender Successfully');
         } else {
-            $this->error("Failed Notified Mail Sender");
+            $this->error('Failed Notified Mail Sender');
         }
     }
 }

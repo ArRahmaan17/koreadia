@@ -20,7 +20,7 @@ class MenuServiceProvider extends ServiceProvider
      * Bootstrap services.
      */
     public function boot(): void
-{
+    {
         $sidebarAppMenu = Menu::where('place', 0)->get()->setHidden([])->toArray();
         $profileAppMenu = Menu::where('place', 1)->get()->setHidden([])->toArray();
         $sidebarAppMenu = buildTree($sidebarAppMenu);

@@ -1,12 +1,13 @@
 <?php
+
 return [
     'menu' => 'Menu',
     'name' => 'Nama',
     'description' => 'Deskripsi',
     'please-sign-in' => 'Login untuk melanjutkan ke ',
     'sign-in-with' => 'Masuk menggunakan',
-    'sign-up-now' => "Belum memiliki akun ? ",
-    'sign-in-now' => "Sudah memiliki akun ? ",
+    'sign-up-now' => 'Belum memiliki akun ? ',
+    'sign-in-now' => 'Sudah memiliki akun ? ',
     'welcome-back' => 'Selamat data kembali !',
     'consequence-warning' => 'Dengan mendaftar anda setuju dengan ',
     'tou' => 'Ketentuan Pengguna',
@@ -42,6 +43,7 @@ return [
     'mail_file_attachment' => 'Lampiran berkas',
     'event_file_attachment' => 'Gambar kecil',
     'event_timeline' => 'Timeline acara',
+    'all' => 'Semua',
     'speaker_agenda' => 'Pejabat yang datang/Penangung jawab acara ',
     'mail_status' => 'Status',
     'mail_date_in' => 'Tanggal masuk',
@@ -285,4 +287,3 @@ return [
     'privacy-policy' => 'Kebijakan Privasi',
     'hot' => 'Populer',
 ];
-?>

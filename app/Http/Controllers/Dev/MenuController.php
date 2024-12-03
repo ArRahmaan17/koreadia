@@ -18,8 +18,9 @@ class MenuController extends Controller
     public function index()
     {
         $routes = Route::getRoutes()->getRoutesByMethod()['GET'];
-        $menus = Menu::where('parent', 0)->get();
+        $menus = Menu::where('parent', 0)->orWhere('route', 'like', '#%')->get();
         $roles = Role::all();
+
         return view('master.menu', compact('menus', 'routes', 'roles'));
     }
 
@@ -36,16 +37,16 @@ class MenuController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $assets = $assets->get();
         } else {
             $assets = Menu::select('*')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('route', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('route', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -54,11 +55,11 @@ class MenuController extends Controller
             $assets = $assets->get();
 
             $totalFiltered = Menu::select('*')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name']. ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -68,7 +69,7 @@ class MenuController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-info parent' data-menu='" . $item->id . "' ><i class='bx bx-plus' ></i></button><button class='btn btn-icon btn-warning edit' data-menu='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-menu='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = (($item->parent == 0) ? "<button class='btn btn-icon btn-info parent' data-menu='".$item->id."' ><i class='bx bx-plus' ></i></button>" : '')."<button class='btn btn-icon btn-warning edit' data-menu='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-menu='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -97,7 +98,7 @@ class MenuController extends Controller
         try {
             $data = $request->except('_token', 'id', 'role');
             $menu = Menu::create($data);
-            $roleMenu =  array_map(function ($data) use ($menu) {
+            $roleMenu = array_map(function ($data) use ($menu) {
                 return ['role_id' => $data, 'menu_id' => $menu->id, 'created_at' => now('Asia/Jakarta')];
             }, $request->roles);
             RoleMenu::insert($roleMenu);
@@ -136,7 +137,7 @@ class MenuController extends Controller
     {
         DB::beginTransaction();
         $request->validate([
-            'name' => 'required|min:2|max:20|unique:menus,name,' . $id,
+            'name' => 'required|min:2|max:20|unique:menus,name,'.$id,
             'route' => 'required',
             'icon' => 'required',
             'parent' => 'required',
@@ -146,7 +147,7 @@ class MenuController extends Controller
             $data = $request->except('_token', 'id', 'role');
             $menu = Menu::find($id)->update($data);
             RoleMenu::where('menu_id', $id)->delete();
-            $roleMenu =  array_map(function ($data) use ($id) {
+            $roleMenu = array_map(function ($data) use ($id) {
                 return ['role_id' => $data, 'menu_id' => $id, 'created_at' => now('Asia/Jakarta')];
             }, $request->roles);
             RoleMenu::insert($roleMenu);

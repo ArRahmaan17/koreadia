@@ -154,6 +154,42 @@
             </div>
         </div>
     </div>
+    <div id="modal-event-update" class="modal fade" tabindex="-1" aria-labelledby="modal-event-update-label" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-event-update-label">@lang('translation.add') @lang('translation.event')</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-event-update">
+                        <div class="row">
+                            @csrf
+                            <input type="hidden" name="id">
+                            <div class="form-check form-switch" dir="ltr">
+                                <input type="checkbox" class="form-check-input employee-checkbox" value="" name="employee[]" id="employee-all">
+                                <label class="form-check-label" for="employee-all">@lang('translation.all')</label>
+                            </div>
+                            <div class="employee-container flex flex-wrap px-0">
+                                @foreach ($employees as $employee)
+                                    <div class="form-check form-switch" dir="ltr">
+                                        <input type="checkbox" class="form-check-input employee-checkbox" value="{{ $employee->id }}" name="employee[]"
+                                            id="employee{{ $employee->id }}">
+                                        <label class="form-check-label" for="employee{{ $employee->id }}">{{ $employee->name }}
+                                            [{{ $employee->phone_number }}]</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </form>
+                </div><!--end row-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
+                    <button type="button" class="btn btn-soft-success" id="save-event-update">@lang('translation.save') @lang('translation.changes')</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <!-- filepond js -->
@@ -174,11 +210,9 @@
     <script src="{{ asset('build/js/moment.min.js') }}"></script>
     <script src="{{ asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
     <script>
-        console.log(`{{ getRole() }}`)
-        window.datatableEvent = null;
+        window.dataTableEvent = null;
         window.state = 'add';
         window.flatpickr = [];
-        window.choices = [];
         window.file_pond_file_attachment = undefined;
         window.swiper_timeline = undefined;
 
@@ -187,14 +221,14 @@
                 window.state = 'update';
                 let idEvent = $(this).data("mailsin");
                 $("#update-event").data("mailsin", idEvent);
-                if (window.datatableEvent.rows('.selected').data().length == 0) {
+                if (window.dataTableEvent.rows('.selected').data().length == 0) {
                     $('#table-event tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableEvent.rows('.selected').data()[0];
+                var data = window.dataTableEvent.rows('.selected').data()[0];
 
-                $('#modal-event').modal('show');
+                $('#modal-event-update').modal('show');
                 $('#modal-event').find('.modal-title').html(`@lang('translation.edit') @lang('translation.event')`);
                 $('#save-event').addClass('d-none');
                 $('#update-event').removeClass('d-none');
@@ -232,22 +266,22 @@
                 window.state = 'update';
                 let fileId = $(this).data("file");
                 $("#update-event").data("file", fileId);
-                if (window.datatableEvent.rows('.selected').data().length == 0) {
+                if (window.dataTableEvent.rows('.selected').data().length == 0) {
                     $('#table-event tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
-                var data = window.datatableEvent.rows('.selected').data()[0];
+                var data = window.dataTableEvent.rows('.selected').data()[0];
                 $('#modal-file-event').modal('show');
                 $('#modal-file-event').find('.modal-title').html(`File @lang('translation.event')`);
                 $('#modal-file-event').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
             });
             $('.delete').click(function() {
-                if (window.datatableEvent.rows('.selected').data().length == 0) {
+                if (window.dataTableEvent.rows('.selected').data().length == 0) {
                     $('#table-event tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idEvent = $(this).data("mailsin");
-                var data = window.datatableEvent.rows('.selected').data()[0];
+                var data = window.dataTableEvent.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -283,7 +317,7 @@
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableEvent.ajax.reload()
+                                    window.dataTableEvent.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
@@ -306,12 +340,12 @@
                 });
             });
             $('.update-status').click(function() {
-                if (window.datatableEvent.rows('.selected').data().length == 0) {
+                if (window.dataTableEvent.rows('.selected').data().length == 0) {
                     $('#table-event tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idEvent = $(this).data("mailsin");
-                var data = window.datatableEvent.rows('.selected').data()[0];
+                var data = window.dataTableEvent.rows('.selected').data()[0];
                 $('#modal-status-event').modal('show');
                 $('input[name=id]').val(idEvent);
                 $.ajax({
@@ -352,54 +386,10 @@
                     }
                 });
             });
-            $('.request-notify').click(function() {
-                if (window.datatableEvent.rows('.selected').data().length == 0) {
-                    $('#table-event tbody').find('tr').removeClass('selected');
-                    $(this).parents('tr').addClass('selected')
-                }
-                console.log(window.datatableEvent.rows('.selected').data()[0])
-                let idEvent = $(this).data("mailsin");
-                var data = window.datatableEvent.rows('.selected').data()[0];
-                iziToast.question({
-                    timeout: 5000,
-                    layout: 2,
-                    close: false,
-                    overlay: true,
-                    color: 'green',
-                    displayMode: 'once',
-                    id: 'question',
-                    zindex: 9999,
-                    title: 'Confirmation',
-                    message: "Are you sure you want to request notified this mails?",
-                    position: 'center',
-                    icon: 'bx bx-question-mark',
-                    buttons: [
-                        ['<button><b>OK</b></button>', function(instance, toast) {
-                            instance.hide({
-                                transitionOut: 'fadeOut'
-                            }, toast, 'button');
-                            let isRegisteredPhoneNumber = new Promise((resolve, reject) => {
-                                $.ajax({
-                                    type: "GET",
-                                    url: `{{ env('WHATSAPP_URL') }}phone-check/${unFormattedPhoneNumber(data.sender_phone_number)}`,
-                                    // url: `{{ env('WHATSAPP_URL') }}phone-check/6289522983271`,
-                                    dataType: "json",
-                                    success: function(response) {
-                                        return resolve(true);
-                                    },
-                                    error: function(error) {
-                                        return reject(false)
-                                    }
-                                });
-                            });
-                        }, true],
-                        ['<button>CANCEL</button>', function(instance, toast) {
-                            instance.hide({
-                                transitionOut: 'fadeOut'
-                            }, toast, 'button');
-                        }],
-                    ],
-                });
+            $('.send-broadcast').click(function() {
+                $('#modal-event-update').modal('show');
+                $('#modal-event-update').find('input[name=id]').val($(this).data('event'));
+                $('#modal-event-update').find('#save-event-update').data('event', $(this).data('event'));
             });
         }
 
@@ -595,7 +585,7 @@
             );
         }
         $(function() {
-            window.datatableEvent = $('#table-event').DataTable({
+            window.dataTableEvent = $('#table-event').DataTable({
                 ajax: "{{ route('event.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -667,12 +657,12 @@
                     }
                 ]
             });
-            window.datatableEvent.on('draw.dt', function() {
+            window.dataTableEvent.on('draw.dt', function() {
                 actionData();
             });
-            window.datatableEvent.on('click', 'td.dt-control', function(e) {
+            window.dataTableEvent.on('click', 'td.dt-control', function(e) {
                 let tr = e.target.closest('tr');
-                let row = window.datatableEvent.row(tr);
+                let row = window.dataTableEvent.row(tr);
 
                 if (row.child.isShown()) {
                     // This row is already open - close it
@@ -729,10 +719,58 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableEvent.ajax.reload();
+                        window.dataTableEvent.ajax.reload();
                     },
                     error: function(error) {
                         $('#modal-event .is-invalid').removeClass('is-invalid')
+                        $.each(error.responseJSON.errors, function(indexInArray,
+                            valueOfElement) {
+                            if (indexInArray.split('agendas.').length > 1) {
+                                let indexSplitting = indexInArray.split('agendas.').join('').split('.')
+                                let name = indexSplitting[1];
+                                let index = indexSplitting[0];
+                                $($('.container-input-agenda')[index]).find('[name="agenda.' + name + '"]').addClass(
+                                    'is-invalid');
+                            } else {
+                                $('#modal-event').find('[name=' + indexInArray +
+                                    ']').addClass('is-invalid')
+                            }
+                        });
+                        iziToast.error({
+                            id: 'alert-event-form',
+                            title: 'Error',
+                            message: error.responseJSON.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
+                        });
+                    }
+                });
+            });
+            $('#save-event-update').click(function() {
+                let id = $(this).data('event');
+                let data = serializeObject($('#form-event-update'));
+                $.ajax({
+                    type: "PUT",
+                    url: `{{ route('event.event-update') }}/${id}`,
+                    data: {
+                        ...data
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        $('#modal-event-update').modal('hide')
+                        iziToast.success({
+                            id: 'alert-event-form',
+                            title: 'Success',
+                            message: response.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
+                        });
+                        window.dataTableEvent.ajax.reload();
+                    },
+                    error: function(error) {
+                        $('#modal-event-update .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
                             if (indexInArray.split('agendas.').length > 1) {
@@ -854,7 +892,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableEvent.ajax.reload();
+                        window.dataTableEvent.ajax.reload();
                         $('select[name=status]').parents('.col-6').addClass('d-none')
                     },
                     error: function(error) {
@@ -890,17 +928,9 @@
                     $('#file_attachment_help').removeClass('d-none')
                 }
             });
-            $('#modal-status-event').on('shown.bs.modal', function() {
-                $('.select2').select2({
-                    dropdownParent: $('#modal-status-event'),
-                });
-                $('.select2multi').select2({
-                    dropdownParent: $('#modal-status-event'),
-                    multiple: true,
-                })
-            });
             $('#modal-status-event').on('hidden.bs.modal', function() {
                 $('#form-status-event')[0].reset();
+                $('.employee-checkbox').prop('checked', false);
             });
             $('#modal-file-event').on('hidden.bs.modal', function() {
                 $('#modal-file-event').find('.modal-body iframe').prop('src', ``)
@@ -911,6 +941,16 @@
             });
             $(".flatpikrc").change(function() {
                 setTimeChange(moment(`${moment().format('YYYY-MM-DD')} 07:00:00`).format('H:m'), '.flatpikr-1');
+            });
+            $('.employee-checkbox').click(function() {
+                if (this.value == '' && $('.employee-checkbox[value=""]').prop('checked') == false) {
+                    $('.employee-checkbox').prop('checked', false);
+                } else if ((this.value == '' && $('.employee-checkbox[value=""]').prop('checked') == true) || $(
+                        '.employee-checkbox:not(.employee-checkbox[value=""], .employee-checkbox:checked)').length == 0) {
+                    $('.employee-checkbox').prop('checked', true);
+                } else {
+                    $('.employee-checkbox[value=""]').prop('checked', false);
+                }
             })
             changeStatusEvent();
             formattedInput();
@@ -962,7 +1002,7 @@
             //     });
             // });
             $('#reload-event').click(debounce(function() {
-                window.datatableEvent.ajax.reload();
+                window.dataTableEvent.ajax.reload();
             }, 1000));
         });
     </script>

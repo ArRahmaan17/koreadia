@@ -30,16 +30,16 @@ class AgendaController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $assets = $assets->get();
         } else {
             $assets = MailAgenda::select('*')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -48,11 +48,11 @@ class AgendaController extends Controller
             $assets = $assets->get();
 
             $totalFiltered = MailAgenda::select('*')
-                ->where('name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('description', 'like', '%' . $request['search']['value'] . '%');
+                ->where('name', 'like', '%'.$request['search']['value'].'%')
+                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name']. ' ' . $request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -62,7 +62,7 @@ class AgendaController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-agenda='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-agenda='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-agenda='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-agenda='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -74,6 +74,7 @@ class AgendaController extends Controller
 
         return Response()->json($response, 200);
     }
+
     public function all()
     {
         $response = ['message' => 'showing all resources successfully', 'data' => MailAgenda::all()];
@@ -82,8 +83,10 @@ class AgendaController extends Controller
             $response = ['message' => 'failed showing all resources', 'data' => MailAgenda::all()];
             $code = 422;
         }
+
         return response()->json($response, $code);
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -130,7 +133,7 @@ class AgendaController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:mail_agendas,name,' . $id,
+            'name' => 'required|unique:mail_agendas,name,'.$id,
             'description' => 'required|min:5|max:200',
         ]);
         DB::beginTransaction();

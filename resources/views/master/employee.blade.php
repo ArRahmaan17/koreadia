@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.role')
+    @lang('translation.employee')
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('build/libs/datatable/dataTables.min.css') }}" />
@@ -11,24 +11,24 @@
             Master
         @endslot
         @slot('title')
-            Role
+            Employee
         @endslot
     @endcomponent
     <div class="card">
         <div class="card-header align-items-center d-flex">
-            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.role')</h4>
+            <h4 class="card-title mb-0 flex-grow-1">@lang('translation.employee')</h4>
             <div class="flex-shrink-0">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-role">@lang('translation.add')</button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-employee">@lang('translation.add')</button>
             </div>
         </div><!-- end card header -->
         <div class="card-body">
             <div class="table-responsive p-2">
-                <table class="table table-bordered" id="table-role">
+                <table class="table table-bordered" id="table-employee">
                     <thead>
                         <tr>
                             <th>@lang('translation.no')</th>
                             <td>@lang('translation.name')</td>
-                            <td>@lang('translation.description')</td>
+                            <td>@lang('translation.phone_number')</td>
                             <td>@lang('translation.action')</td>
                         </tr>
                     </thead>
@@ -38,31 +38,31 @@
             </div>
         </div>
     </div>
-    <div id="modal-role" class="modal fade" tabindex="-1" aria-labelledby="modal-role-label" aria-hidden="true" style="display: none;">
+    <div id="modal-employee" class="modal fade" tabindex="-1" aria-labelledby="modal-employee-label" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modal-role-label">@lang('translation.add') @lang('translation.role')</h5>
+                    <h5 class="modal-title" id="modal-employee-label">@lang('translation.add') @lang('translation.employee')</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="#" id="form-role">
+                    <form action="#" id="form-employee">
                         @csrf
                         <input type="hidden" name="id">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name role mail">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
                             <label for="name">@lang('translation.name')</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description role mail"></textarea>
-                            <label for="description">@lang('translation.description')</label>
+                            <textarea class="form-control phone_number" id="phone_number" name="phone_number" rows="3" placeholder="Enter your phone_number"></textarea>
+                            <label for="phone_number">@lang('translation.phone_number')</label>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
-                    <button type="button" class="btn btn-soft-success" id="save-role">@lang('translation.save') @lang('translation.changes')</button>
-                    <button type="button" class="btn btn-soft-warning d-none" id="update-role">@lang('translation.update') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-success" id="save-employee">@lang('translation.save') @lang('translation.changes')</button>
+                    <button type="button" class="btn btn-soft-warning d-none" id="update-employee">@lang('translation.update') @lang('translation.changes')</button>
                 </div>
             </div>
         </div>
@@ -77,32 +77,32 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
-        window.dataTableRole = null;
+        window.dataTableEmployee = null;
         window.state = 'add';
 
         function actionData() {
             $('.edit').click(function() {
                 window.state = 'update';
-                let idRole = $(this).data("role");
-                $("#update-role").data("role", idRole);
-                if (window.dataTableRole.rows('.selected').data().length == 0) {
-                    $('#table-role tbody').find('tr').removeClass('selected');
+                let idEmployee = $(this).data("employee");
+                $("#update-employee").data("employee", idEmployee);
+                if (window.dataTableEmployee.rows('.selected').data().length == 0) {
+                    $('#table-employee tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.dataTableRole.rows('.selected').data()[0];
+                var data = window.dataTableEmployee.rows('.selected').data()[0];
 
-                $('#modal-role').modal('show');
-                $('#modal-role').find('.modal-title').html(`Edit @lang('translation.role')`);
-                $('#save-role').addClass('d-none');
-                $('#update-role').removeClass('d-none');
+                $('#modal-employee').modal('show');
+                $('#modal-employee').find('.modal-title').html(`Edit @lang('translation.employee')`);
+                $('#save-employee').addClass('d-none');
+                $('#update-employee').removeClass('d-none');
 
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('master.role.show') }}/" + idRole,
+                    url: "{{ route('master.employee.show') }}/" + idEmployee,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-role').find("form")
+                        $('#modal-employee').find("form")
                             .find('input, textarea').map(function(index, element) {
                                 if (response.data[element.name]) {
                                     $(`[name=${element.name}]`).val(response.data[element
@@ -112,7 +112,7 @@
                     },
                     error: function(error) {
                         iziToast.error({
-                            id: 'alert-role-action',
+                            id: 'alert-employee-action',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -124,12 +124,12 @@
             })
 
             $('.delete').click(function() {
-                if (window.dataTableRole.rows('.selected').data().length == 0) {
-                    $('#table-role tbody').find('tr').removeClass('selected');
+                if (window.dataTableEmployee.rows('.selected').data().length == 0) {
+                    $('#table-employee tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
-                let idRole = $(this).data("role");
-                var data = window.dataTableRole.rows('.selected').data()[0];
+                let idEmployee = $(this).data("employee");
+                var data = window.dataTableEmployee.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -140,7 +140,7 @@
                     id: 'question',
                     zindex: 9999,
                     title: 'Confirmation',
-                    message: "Are you sure you want to delete this mails role data?",
+                    message: "Are you sure you want to delete this mails employee data?",
                     position: 'center',
                     icon: 'bx bx-question-mark',
                     buttons: [
@@ -150,26 +150,26 @@
                             }, toast, 'button');
                             $.ajax({
                                 type: "DELETE",
-                                url: "{{ route('master.role.destroy') }}/" +
-                                    idRole,
+                                url: "{{ route('master.employee.destroy') }}/" +
+                                    idEmployee,
                                 data: {
                                     _token: `{{ csrf_token() }}`,
                                 },
                                 dataType: "json",
                                 success: function(response) {
                                     iziToast.success({
-                                        id: 'alert-role-form',
+                                        id: 'alert-employee-form',
                                         title: 'Success',
                                         message: response.message,
                                         position: 'topRight',
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.dataTableRole.ajax.reload()
+                                    window.dataTableEmployee.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
-                                        id: 'alert-role-action',
+                                        id: 'alert-employee-action',
                                         title: 'Error',
                                         message: error.responseJSON.message,
                                         position: 'topRight',
@@ -189,8 +189,8 @@
             });
         }
         $(function() {
-            window.dataTableRole = $('#table-role').DataTable({
-                ajax: "{{ route('master.role.data-table') }}",
+            window.dataTableEmployee = $('#table-employee').DataTable({
+                ajax: "{{ route('master.employee.data-table') }}",
                 processing: true,
                 serverSide: true,
                 order: [
@@ -216,8 +216,8 @@
                     }
                 }, {
                     target: 2,
-                    name: 'description',
-                    data: 'description',
+                    name: 'phone_number',
+                    data: 'phone_number',
                     orderable: true,
                     searchable: true,
                     render: (data, type, row, meta) => {
@@ -234,38 +234,38 @@
                     }
                 }]
             });
-            window.dataTableRole.on('draw.dt', function() {
+            window.dataTableEmployee.on('draw.dt', function() {
                 actionData();
             });
-            $('#save-role').click(function() {
-                let data = serializeObject($('#form-role'));
+            $('#save-employee').click(function() {
+                let data = serializeObject($('#form-employee'));
                 $.ajax({
                     type: "POST",
-                    url: `{{ route('master.role.store') }}`,
+                    url: `{{ route('master.employee.store') }}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-role').modal('hide')
+                        $('#modal-employee').modal('hide')
                         iziToast.success({
-                            id: 'alert-role-form',
+                            id: 'alert-employee-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.dataTableRole.ajax.reload();
+                        window.dataTableEmployee.ajax.reload();
 
                     },
                     error: function(error) {
-                        $('#modal-role .is-invalid').removeClass('is-invalid')
+                        $('#modal-employee .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-role').find('[name=' + indexInArray +
+                            $('#modal-employee').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-role-form',
+                            id: 'alert-employee-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -275,35 +275,35 @@
                     }
                 });
             });
-            $('#update-role').click(function() {
-                let data = serializeObject($('#form-role'));
+            $('#update-employee').click(function() {
+                let data = serializeObject($('#form-employee'));
                 $.ajax({
                     type: "PUT",
-                    url: `{{ route('master.role.update') }}/${data.id}`,
+                    url: `{{ route('master.employee.update') }}/${data.id}`,
                     data: data,
                     dataType: "json",
                     success: function(response) {
-                        $('#modal-role').modal('hide')
+                        $('#modal-employee').modal('hide')
                         iziToast.success({
-                            id: 'alert-role-form',
+                            id: 'alert-employee-form',
                             title: 'Success',
                             message: response.message,
                             position: 'topRight',
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.dataTableRole.ajax.reload();
+                        window.dataTableEmployee.ajax.reload();
 
                     },
                     error: function(error) {
-                        $('#modal-role .is-invalid').removeClass('is-invalid')
+                        $('#modal-employee .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-role').find('[name=' + indexInArray +
+                            $('#modal-employee').find('[name=' + indexInArray +
                                 ']').addClass('is-invalid')
                         });
                         iziToast.error({
-                            id: 'alert-role-form',
+                            id: 'alert-employee-form',
                             title: 'Error',
                             message: error.responseJSON.message,
                             position: 'topRight',
@@ -313,15 +313,16 @@
                     }
                 });
             });
-            $('#modal-role').on('hidden.bs.modal', function() {
+            $('#modal-employee').on('hidden.bs.modal', function() {
                 window.state = 'add';
                 $(this).find('form')[0].reset();
-                $(this).find('.modal-title').html(`Add @lang('translation.role')`);
-                $('#save-role').removeClass('d-none');
-                $('#update-role').addClass('d-none');
-                $('#modal-role .is-invalid').removeClass('is-invalid')
-                $('#table-role tbody').find('tr').removeClass('selected');
+                $(this).find('.modal-title').html(`Add @lang('translation.employee')`);
+                $('#save-employee').removeClass('d-none');
+                $('#update-employee').addClass('d-none');
+                $('#modal-employee .is-invalid').removeClass('is-invalid')
+                $('#table-employee tbody').find('tr').removeClass('selected');
             });
+            formattedInput();
         });
     </script>
 @endsection

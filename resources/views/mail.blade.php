@@ -258,7 +258,7 @@
     <script src="{{ asset('build/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('build/libs/flatpickr/l10n/id.js') }}"></script>
     <script>
-        window.datatableMail = null;
+        window.dataTableMail = null;
         window.state = 'add';
         window.file_pond_file_attachment = undefined;
         window.file_pond_reply_file_attachment = undefined;
@@ -268,12 +268,12 @@
                 window.state = 'update';
                 let idMail = $(this).data("mailsin");
                 $("#update-mail-in").data("mailsin", idMail);
-                if (window.datatableMail.rows('.selected').data().length == 0) {
+                if (window.dataTableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableMail.rows('.selected').data()[0];
+                var data = window.dataTableMail.rows('.selected').data()[0];
 
                 $('#modal-mail-in').modal('show');
                 $('#modal-mail-in').find('.modal-title').html(`@lang('translation.edit') @lang('translation.mail_in')`);
@@ -313,33 +313,33 @@
                 window.state = 'update';
                 let fileId = $(this).data("file");
                 $("#update-mail-in").data("file", fileId);
-                if (window.datatableMail.rows('.selected').data().length == 0) {
+                if (window.dataTableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
-                var data = window.datatableMail.rows('.selected').data()[0];
+                var data = window.dataTableMail.rows('.selected').data()[0];
                 $('#modal-file-mail-in').modal('show');
                 $('#modal-file-mail-in').find('.modal-title').html(`File @lang('translation.mail_in')`);
                 $('#modal-file-mail-in').find('.modal-body iframe').prop('src', `{{ url('/') }}/${fileId}`)
             });
             $('.print-report').click(function() {
                 let fileId = $(this).data("mailsin");
-                if (window.datatableMail.rows('.selected').data().length == 0) {
+                if (window.dataTableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
-                var data = window.datatableMail.rows('.selected').data()[0];
+                var data = window.dataTableMail.rows('.selected').data()[0];
                 $('#modal-report-mail-in').modal('show');
                 $('#modal-report-mail-in').find('.modal-title').html(`Report @lang('translation.mail_in')`);
                 $('#modal-report-mail-in').find('.modal-body iframe').prop('src', `{{ route('mail.in.report') }}/${fileId}`)
             })
             $('.delete').click(function() {
-                if (window.datatableMail.rows('.selected').data().length == 0) {
+                if (window.dataTableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idMail = $(this).data("mailsin");
-                var data = window.datatableMail.rows('.selected').data()[0];
+                var data = window.dataTableMail.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -375,7 +375,7 @@
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableMail.ajax.reload()
+                                    window.dataTableMail.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
@@ -398,12 +398,12 @@
                 });
             });
             $('.update-status').click(function() {
-                if (window.datatableMail.rows('.selected').data().length == 0) {
+                if (window.dataTableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idMail = $(this).data("mailsin");
-                var data = window.datatableMail.rows('.selected').data()[0];
+                var data = window.dataTableMail.rows('.selected').data()[0];
                 $('#modal-status-mail-in').modal('show');
                 $('input[name=id]').val(idMail);
                 $.ajax({
@@ -445,13 +445,13 @@
                 });
             });
             $('.request-notify').click(function() {
-                if (window.datatableMail.rows('.selected').data().length == 0) {
+                if (window.dataTableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
-                console.log(window.datatableMail.rows('.selected').data()[0])
+                console.log(window.dataTableMail.rows('.selected').data()[0])
                 let idMail = $(this).data("mailsin");
-                var data = window.datatableMail.rows('.selected').data()[0];
+                var data = window.dataTableMail.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -503,7 +503,7 @@
                                             layout: 2,
                                             displayMode: 'replace'
                                         });
-                                        window.datatableMail.ajax.reload()
+                                        window.dataTableMail.ajax.reload()
                                     },
                                     error: function(error) {
                                         iziToast.error({
@@ -535,7 +535,7 @@
                                             layout: 2,
                                             displayMode: 'replace'
                                         });
-                                        window.datatableMail.ajax.reload()
+                                        window.dataTableMail.ajax.reload()
                                     },
                                     error: function(error) {
                                         iziToast.error({
@@ -560,7 +560,7 @@
             });
         }
         $(function() {
-            window.datatableMail = $('#table-mail-in').DataTable({
+            window.dataTableMail = $('#table-mail-in').DataTable({
                 ajax: "{{ route('mail.in.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -695,7 +695,7 @@
                     }
                 }, ]
             });
-            window.datatableMail.on('draw.dt', function() {
+            window.dataTableMail.on('draw.dt', function() {
                 actionData();
             });
             $('#save-mail-in').click(function() {
@@ -715,7 +715,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableMail.ajax.reload();
+                        window.dataTableMail.ajax.reload();
                     },
                     error: function(error) {
                         $('#modal-mail-in .is-invalid').removeClass('is-invalid')
@@ -752,7 +752,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableMail.ajax.reload();
+                        window.dataTableMail.ajax.reload();
                         $('select[name=status]').parents('.col-6').addClass('d-none')
                     },
                     error: function(error) {
@@ -790,7 +790,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableMail.ajax.reload();
+                        window.dataTableMail.ajax.reload();
                         $('select[name=status]').parents('.col-6').addClass('d-none')
                     },
                     error: function(error) {
@@ -940,7 +940,7 @@
             //     });
             // });
             $('#reload-mail-in').click(debounce(function() {
-                window.datatableMail.ajax.reload();
+                window.dataTableMail.ajax.reload();
             }, 1000));
         });
     </script>

@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SincerelyWord extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name', 'description'];
 }

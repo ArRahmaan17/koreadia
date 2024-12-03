@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class WhatsappQueue extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'transaction_mail_id',
         'current_status',
@@ -16,7 +17,7 @@ class WhatsappQueue extends Model
         'notified',
         'user_id',
         'request_notified',
-        'request_notified_at'
+        'request_notified_at',
     ];
 
     public function user(): HasOne

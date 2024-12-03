@@ -3,27 +3,27 @@
 namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
-use App\Models\SincerelyWord;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class SincerelyWordController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('master.sincerely-word');
+        return view('master.employee');
     }
 
     public function dataTable(Request $request)
     {
-        $totalData = SincerelyWord::orderBy('id', 'asc')
+        $totalData = Employee::orderBy('id', 'asc')
             ->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = SincerelyWord::select('*');
+            $assets = Employee::select('*');
 
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -34,9 +34,9 @@ class SincerelyWordController extends Controller
             }
             $assets = $assets->get();
         } else {
-            $assets = SincerelyWord::select('*')
+            $assets = Employee::select('*')
                 ->where('name', 'like', '%'.$request['search']['value'].'%')
-                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
+                ->orWhere('phone_number', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
                 $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
@@ -47,9 +47,9 @@ class SincerelyWordController extends Controller
             }
             $assets = $assets->get();
 
-            $totalFiltered = SincerelyWord::select('*')
+            $totalFiltered = Employee::select('*')
                 ->where('name', 'like', '%'.$request['search']['value'].'%')
-                ->orWhere('description', 'like', '%'.$request['search']['value'].'%');
+                ->orWhere('phone_number', 'like', '%'.$request['search']['value'].'%');
 
             if (isset($request['order'][0]['column'])) {
                 $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
@@ -61,8 +61,8 @@ class SincerelyWordController extends Controller
             $row = [];
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
-            $row['description'] = $item->description;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-agenda='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-agenda='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['phone_number'] = $item->phone_number;
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-employee='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-employee='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -75,35 +75,22 @@ class SincerelyWordController extends Controller
         return Response()->json($response, 200);
     }
 
-    public function all()
-    {
-        $response = ['message' => 'showing all resources successfully', 'data' => SincerelyWord::all()];
-        $code = 200;
-        if (SincerelyWord::count() == 0) {
-            $response = ['message' => 'failed showing all resources', 'data' => SincerelyWord::all()];
-            $code = 422;
-        }
-
-        return response()->json($response, $code);
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:sincerely_words,name',
-            'description' => 'required|min:5|max:200',
+            'name' => 'required|unique:employees,name|min:5|max:30',
+            'phone_number' => 'required|unique:employees,phone_number|min:18|max:19',
         ]);
         DB::beginTransaction();
         try {
-            SincerelyWord::create($request->except('_token'));
+            Employee::create($request->except('_token'));
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
             DB::commit();
         } catch (\Throwable $th) {
-            DB::rollBack();
             $response = ['message' => 'failed creating resources'];
             $code = 422;
         }
@@ -116,7 +103,20 @@ class SincerelyWordController extends Controller
      */
     public function show(string $id)
     {
-        $data = SincerelyWord::find($id);
+        $data = Employee::find($id);
+        $response = ['message' => 'showing resources successfully', 'data' => $data];
+        $code = 200;
+        if (empty($data)) {
+            $response = ['message' => 'failed showing resources', 'data' => $data];
+            $code = 404;
+        }
+
+        return response()->json($response, $code);
+    }
+
+    public function all()
+    {
+        $data = Employee::all();
         $response = ['message' => 'showing resources successfully', 'data' => $data];
         $code = 200;
         if (empty($data)) {
@@ -133,15 +133,15 @@ class SincerelyWordController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:sincerely_words,name,'.$id,
-            'description' => 'required|min:5|max:200',
+            'name' => 'required|unique:employees,name,'.$id.'|min:5|max:30',
+            'phone_number' => 'required|unique:employees,phone_number,'.$id.'|min:18|max:19',
         ]);
         DB::beginTransaction();
         try {
-            SincerelyWord::find($id)->update($request->except('_token'));
+            Employee::find($id)->update($request->except('_token'));
+            DB::commit();
             $response = ['message' => 'updating resources successfully'];
             $code = 200;
-            DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
             $response = ['message' => 'failed updating resources'];
@@ -158,14 +158,12 @@ class SincerelyWordController extends Controller
     {
         DB::beginTransaction();
         try {
-            SincerelyWord::find($id)->delete();
-            DB::commit();
-            $response = ['message' => 'destroying resources successfully'];
+            Employee::find($id)->delete();
+            $response = ['message' => 'deleting resources successfully'];
             $code = 200;
         } catch (\Throwable $th) {
-            $response = ['message' => 'failed destroying resources'];
+            $response = ['message' => 'failed deleting resources'];
             $code = 422;
-            DB::rollBack();
         }
 
         return response()->json($response, $code);

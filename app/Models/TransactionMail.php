@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class TransactionMail extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'number',
         'regarding',
@@ -39,14 +40,17 @@ class TransactionMail extends Model
     {
         return $this->hasOne(MailAgenda::class, 'id', 'agenda_id');
     }
+
     public function priority(): HasOne
     {
         return $this->hasOne(MailPriority::class, 'id', 'priority_id');
     }
+
     public function type(): HasOne
     {
         return $this->hasOne(MailType::class, 'id', 'type_id');
     }
+
     public function histories(): HasMany
     {
         return $this->hasMany(WhatsappQueue::class, 'transaction_mail_id', 'id')->orderBy('created_at', 'ASC');

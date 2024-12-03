@@ -83,7 +83,7 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
-        window.datatableRoleUser = null;
+        window.dataTableRoleUser = null;
         window.state = 'add';
 
         function actionData() {
@@ -91,12 +91,12 @@
                 window.state = 'update';
                 let idRoleUser = $(this).data("roleuser");
                 $("#update-role-user").data("roleuser", idRoleUser);
-                if (window.datatableRoleUser.rows('.selected').data().length == 0) {
+                if (window.dataTableRoleUser.rows('.selected').data().length == 0) {
                     $('#table-role-user tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableRoleUser.rows('.selected').data()[0];
+                var data = window.dataTableRoleUser.rows('.selected').data()[0];
 
                 $('#modal-role-user').modal('show');
                 $('#modal-role-user').find('.modal-title').html(`Edit @lang('translation.role-user')`);
@@ -131,12 +131,12 @@
             })
 
             $('.delete').click(function() {
-                if (window.datatableRoleUser.rows('.selected').data().length == 0) {
+                if (window.dataTableRoleUser.rows('.selected').data().length == 0) {
                     $('#table-role-user tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idRoleUser = $(this).data("roleuser");
-                var data = window.datatableRoleUser.rows('.selected').data()[0];
+                var data = window.dataTableRoleUser.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -172,7 +172,7 @@
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableRoleUser.ajax.reload()
+                                    window.dataTableRoleUser.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
@@ -196,7 +196,7 @@
             });
         }
         $(function() {
-            window.datatableRoleUser = $('#table-role-user').DataTable({
+            window.dataTableRoleUser = $('#table-role-user').DataTable({
                 ajax: "{{ route('master.role-user.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -241,7 +241,7 @@
                     }
                 }]
             });
-            window.datatableRoleUser.on('draw.dt', function() {
+            window.dataTableRoleUser.on('draw.dt', function() {
                 actionData();
             });
             $('#save-role-user').click(function() {
@@ -261,7 +261,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableRoleUser.ajax.reload();
+                        window.dataTableRoleUser.ajax.reload();
 
                     },
                     error: function(error) {
@@ -299,7 +299,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableRoleUser.ajax.reload();
+                        window.dataTableRoleUser.ajax.reload();
 
                     },
                     error: function(error) {

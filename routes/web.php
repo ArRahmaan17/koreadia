@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dev\AuthController;
+use App\Http\Controllers\Dev\EmployeeController;
 use App\Http\Controllers\Dev\EventScheduleController;
 use App\Http\Controllers\Dev\Mail\AgendaController;
 use App\Http\Controllers\Dev\Mail\PriorityController;
@@ -9,15 +9,16 @@ use App\Http\Controllers\Dev\Mail\TypeController;
 use App\Http\Controllers\Dev\MailOutController;
 use App\Http\Controllers\Dev\MailTransactionController;
 use App\Http\Controllers\Dev\MenuController;
-use App\Http\Controllers\Dev\RoleController;
-use App\Http\Controllers\Dev\UserController;
-use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\Dev\RoleUserController;
 use App\Http\Controllers\Dev\OrganizationController;
+use App\Http\Controllers\Dev\RoleController;
+use App\Http\Controllers\Dev\RoleUserController;
 use App\Http\Controllers\Dev\SincerelyWordController;
+use App\Http\Controllers\Dev\UserController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\MailController;
 use App\Http\Controllers\Frontend\TrackingController;
+use App\Http\Controllers\User\HomeController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,7 @@ Route::middleware('check.auth')->group(function () {
     Route::prefix('event')->name('event.')->group(function () {
         Route::get('/', [EventScheduleController::class, 'index'])->name('index');
         Route::get('/data-table', [EventScheduleController::class, 'dataTable'])->name('data-table');
+        Route::put('/event-update/{id?}', [EventScheduleController::class, 'requestBroadcast'])->name('event-update');
         Route::get('/{id?}', [EventScheduleController::class, 'show'])->name('show');
         Route::put('/{id?}', [EventScheduleController::class, 'update'])->name('update');
         Route::delete('/{id?}', [EventScheduleController::class, 'destroy'])->name('destroy');
@@ -90,6 +92,15 @@ Route::middleware('check.auth')->group(function () {
             Route::put('/{id?}', [PriorityController::class, 'update'])->name('update');
             Route::delete('/{id?}', [PriorityController::class, 'destroy'])->name('destroy');
             Route::post('/', [PriorityController::class, 'store'])->name('store');
+        });
+        Route::prefix('employee')->name('employee.')->group(function () {
+            Route::get('/', [EmployeeController::class, 'index'])->name('index');
+            Route::get('/all', [EmployeeController::class, 'all'])->name('all');
+            Route::get('/data-table', [EmployeeController::class, 'dataTable'])->name('data-table');
+            Route::get('/{id?}', [EmployeeController::class, 'show'])->name('show');
+            Route::put('/{id?}', [EmployeeController::class, 'update'])->name('update');
+            Route::delete('/{id?}', [EmployeeController::class, 'destroy'])->name('destroy');
+            Route::post('/', [EmployeeController::class, 'store'])->name('store');
         });
         Route::prefix('menu')->name('menu.')->group(function () {
             Route::get('/', [MenuController::class, 'index'])->name('index');

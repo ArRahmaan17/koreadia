@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Builder;
 
 class AuthController extends Controller
 {
@@ -17,6 +16,7 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
+
     public function forgotPassword()
     {
         return view('auth.passwords.reset');
@@ -49,14 +49,15 @@ class AuthController extends Controller
             $code = 422;
             $response = ['message' => 'User gagal di buat', 'button' => 'Coba Lagi'];
         }
+
         return response()->json($response, $code);
     }
 
     public function login(Request $request)
     {
         $request->validate([
-            'username' => "required",
-            'password' => 'required'
+            'username' => 'required',
+            'password' => 'required',
         ]);
         $response = ['status' => 'Gagal', 'button' => trans('translation.reload'), 'message' => 'kombinasi username dan password tidak terdaftar di aplikasi kita', 'button' => 'Coba lagi'];
         $code = 401;
@@ -70,8 +71,10 @@ class AuthController extends Controller
             $response = ['status' => 'Berhasil', 'button' => trans('translation.signin'), 'message' => 'kombinasi username dan password ditemukan', 'button' => 'Masuk Aplikasi'];
             $code = 200;
         }
+
         return response()->json($response, $code);
     }
+
     public function executeResetPassword(Request $request)
     {
         $request->validate([
@@ -85,12 +88,14 @@ class AuthController extends Controller
             //throw $th;
         }
     }
+
     public function logout(Request $request)
     {
         Auth::user()->setRememberToken(null);
         Auth::logout();
         $request->session()->flush();
         $request->session()->invalidate();
+
         return redirect()->route('login');
     }
 }

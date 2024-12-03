@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
 use App\Models\DetailEventSchedule;
+use App\Models\Employee;
+use App\Models\EventQueue;
 use App\Models\EventSchedule;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,26 +15,29 @@ class EventScheduleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Employee $employee)
     {
-        return view('event');
+        $employees = $employee->all();
+
+        return view('event', compact('employees'));
     }
+
     public function dataTable(Request $request)
     {
-        $totalData = EventSchedule::select('event_schedules.*', 'u.name as admin')
+        $totalData = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
             ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
             ->where([
                 [
                     'event_schedules.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
             ])
             ->orderBy('id', 'asc')
             ->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin')
+            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id');
 
             if ($request['length'] != '-1') {
@@ -47,11 +51,11 @@ class EventScheduleController extends Controller
                 [
                     'event_schedules.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
             ])->get();
         } else {
-            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin')
+            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
                 ->where('event_schedules.name', 'ilike', '%' . $request['search']['value'] . '%')
                 ->orWhere('date', 'ilike', '%' . $request['search']['value'] . '%')
@@ -69,11 +73,11 @@ class EventScheduleController extends Controller
                 [
                     'event_schedules.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
             ])->get();
 
-            $totalFiltered = EventSchedule::select('event_schedules.*', 'u.name as admin')
+            $totalFiltered = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
                 ->where('event_schedules.name', 'ilike', '%' . $request['search']['value'] . '%')
                 ->orWhere('date', 'ilike', '%' . $request['search']['value'] . '%')
@@ -87,7 +91,7 @@ class EventScheduleController extends Controller
                 [
                     'event_schedules.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? NULL : auth()->user()->id)
+                    ((getRole() == 'Developer') ? null : auth()->user()->id),
                 ],
             ])->count();
         }
@@ -101,7 +105,7 @@ class EventScheduleController extends Controller
             $row['admin'] = $item->admin;
             $row['detail_event'] = DetailEventSchedule::where('event_schedule_id', $item->id)->get()->toArray();
             $row['file_attachment'] = "<button title='" . trans('translation.show') . ' ' . trans('translation.event_file_attachment') . "' class='btn btn-icon btn-info file-thumbnails' data-file='" . $item->file_attachment . "'><i class='bx bx-image' ></i></button>";
-            $row['action'] = "<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' " .( ($item->request_broadcast) ? 'disabled' : '' ). " data-event='" . $item->id . "' ><i class='bx " . ($item->request_broadcast) ? 'bx-loader-circle' : 'bxs-paper-plane' . "' ></i></button><button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
+            $row['action'] = "<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' " . (($item->request_broadcast > 0) ? 'disabled' : '') . " data-event='" . $item->id . "' >" . (($item->request_broadcast > 0) ? '<i class="bx bx-loader-circle"></i>' : '<i class="bx bxs-paper-plane"></i>') . "</button><button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -113,6 +117,7 @@ class EventScheduleController extends Controller
 
         return Response()->json($response, 200);
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -140,7 +145,7 @@ class EventScheduleController extends Controller
         try {
             $data_event = $request->except('_token', 'agendas');
             $data_event['user_id'] = auth()->user()->id;
-            if (!empty($data_event['file_attachment'])) {
+            if (! empty($data_event['file_attachment'])) {
                 $file_name = 'event_file_attachment/' . $data_event['file_attachment']['id'] . '.jpg';
                 file_put_contents(public_path($file_name), base64_decode($data_event['file_attachment']['data']));
                 $data_event['file_attachment'] = $file_name;
@@ -155,7 +160,7 @@ class EventScheduleController extends Controller
                     $value['meeting'] = json_encode([
                         'id' => $value['meeting.id'],
                         'passcode' => $value['meeting.passcode'],
-                        'topic' => $value['meeting.passcode']
+                        'topic' => $value['meeting.passcode'],
                     ]);
                     unset($value['meeting.id'], $value['meeting.passcode'], $value['meeting.topic']);
                 }
@@ -170,6 +175,7 @@ class EventScheduleController extends Controller
             $response = ['message' => 'failed creating resources'];
             $code = 422;
         }
+
         return response()->json($response, $code);
     }
 
@@ -179,6 +185,31 @@ class EventScheduleController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function requestBroadcast(Request $request, string $id)
+    {
+        $request->validate(['id' => 'required|in:' . $id, 'employee' => 'required']);
+        DB::beginTransaction();
+        try {
+            $broadcast_queue = [];
+            foreach ($request->employee as $key => $value) {
+                array_push($broadcast_queue, ['event_schedule_id' => $request->id, 'employee_id' => $value, 'request_broadcast' => true, 'request_broadcasted_at' => now('Asia/Jakarta'), 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
+            }
+            EventQueue::insert($broadcast_queue);
+            $response = ['message' => 'successfully creating resources'];
+            $code = 200;
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $response = ['message' => 'failed creating resources'];
+            $code = 422;
+        }
+
+        return response()->json($response, $code);
     }
 
     /**

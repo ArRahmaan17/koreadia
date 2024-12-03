@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class News extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'title',
         'content',
@@ -20,13 +21,15 @@ class News extends Model
         'user_id',
         'regency_id',
     ];
-    static function loadLimit($limit = 3, $id = 0)
+
+    public static function loadLimit($limit = 3, $id = 0)
     {
         $news = self::with('user')->limit($limit);
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             $news->whereIn('type', ['pu_news', 'pu_announcement']);
         }
         $news = $news->where('id', '>', $id)->orderBy('updated_at', 'desc')->get();
+
         return $news;
     }
 
@@ -34,6 +37,7 @@ class News extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+
     public function comment(): HasMany
     {
         return $this->hasMany(NewsComment::class, 'news_id', 'id');

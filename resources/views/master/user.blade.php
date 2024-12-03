@@ -118,7 +118,7 @@
     <script src="{{ asset('build/libs/datatable/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('build/libs/datatable/dataTables.responsive.min.js') }}"></script>
     <script>
-        window.datatableUser = null;
+        window.dataTableUser = null;
         window.state = 'add';
         window.file_pond = undefined;
 
@@ -127,12 +127,12 @@
                 window.state = 'update';
                 let idUser = $(this).data("user");
                 $("#update-user").data("user", idUser);
-                if (window.datatableUser.rows('.selected').data().length == 0) {
+                if (window.dataTableUser.rows('.selected').data().length == 0) {
                     $('#table-user tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
 
-                var data = window.datatableUser.rows('.selected').data()[0];
+                var data = window.dataTableUser.rows('.selected').data()[0];
 
                 $('#modal-user').modal('show');
                 $('#modal-user').find('.modal-title').html(`Edit @lang('translation.user')`);
@@ -172,12 +172,12 @@
             })
 
             $('.delete').click(function() {
-                if (window.datatableUser.rows('.selected').data().length == 0) {
+                if (window.dataTableUser.rows('.selected').data().length == 0) {
                     $('#table-user tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
                 }
                 let idUser = $(this).data("user");
-                var data = window.datatableUser.rows('.selected').data()[0];
+                var data = window.dataTableUser.rows('.selected').data()[0];
                 iziToast.question({
                     timeout: 5000,
                     layout: 2,
@@ -213,7 +213,7 @@
                                         layout: 2,
                                         displayMode: 'replace'
                                     });
-                                    window.datatableUser.ajax.reload()
+                                    window.dataTableUser.ajax.reload()
                                 },
                                 error: function(error) {
                                     iziToast.error({
@@ -237,7 +237,7 @@
             });
         }
         $(function() {
-            window.datatableUser = $('#table-user').DataTable({
+            window.dataTableUser = $('#table-user').DataTable({
                 ajax: "{{ route('master.user.data-table') }}",
                 processing: true,
                 serverSide: true,
@@ -318,7 +318,7 @@
                     }
                 }]
             });
-            window.datatableUser.on('draw.dt', function() {
+            window.dataTableUser.on('draw.dt', function() {
                 actionData();
             });
             $('#save-user').click(function() {
@@ -338,7 +338,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableUser.ajax.reload();
+                        window.dataTableUser.ajax.reload();
                     },
                     error: function(error) {
                         $('#modal-user .is-invalid').removeClass('is-invalid')
@@ -375,7 +375,7 @@
                             layout: 2,
                             displayMode: 'replace'
                         });
-                        window.datatableUser.ajax.reload();
+                        window.dataTableUser.ajax.reload();
 
                     },
                     error: function(error) {
