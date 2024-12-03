@@ -4,6 +4,7 @@
 /public/file_attachment/*
 /public/reply_file_attachment/*
 /public/out_file_attachment/*
+/public/event_file_attachment/*
 /public/assets/media/news/temp/*
 /public/assets/media/news/thumbnail/*
 /public/hot

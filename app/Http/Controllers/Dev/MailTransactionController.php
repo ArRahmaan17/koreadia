@@ -103,7 +103,7 @@ class MailTransactionController extends Controller
                     ->offset($request['start']);
             }
             $assets = $assets->where([
-                 [
+                [
                     'transaction_mails.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
                     ((getRole() == 'Developer') ? NULL : auth()->user()->id)
@@ -113,7 +113,6 @@ class MailTransactionController extends Controller
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id);
             })->get();
-
             $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
                 ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
                 ->join('mail_priorities as mp', 'mp.id', '=', 'transaction_mails.priority_id')
@@ -210,7 +209,7 @@ class MailTransactionController extends Controller
             'sender_phone_number' => 'required|min:18|max:19',
             'file_attachment' => 'required',
             'file_attachment.type' => 'end_with:pdf',
-            'file_attachment.type' => 'integer|size:52428800',
+            'file_attachment.type' => 'integer|max:'.env('FILE_LIMIT').'',
             'file_attachment.name' => 'end_with:pdf',
         ]);
         DB::beginTransaction();
@@ -277,7 +276,7 @@ class MailTransactionController extends Controller
             'status' => 'required',
             'file_attachment' => 'string',
             'file_attachment.type' => 'end_with:pdf',
-            'file_attachment.type' => 'integer|size:52428800',
+            'file_attachment.type' => 'integer|max:'.env('FILE_LIMIT').'',
             'file_attachment.name' => 'end_with:pdf',
         ]);
         DB::beginTransaction();
@@ -839,7 +838,7 @@ class MailTransactionController extends Controller
             TransactionMail::find($id)->update($data);
             $response = ['message' => 'updating status mail successfully'];
             $code = 200;
-            // DB::commit();
+            DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
             $response = ['message' => 'failed updating status mail'];

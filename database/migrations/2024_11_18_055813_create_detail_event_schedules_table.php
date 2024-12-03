@@ -20,8 +20,9 @@ return new class extends Migration
                 ->on('event_schedules')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->string('name')->unique();
-            $table->string('location');
+            $table->string('name');
+            $table->string('speaker');
+            $table->string('location')->nullable(true);
             $table->time('time');
             $table->boolean('online');
             $table->jsonb('meeting')->nullable(true);

@@ -16,12 +16,17 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->date('date');
             $table->string('recipient');
+            $table->string('file_attachment');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')
                 ->on('users')
                 ->references('id')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+            $table->boolean('request_broadcast')->default(false);
+            $table->boolean('broadcast')->default(false);
+            $table->dateTimeTz('request_broadcasted_at')->nullable(true);
+            $table->dateTimeTz('broadcasted_at')->nullable(true);
             $table->timestamps();
         });
     }

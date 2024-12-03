@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailEventSchedule;
 use App\Models\EventSchedule;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EventScheduleController extends Controller
 {
@@ -18,37 +20,21 @@ class EventScheduleController extends Controller
     }
     public function dataTable(Request $request)
     {
-        $totalData = EventSchedule::select('event_schedules.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')->join('mail_agendas as ma', 'ma.id', '=', 'event_schedules.agenda_id')
-            ->join('mail_priorities as mp', 'mp.id', '=', 'event_schedules.priority_id')
-            ->join('mail_types as mt', 'mt.id', '=', 'event_schedules.type_id')
+        $totalData = EventSchedule::select('event_schedules.*', 'u.name as admin')
             ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
-            ->leftJoin('whatsapp_queues as wq', function (JoinClause $join) {
-                $join->on('event_schedules.id', '=', 'wq.transaction_mail_id')
-                    ->on('event_schedules.status', '=', 'wq.current_status');
-            })
             ->where([
                 [
                     'event_schedules.user_id',
                     ((getRole() == 'Developer') ? '<>' : '='),
                     ((getRole() == 'Developer') ? NULL : auth()->user()->id)
                 ],
-                ['event_schedules.status', '!=', 'OUT']
-            ])->where(function ($query) {
-                $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('event_schedules.creator_id', auth()->user()->id);
-            })
+            ])
             ->orderBy('id', 'asc')
             ->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')->join('mail_agendas as ma', 'ma.id', '=', 'event_schedules.agenda_id')
-                ->join('mail_priorities as mp', 'mp.id', '=', 'event_schedules.priority_id')
-                ->join('mail_types as mt', 'mt.id', '=', 'event_schedules.type_id')
-                ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
-                ->leftJoin('whatsapp_queues as wq', function (JoinClause $join) {
-                    $join->on('event_schedules.id', '=', 'wq.transaction_mail_id')
-                        ->on('event_schedules.status', '=', 'wq.current_status');
-                });
+            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin')
+                ->join('users as u', 'u.id', '=', 'event_schedules.user_id');
 
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -63,33 +49,14 @@ class EventScheduleController extends Controller
                     ((getRole() == 'Developer') ? '<>' : '='),
                     ((getRole() == 'Developer') ? NULL : auth()->user()->id)
                 ],
-                ['event_schedules.status', '!=', 'OUT']
-            ])->where(function ($query) {
-                $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('event_schedules.creator_id', auth()->user()->id);
-            })->get();
+            ])->get();
         } else {
-            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
-                ->join('mail_agendas as ma', 'ma.id', '=', 'event_schedules.agenda_id')
-                ->join('mail_priorities as mp', 'mp.id', '=', 'event_schedules.priority_id')
-                ->join('mail_types as mt', 'mt.id', '=', 'event_schedules.type_id')
+            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin')
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
-                ->leftJoin('whatsapp_queues as wq', function (JoinClause $join) {
-                    $join->on('event_schedules.id', '=', 'wq.transaction_mail_id')
-                        ->on('event_schedules.status', '=', 'wq.current_status');
-                })
-                ->where('number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('regarding', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender_phone_number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('file_attachment', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('status', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date_in', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('u.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('ma.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mp.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mt.name', 'like', '%' . $request['search']['value'] . '%');
+                ->where('event_schedules.name', 'ilike', '%' . $request['search']['value'] . '%')
+                ->orWhere('date', 'ilike', '%' . $request['search']['value'] . '%')
+                ->orWhere('u.name', 'ilike', '%' . $request['search']['value'] . '%')
+                ->orWhere('recipient', 'ilike', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
                 $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
@@ -104,33 +71,14 @@ class EventScheduleController extends Controller
                     ((getRole() == 'Developer') ? '<>' : '='),
                     ((getRole() == 'Developer') ? NULL : auth()->user()->id)
                 ],
-                ['event_schedules.status', '!=', 'OUT']
-            ])->where(function ($query) {
-                $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('event_schedules.creator_id', auth()->user()->id);
-            })->get();
+            ])->get();
 
-            $totalFiltered = EventSchedule::select('event_schedules.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
-                ->join('mail_agendas as ma', 'ma.id', '=', 'event_schedules.agenda_id')
-                ->join('mail_priorities as mp', 'mp.id', '=', 'event_schedules.priority_id')
-                ->join('mail_types as mt', 'mt.id', '=', 'event_schedules.type_id')
+            $totalFiltered = EventSchedule::select('event_schedules.*', 'u.name as admin')
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
-                ->leftJoin('whatsapp_queues as wq', function (JoinClause $join) {
-                    $join->on('event_schedules.id', '=', 'wq.transaction_mail_id')
-                        ->on('event_schedules.status', '=', 'wq.current_status');
-                })
-                ->where('number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('regarding', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('sender_phone_number', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('file_attachment', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('status', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('date_in', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('u.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('ma.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mp.name', 'like', '%' . $request['search']['value'] . '%')
-                ->orWhere('mt.name', 'like', '%' . $request['search']['value'] . '%');
+                ->where('event_schedules.name', 'ilike', '%' . $request['search']['value'] . '%')
+                ->orWhere('date', 'ilike', '%' . $request['search']['value'] . '%')
+                ->orWhere('u.name', 'ilike', '%' . $request['search']['value'] . '%')
+                ->orWhere('recipient', 'ilike', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
                 $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
@@ -141,43 +89,19 @@ class EventScheduleController extends Controller
                     ((getRole() == 'Developer') ? '<>' : '='),
                     ((getRole() == 'Developer') ? NULL : auth()->user()->id)
                 ],
-                ['event_schedules.status', '!=', 'OUT']
-            ])->where(function ($query) {
-                $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('event_schedules.creator_id', auth()->user()->id);
-            })->count();
+            ])->count();
         }
         $dataFiltered = [];
         foreach ($assets as $index => $item) {
             $row = [];
             $row['index'] = $request['start'] + ($index + 1);
-            $row['number'] = $item->number;
-            $row['regarding'] = $item->regarding;
+            $row['name'] = $item->name;
             $row['date'] = $item->date;
-            $row['sender'] = $item->sender;
-            $row['sender_phone_number'] = $item->sender_phone_number;
-            if ($item->reply_file_attachment == NULL) {
-                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->file_attachment . "'><i class='bx bxs-file-pdf' ></i></button>";
-            } else {
-                $row['file_attachment'] = "<button class='btn btn-icon btn-info file' data-file='" . $item->reply_file_attachment . "'><i class='bx bxs-file-pdf' ></i></button>";
-            }
-            $row['status'] = $item->status;
-            $row['date_in'] = $item->date_in;
+            $row['recipient'] = $item->recipient;
             $row['admin'] = $item->admin;
-            $row['agenda'] = $item->agenda;
-            $row['priority'] = $item->priority;
-            $row['type'] = $item->type;
-            if ((getRole() == 'Developer' || $item->creator_id == auth()->user()->id) && $item->notified && ($item->status == 'REPLIED' || $item->status == 'OUT')) {
-                $row['action'] = "<button class='btn btn-icon btn-warning update-status' data-mailsIn='" . $item->id . "' ><i class='bx bx-check-double'></i></button>";
-            } else if ((getRole() == 'Developer' || $item->user_id == auth()->user()->id) && $item->notified && ($item->status != 'REPLIED' && $item->status != 'OUT' && $item->status != 'ARCHIVE')) {
-                $row['action'] = "<button class='btn btn-icon btn-info update-status' data-mailsIn='" . $item->id . "' ><i class='bx bxs-chevrons-up'></i></button><button class='btn btn-icon btn-warning edit' data-mailsIn='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-mailsIn='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
-            } else if ((getRole() == 'Developer' || $item->processor_id == auth()->user()->id) && $item->status != 'ARCHIVE' && $item->request_notified == false && $item->notified == false) {
-                $row['action'] = "<button class='btn btn-icon btn-success request-notify' data-mailsIn='" . $item->id . "' ><i class='bx bxl-whatsapp'></i></button>";
-            } else if (($item->creator_id == auth()->user()->id && $item->status != 'ARCHIVE') || ($item->request_notified == true && $item->notified == false)) {
-                $row['action'] = "<button class='btn btn-icon btn-secondary disabled' data-mailsIn='" . $item->id . "' ><i class='bx bx-loader-circle' ></i></button>";
-            } else {
-                $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='" . $item->id . "' ><i class='bx bxs-show'></i></button><button class='btn btn-icon btn-success print-report' data-mailsIn='" . $item->id . "' ><i class='bx bxs-printer'></i></button>";
-            }
+            $row['detail_event'] = DetailEventSchedule::where('event_schedule_id', $item->id)->get()->toArray();
+            $row['file_attachment'] = "<button title='" . trans('translation.show') . ' ' . trans('translation.event_file_attachment') . "' class='btn btn-icon btn-info file-thumbnails' data-file='" . $item->file_attachment . "'><i class='bx bx-image' ></i></button>";
+            $row['action'] = "<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' data-event='" . $item->id . "' ><i class='bx bxs-paper-plane' ></i></button><button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -194,21 +118,65 @@ class EventScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:5|max:100',
+            'date' => 'required|date',
+            'recipient' => 'required|min:5|max:50',
+            'agendas' => 'required|array',
+            'agendas.*.name' => 'required|string|min:5|max:50',
+            'agendas.*.time' => 'required',
+            'agendas.*.speaker' => 'required|string|min:5|max:50',
+            'agendas.*.online' => 'required|string',
+            'agendas.*.location' => 'required_if:online,false|string|min:5|max:50',
+            'agendas.*.meeting.id' => 'required_if:online,true|string|min:5|max:50',
+            'agendas.*.meeting.passcode' => 'required_if:online,true|string|min:5|max:50',
+            'agendas.*.meeting.topic' => 'required_if:online,true|string|min:5|max:50',
+            'file_attachment.id' => 'required|string',
+            'file_attachment.type' => 'required|string|starts_with:image/',
+            'file_attachment.size' => 'required|integer|max:' . env('FILE_LIMIT') . '',
+            'file_attachment.data' => 'required',
+        ]);
+        DB::beginTransaction();
+        try {
+            $data_event = $request->except('_token', 'agendas');
+            $data_event['user_id'] = auth()->user()->id;
+            if (!empty($data_event['file_attachment'])) {
+                $file_name = 'event_file_attachment/' . $data_event['file_attachment']['id'] . '.jpg';
+                file_put_contents(public_path($file_name), base64_decode($data_event['file_attachment']['data']));
+                $data_event['file_attachment'] = $file_name;
+            }
+            $event_schedule = EventSchedule::create($data_event);
+            $data_agenda = [];
+            foreach ($request->only('agendas')['agendas'] as $key => $value) {
+                $value['event_schedule_id'] = $event_schedule->id;
+                $value['created_at'] = now('Asia/Jakarta');
+                $value['updated_at'] = now('Asia/Jakarta');
+                if ($value['online'] == 'true') {
+                    $value['meeting'] = json_encode([
+                        'id' => $value['meeting.id'],
+                        'passcode' => $value['meeting.passcode'],
+                        'topic' => $value['meeting.passcode']
+                    ]);
+                    unset($value['meeting.id'], $value['meeting.passcode'], $value['meeting.topic']);
+                }
+                array_push($data_agenda, $value);
+            }
+            DetailEventSchedule::insert($data_agenda);
+            DB::commit();
+            $response = ['message' => 'successfully creating resources'];
+            $code = 200;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $response = ['message' => 'failed creating resources'];
+            $code = 422;
+        }
+        return response()->json($response, $code);
     }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
     {
         //
     }

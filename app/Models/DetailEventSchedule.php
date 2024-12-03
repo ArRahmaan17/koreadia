@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EventSchedule extends Model
+class DetailEventSchedule extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'date', 'recipient', 'file_attachment', 'user_id'];
 }

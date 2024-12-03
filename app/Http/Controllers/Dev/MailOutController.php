@@ -217,7 +217,7 @@ class MailOutController extends Controller
             'sender_phone_number' => 'required|min:18|max:19',
             'file_attachment' => 'required',
             'file_attachment.type' => 'end_with:pdf',
-            'file_attachment.type' => 'integer|size:52428800',
+            'file_attachment.type' => 'integer|max:'.env('FILE_LIMIT').'',
             'file_attachment.name' => 'end_with:pdf',
         ]);
         DB::beginTransaction();
@@ -284,7 +284,7 @@ class MailOutController extends Controller
             'status' => 'required',
             'file_attachment' => 'string',
             'file_attachment.type' => 'end_with:pdf',
-            'file_attachment.type' => 'integer|size:52428800',
+            'file_attachment.type' => 'integer|max:'.env('FILE_LIMIT').'',
             'file_attachment.name' => 'end_with:pdf',
         ]);
         DB::beginTransaction();

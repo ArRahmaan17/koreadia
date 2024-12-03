@@ -12,17 +12,12 @@ use App\Http\Controllers\Dev\MenuController;
 use App\Http\Controllers\Dev\RoleController;
 use App\Http\Controllers\Dev\UserController;
 use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\Dev\MailOutController;
 use App\Http\Controllers\Dev\RoleUserController;
-use App\Http\Controllers\Dev\Mail\TypeController;
-use App\Http\Controllers\Dev\Mail\AgendaController;
 use App\Http\Controllers\Dev\OrganizationController;
-use App\Http\Controllers\Dev\Mail\PriorityController;
 use App\Http\Controllers\Dev\SincerelyWordController;
 use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\Frontend\TrackingController;
-use App\Http\Controllers\Dev\MailTransactionController;
 use App\Http\Controllers\Frontend\MailController;
+use App\Http\Controllers\Frontend\TrackingController;
 
 /*
 |--------------------------------------------------------------------------

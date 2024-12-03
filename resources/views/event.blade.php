@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('build/libs/filepond/filepond.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
     <link rel="stylesheet" href="{{ asset('build/libs/flatpickr/flatpickr.min.css') }}">
+    <link href="{{ asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         select.is-invalid+.select2-container--default {
             border: 1px solid #f06548;
@@ -33,18 +34,11 @@
                 <table class="table table-bordered" id="table-event">
                     <thead>
                         <tr>
-                            <th>@lang('translation.no')</th>
-                            <th>@lang('translation.mail_number')</th>
-                            <th>@lang('translation.mail_regarding')</th>
-                            <th>@lang('translation.mail_agenda')</th>
-                            <th>@lang('translation.mail_priority')</th>
-                            <th>@lang('translation.mail_type')</th>
+                            <th></th>
+                            <th>@lang('translation.name')</th>
                             <th>@lang('translation.mail_date')</th>
-                            <th>@lang('translation.mail_sender')</th>
-                            <th>@lang('translation.mail_sender_phone_number')</th>
-                            <th>@lang('translation.mail_file_attachment')</th>
-                            <th>@lang('translation.mail_status')</th>
-                            <th>@lang('translation.mail_date_in')</th>
+                            <th>@lang('translation.recipient')</th>
+                            <th>@lang('translation.event_file_attachment')</th>
                             <th>@lang('translation.mail_admin')</th>
                             <th>@lang('translation.action')</th>
                         </tr>
@@ -83,7 +77,7 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="recipient" class="form-label">@lang('translation.recipient')</label>
-                                    <input class="form-control" data-choices data-choices-text-unique-true data-choices-limit="your required limit"
+                                    <input class="form-control js-choice" data-choices data-choices-text-unique-true data-choices-limit="your required limit"
                                         data-choices-removeItem type="text" name="recipient" id="recipient" />
                                 </div>
                             </div><!--end col-->
@@ -100,54 +94,58 @@
                                     <div class="col-12 row container-input-agenda">
                                         <div class="col-6 mb-2">
                                             <label class="form-label" for="name1">Name</label>
-                                            <input type="text" id="name1" name="name[]" placeholder="Enter the agenda name" class="form-control"
+                                            <input type="text" id="name1" name="agenda.name" placeholder="Enter the agenda name" class="form-control"
                                                 required>
                                         </div>
                                         <div class="col-6 mb-2">
                                             <label class="form-label" for="time1">Time</label>
-                                            <input type="text" id="time1" name="time[]" class="form-control flatpikr-1" required>
+                                            <input type="text" id="time1" name="agenda.time" class="form-control flatpikr-1" required>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <label for="speaker1" class="form-label">@lang('translation.speaker')</label>
+                                            <input class="form-control js-choice" data-choices data-choices-text-unique-true
+                                                data-choices-limit="your required limit" data-choices-removeItem type="text" name="agenda.speaker"
+                                                id="speaker1" />
                                         </div>
                                         <div class="col-6 mb-2">
                                             <label class="form-label" for="online1">Online</label>
-                                            <select class="form-control" id="online1" name="online[]">
+                                            <select class="form-control" id="online1" name="agenda.online">
                                                 <option selected value="false">No</option>
                                                 <option value="true">Yes</option>
                                             </select>
                                         </div>
                                         <div class="col-6 mb-2 online-no">
                                             <label class="form-label" for="location1">Location</label>
-                                            <input type="text" id="location1" name="location[]" placeholder="Enter the location" class="form-control"
-                                                required>
-                                        </div>
-                                        <div class="col-6 mb-2 online-yes d-none">
-                                            <label class="form-label" for="meeting[][id]1">Id meeting</label>
-                                            <input type="text" id="meeting[][id]1" name="meeting[][id]" placeholder="Enter the id" class="form-control"
-                                                required>
-                                        </div>
-                                        <div class="col-6 mb-2 online-yes d-none">
-                                            <label class="form-label" for="meeting[][passcode]1">Passcode meeting</label>
-                                            <input type="text" id="meeting[][passcode]1" name="meeting[][passcode]" placeholder="Enter the passcode"
+                                            <input type="text" id="location1" name="agenda.location" placeholder="Enter the location"
                                                 class="form-control" required>
                                         </div>
                                         <div class="col-6 mb-2 online-yes d-none">
-                                            <label class="form-label" for="meeting[][topic]1">Topic meeting</label>
-                                            <input type="text" id="meeting[][topic]1" name="meeting[][topic]" placeholder="Enter the topic"
+                                            <label class="form-label" for="meeting.id1">Id meeting</label>
+                                            <input type="text" id="meeting.id1" name="agenda.meeting.id[]" placeholder="Enter the id"
                                                 class="form-control" required>
                                         </div>
-                                    </div>
+                                        <div class="col-6 mb-2 online-yes d-none">
+                                            <label class="form-label" for="meeting.passcode1">Passcode meeting</label>
+                                            <input type="text" id="meeting.passcode1" name="agenda.meeting.passcode[]" placeholder="Enter the passcode"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="col-6 mb-2 online-yes d-none">
+                                            <label class="form-label" for="meeting.topic1">Topic meeting</label>
+                                            <input type="text" id="meeting.topic1" name="agenda.meeting.topic[]" placeholder="Enter the topic"
+                                                class="form-control" required>
+                                        </div>
+                                    </div><!--end col-->
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="file_attachment" class="form-label">@lang('translation.mail_file_attachment')</label>
-                                    <input type="file" class="filepond-input-multiple" id="file_attachment" name="file_attachment"
-                                        aria-describedby="file_attachment_help">
-                                    <div id="file_attachment_help" class="form-text d-none">@lang('translation.image_update_help')</div>
-                                </div>
+                            <div class="col-12 mb-3">
+                                <label for="file_attachment" class="form-label">@lang('translation.mail_file_attachment')</label>
+                                <input type="file" class="filepond-input-multiple" id="file_attachment" name="file_attachment"
+                                    aria-describedby="file_attachment_help">
+                                <div id="file_attachment_help" class="form-text d-none">@lang('translation.image_update_help')</div>
                             </div><!--end col-->
-                        </div><!--end row-->
+                        </div>
                     </form>
-                </div>
+                </div><!--end row-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">@lang('translation.close')</button>
                     <button type="button" class="btn btn-soft-success" id="save-event">@lang('translation.save') @lang('translation.changes')</button>
@@ -174,12 +172,15 @@
     <script src="{{ asset('build/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('build/libs/flatpickr/l10n/id.js') }}"></script>
     <script src="{{ asset('build/js/moment.min.js') }}"></script>
+    <script src="{{ asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
     <script>
+        console.log(`{{ getRole() }}`)
         window.datatableEvent = null;
         window.state = 'add';
         window.flatpickr = [];
+        window.choices = [];
         window.file_pond_file_attachment = undefined;
-        window.file_pond_reply_file_attachment = undefined;
+        window.swiper_timeline = undefined;
 
         function actionData() {
             $('.edit').click(function() {
@@ -403,13 +404,13 @@
         }
 
         function changeStatusEvent() {
-            $('[name="online[]"]').change(function() {
+            $('[name="agenda.online"]').change(function() {
                 if (this.value == 'true') {
-                    $(this).parents('.container-input-agenda').find('.online-yes').removeClass('d-none');
-                    $(this).parents('.container-input-agenda').find('.online-no').addClass('d-none');
+                    $(this).parents('.container-input-agenda').find('.online-yes').removeClass('d-none').find('input').val('');
+                    $(this).parents('.container-input-agenda').find('.online-no').addClass('d-none').find('input').val('');
                 } else {
-                    $(this).parents('.container-input-agenda').find('.online-yes').addClass('d-none');
-                    $(this).parents('.container-input-agenda').find('.online-no').removeClass('d-none');
+                    $(this).parents('.container-input-agenda').find('.online-no').removeClass('d-none').find('input').val('');
+                    $(this).parents('.container-input-agenda').find('.online-yes').addClass('d-none').find('input').val('');
                 }
             });
         }
@@ -432,38 +433,166 @@
             $('[name="time[]"]').change(debounce(function() {
                 let changeElement = this;
                 if (!$(changeElement).hasClass(lastCreateElement)) {
-                    if ($('.container-form-agenda').find('.container-input-agenda').length > 1) {
-                        let matchElement = false;
+                    let countElement = $('.container-form-agenda').find('.container-input-agenda').length;
+                    if (countElement > 1) {
                         let element = $('[name="time[]"]');
+                        let matchElement = false;
+                        let indexElementChange = 0;
+                        let dateEvent = '';
+                        let minTime = '';
+                        let additionOrSubtraction = 0;
                         $.map(element, function(elementOrValue, indexOrKey) {
-                            if ($(elementOrValue).prop('id') == $(elementOrValue).prop('id')) {
+                            if ($(elementOrValue).prop('id') == $(changeElement).prop('id')) {
                                 matchElement = true;
+                                indexElementChange = indexOrKey;
+                                dateEvent = $('#date').val();
+                                additionOrSubtraction = moment(`${dateEvent} ${$(changeElement).val()}`).diff(moment(
+                                        `${dateEvent} ${$(changeElement).data('lastTime')}`),
+                                    'minutes', true);
+                                $(elementOrValue).data('lastTime', $(changeElement).val());
+                                minTime = moment(`${dateEvent} ${$(changeElement).val()}`).add(10, 'minutes');
                             }
-                            if (matchElement && indexOrKey != 0) {
-                                let lastTimeUpdate = '';
-                                let timeNow = '';
-                                if ($(element[indexOrKey - 1]).data('lastTime') == undefined) {
-                                    lastTimeUpdate = $(element[indexOrKey - 1]).val();
-                                    timeNow = $(element[indexOrKey]).val();
-                                } else {
-                                    lastTimeUpdate = $(element[indexOrKey - 1]).data('lastTime');
-                                    timeNow = $(element[indexOrKey]).data('lastTime');
-                                }
-                                let defaultTimeParent = window.flatpickr[indexOrKey - 1].config.defaultDate;
-                                let defaultTimeChild = window.flatpickr[indexOrKey].config.defaultDate;
-                                let dateEvent = $('#date').val();
-                                console.log(lastTimeUpdate, timeNow, moment(`${dateEvent} ${lastTimeUpdate}`), moment(
-                                    `${dateEvent} ${timeNow}`))
-                                let classList = $(elementOrValue).attr("class").split(/\s+/);
-                                // window.flatpickr[indexOrKey].destroy();
-                                // setTimeChange(lastTimeUpdate, `.${classList[1]}`);
+                            if (matchElement && indexOrKey > indexElementChange) {
+                                console.log(additionOrSubtraction)
+                                let resultTime = moment(`${dateEvent} ${$(elementOrValue).val()}`).add(additionOrSubtraction, 'minutes');
+                                window.flatpickr[indexOrKey].set('defaultDate', resultTime.format('H:m'));
+                                window.flatpickr[indexOrKey].set('minTime', minTime.format('H:m'));
+                                window.flatpickr[indexOrKey].setDate(resultTime.format('H:m'), true);
+                                $(elementOrValue).data('lastTime', resultTime.format('H:m'));
                             }
+                            // if (matchElement && ($(element[indexElementChange]).data('lastTime') != undefined || indexOrKey >
+                            //         indexElementChange)) {
+                            //     let lastTimeEvent, timeEvent = '';
+                            //     if ($(element[indexOrKey]).data('lastTime') == undefined) {
+                            //         timeEvent = $(element[indexOrKey]).val();
+                            //         lastTimeEvent = $(element[indexOrKey - 1]).data('lastTime');
+                            //     } else {
+                            //         lastTimeEvent = $(element[indexOrKey]).data('lastTime');
+                            //         if (indexOrKey == 0) {
+                            //             timeEvent = $(element[indexOrKey]).val();
+                            //         } else {
+                            //             timeEvent = $(element[indexOrKey - 1]).val();
+                            //         }
+                            //     }
+                            //     console.log(indexOrKey, (countElement - 1))
+                            //     if (indexOrKey != 0 || indexOrKey != (countElement - 1)) {
+                            //         let dateEvent = $('#date').val();
+                            //         let eventDuration = moment(`${dateEvent} ${timeEvent}`).diff(moment(`${dateEvent} ${lastTimeEvent}`),
+                            //             'minutes', true);
+                            //         let classList = $(elementOrValue).attr("class").split(/\s+/);
+                            //         console.log(eventDuration)
+                            //         // window.flatpickr[indexOrKey].destroy();
+                            //         // setTimeChange(lastTimeUpdate, `.${classList[1]}`);
+                            //     }
+                            // } else {
+                            //     console.log(elementOrValue)
+                            // }
                         });
                     }
                 } else {
                     $(changeElement).attr('last-time', this.value);
                 }
             }, 1000))
+        }
+
+        function setupChoices(initial = true) {
+            if (initial) {
+                new Choices('.js-choice');
+            } else {
+                new Choices($('.js-choice:last-child')[0]);
+            }
+        }
+
+        function swiperInit() {
+            return new Swiper('.timelineSlider', {
+                slidesPerView: 1,
+                spaceBetween: 0,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 50,
+                    },
+                    1200: {
+                        slidesPerView: 5,
+                        spaceBetween: 50,
+                    }
+                }
+            })
+        }
+
+        function swiperDestroy() {
+            window.swiper_timeline.destroy(true, true);
+        }
+
+        function convertToAmPm(time) {
+            // Split the time into hours, minutes, and seconds
+            const [hour, minute, second] = time.split(":").map(Number);
+
+            // Determine AM/PM
+            const period = hour >= 12 ? "PM" : "AM";
+
+            // Convert hour to 12-hour format
+            const hour12 = hour % 12 || 12;
+
+            // Return the formatted time
+            return `${hour12.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${period}`;
+        }
+
+        function format(d) {
+            let html = '';
+            d.detail_event.forEach(detail_event => {
+                if (detail_event.online && (typeof detail_event.meeting) == 'string') {
+                    detail_event.meeting = JSON.parse(detail_event.meeting);
+                }
+                let timeInterval = moment(`${d.date} ${detail_event.time}`).diff(moment(), 'second');
+                let classBadge = timeInterval < 0 ? 'bg-success' : (timeInterval < 3600) ? 'bg-warning' : 'bg-secondary';
+                html += `<div class="swiper-slide">
+                            <div class="card pt-2 border-0 item-box text-center">
+                                <div class="timeline-content p-3 rounded">
+                                    <div>
+                                        <h6 class="fs-2 mb-0">${detail_event.name}</h6>
+                                        <dl class='mb-1'>${detail_event.speaker} - ${detail_event.location ?? 'daring'}</dl>
+                                        <div class="container-fluid text-muted mt-0">
+                                            ${(detail_event.online)?
+                                                `<div class='col-12'><dl class='mb-1 d-flex'><dt class='col-12 col-md-6 col-lg-5 text-start'>Id:</dt><div class='col-12 col-md-6 col-lg-7 rounded text-start fw-bold'>${detail_event.meeting.id}</div></dl><dl class='mb-1 d-flex'><dt class='col-12 col-md-6 col-lg-5 text-start'>Code:</dt><div class='col-12 col-md-6 col-lg-7 rounded text-start fw-bold'>${detail_event.meeting.passcode}</div></dl><dl class='mb-1 d-flex'><dt class='col-12 col-md-6 col-lg-5 text-start'>Topic:</dt><div class='col-12 col-md-6 col-lg-7 rounded text-start fw-bold'>${detail_event.meeting.topic}</div></dl></div>`
+                                            : ""}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="time"><span class="badge ${classBadge}">${convertToAmPm(detail_event.time)}</span></div>
+                            </div>
+                        </div>`;
+            });
+            return (
+                `<div class="col-lg-12">
+                    <div>
+                        <h5>@lang('translation.event_timeline')</h5>
+                        <div class="horizontal-timeline my-3 bg-body-tertiary">
+                            <div class="swiper timelineSlider">
+                                <div class="swiper-wrapper p-3">
+                                    ${html}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            );
         }
         $(function() {
             window.datatableEvent = $('#table-event').DataTable({
@@ -474,142 +603,121 @@
                     [1, 'desc']
                 ],
                 columns: [{
-                    target: 0,
-                    name: 'index',
-                    data: 'index',
-                    orderable: false,
-                    searchable: false,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
+                        target: 0,
+                        className: 'dt-control',
+                        orderable: false,
+                        data: null,
+                        defaultContent: ''
+                    }, {
+                        target: 1,
+                        name: 'name',
+                        data: 'name',
+                        orderable: true,
+                        searchable: true,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        }
+                    }, {
+                        target: 2,
+                        name: 'date',
+                        data: 'date',
+                        orderable: true,
+                        searchable: true,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        }
+                    }, {
+                        target: 3,
+                        name: 'recipient',
+                        data: 'recipient',
+                        orderable: true,
+                        searchable: true,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        },
+                    },
+                    {
+                        target: 4,
+                        name: 'file_attachment',
+                        data: 'file_attachment',
+                        orderable: false,
+                        searchable: false,
+                        render: (data, type, row, meta) => {
+                            return `<div class='d-flex justify-content-center'>${data}</div>`
+                        },
+                    },
+                    {
+                        target: 5,
+                        name: 'admin',
+                        data: 'admin',
+                        orderable: true,
+                        searchable: true,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        }
+                    }, {
+                        target: 6,
+                        name: 'action',
+                        data: 'action',
+                        orderable: true,
+                        searchable: true,
+                        render: (data, type, row, meta) => {
+                            return `<div class='d-flex justify-content-center'>${data}</div>`
+                        }
                     }
-                }, {
-                    target: 1,
-                    name: 'number',
-                    data: 'number',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 2,
-                    name: 'regarding',
-                    data: 'regarding',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 3,
-                    name: 'agenda',
-                    data: 'agenda',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 4,
-                    name: 'priority',
-                    data: 'priority',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 5,
-                    name: 'type',
-                    data: 'type',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 6,
-                    name: 'date',
-                    data: 'date',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 7,
-                    name: 'sender',
-                    data: 'sender',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 8,
-                    name: 'sender_phone_number',
-                    data: 'sender_phone_number',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 9,
-                    name: 'file_attachment',
-                    data: 'file_attachment',
-                    orderable: false,
-                    searchable: false,
-                    render: (data, type, row, meta) => {
-                        return `<div class='d-flex m-0 p-0 g-1'>${data}</div>`
-                    }
-                }, {
-                    target: 10,
-                    name: 'status',
-                    data: 'status',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 11,
-                    name: 'date_in',
-                    data: 'date_in',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 12,
-                    name: 'admin',
-                    data: 'admin',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='d-flex gap-1'>${data}</div>`
-                    }
-                }, {
-                    target: 13,
-                    name: 'action',
-                    data: 'action',
-                    orderable: false,
-                    searchable: false,
-                    render: (data, type, row, meta) => {
-                        return `<div class='d-flex m-0 p-0 g-1'>${data}</div>`
-                    }
-                }, ]
+                ]
             });
             window.datatableEvent.on('draw.dt', function() {
                 actionData();
             });
+            window.datatableEvent.on('click', 'td.dt-control', function(e) {
+                let tr = e.target.closest('tr');
+                let row = window.datatableEvent.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    swiperDestroy();
+                } else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    window.swiper_timeline = swiperInit();
+                }
+            });
             $('#save-event').click(function() {
                 let data = serializeObject($('#form-event'));
+                let agendas = [];
+                $.map($('.container-input-agenda'), function(elementOrValue, indexOrKey) {
+                    let agenda = {};
+                    $(elementOrValue).find('select, input:not(".d-none >input")[type=text]').map(function(indexOrKeyInput,
+                        elementOrValueInput) {
+                        let element = $(elementOrValueInput);
+                        let elementId = element.prop('name').split('agenda.').join('').split('[]').join('');
+                        if (element.val().trim() != '') {
+                            agenda[elementId] = element.val();
+                        }
+                    });
+                    agendas.push(agenda);
+                });
+                let file_attachment = data["file_attachment"];
+                delete data["agenda.location"];
+                delete data["agenda.name"];
+                delete data["agenda.online"];
+                delete data["agenda.speaker"];
+                delete data["agenda.time"];
+                delete data["agenda.meeting.id"];
+                delete data["agenda.meeting.passcode"];
+                delete data["agenda.meeting.topic"];
+                delete data["file_attachment"];
+
                 $.ajax({
                     type: "POST",
                     url: `{{ route('event.store') }}`,
-                    data: data,
+                    data: {
+                        ...data,
+                        agendas: agendas,
+                        file_attachment: JSON.parse(file_attachment),
+                    },
                     dataType: "json",
                     success: function(response) {
                         $('#modal-event').modal('hide')
@@ -643,14 +751,14 @@
             });
             $('#add-agenda').click(function(e) {
                 $('.is-invalid').removeClass('is-invalid')
-
                 if ($('#date').val() == '') {
                     $('#date').addClass('is-invalid');
                 } else {
                     let valid = true;
-                    $.map($(document).find('.container-input-agenda:last-child input'), function(elementOrValue, indexOrKey) {
+                    $.map($(document).find('.container-input-agenda:last-child input:not(input.choices__input)'), function(elementOrValue,
+                        indexOrKey) {
                         if ($(elementOrValue).parent('.d-none').length == 0 && $(elementOrValue).val() == '') {
-                            $(elementOrValue).addClass('is-invalid')
+                            $(elementOrValue).addClass('is-invalid');
                             valid = false;
                         }
                     });
@@ -663,46 +771,51 @@
                         let dateAndTime = `${$('#date').val()} ${lastTime}`;
                         lastTime = moment(dateAndTime).add(10, 'minutes').format('H:m');
                         let html = `<div class="col-12 row container-input-agenda">
-                        <div class="col-6 mb-2">
-                            <label class="form-label" for="name">Name</label>
-                            <input type="text" id="name" name="name" placeholder="Enter the agenda name" class="form-control"
-                                required>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <label class="form-label" for="time${nextIndex}">Time</label>
-                            <input type="text" id="time${nextIndex}" name="time[]" class="form-control flatpikr-${nextIndex}" required>
-                        </div>
-                        <div class="col-6 mb-2">
-                            <label class="form-label" for="online${nextIndex}">Online</label>
-                            <select class="form-control" id="online${nextIndex}" name="online[]">
-                                <option selected value="false">No</option>
-                                <option value="true">Yes</option>
-                            </select>
-                        </div>
-                        <div class="col-6 mb-2 online-no">
-                            <label class="form-label" for="location${nextIndex}">Location</label>
-                            <input type="text" id="location${nextIndex}" name="location[]" placeholder="Enter the location" class="form-control"
-                                required>
-                        </div>
-                       <div class="col-6 mb-2 online-yes d-none">
-                            <label class="form-label" for="meeting[][id]${nextIndex}">Location</label>
-                            <input type="text" id="meeting[][id]${nextIndex}" name="meeting[][id]" placeholder="Enter the id" class="form-control"
-                                required>
-                        </div>
-                        <div class="col-6 mb-2 online-yes d-none">
-                            <label class="form-label" for="meeting[][passcode]${nextIndex}">Location</label>
-                            <input type="text" id="meeting[][passcode]${nextIndex}" name="meeting[][passcode]" placeholder="Enter the passcode" class="form-control"
-                                required>
-                        </div>
-                        <div class="col-6 mb-2 online-yes d-none">
-                            <label class="form-label" for="meeting[][topic]${nextIndex}">Location</label>
-                            <input type="text" id="meeting[][topic]${nextIndex}" name="meeting[][topic]" placeholder="Enter the topic" class="form-control"
-                                required>
-                        </div>
-                        <div class="col-12 row justify-content-end gap-1">
-                            <button type="button" class="btn btn-icon btn-danger"><i class='bx bxs-trash'></i></button>
-                        </div>
-                    </div>`;
+                            <div class="col-6 mb-2">
+                                <label class="form-label" for="name${nextIndex}">Name</label>
+                                <input type="text" id="name${nextIndex}" name="agenda.name" placeholder="Enter the agenda name" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label" for="time${nextIndex}">Time</label>
+                                <input type="text" id="time${nextIndex}" name="agenda.time" class="form-control flatpikr-${nextIndex}" required>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label for="speaker${nextIndex}" class="form-label">@lang('translation.speaker')</label>
+                                <input type="text" class="form-control js-choice" data-choices data-choices-text-unique-true
+                                    data-choices-limit="your required limit" data-choices-removeItem  name="agenda.speaker" id="speaker${nextIndex}" />
+                            </div>
+                            <div class="col-6 mb-2">
+                                <label class="form-label" for="online${nextIndex}">Online</label>
+                                <select class="form-control" id="online${nextIndex}" name="agenda.online">
+                                    <option selected value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+                            <div class="col-6 mb-2 online-no">
+                                <label class="form-label" for="location${nextIndex}">Location</label>
+                                <input type="text" id="location${nextIndex}" name="agenda.location" placeholder="Enter the location" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-6 mb-2 online-yes d-none">
+                                <label class="form-label" for="meeting.id${nextIndex}">Id meeting</label>
+                                <input type="text" id="meeting.id${nextIndex}" name="agenda.meeting.id" placeholder="Enter the id" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-6 mb-2 online-yes d-none">
+                                <label class="form-label" for="meeting.passcode${nextIndex}">Passcode meeting</label>
+                                <input type="text" id="meeting.passcode${nextIndex}" name="agenda.meeting.passcode" placeholder="Enter the passcode" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-6 mb-2 online-yes d-none">
+                                <label class="form-label" for="meeting.topic${nextIndex}">Topic meeting</label>
+                                <input type="text" id="meeting.topic${nextIndex}" name="agenda.meeting.topic" placeholder="Enter the topic" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-12 row justify-content-end gap-1">
+                                <button type="button" class="btn btn-icon btn-danger"><i class='bx bxs-trash'></i></button>
+                            </div>
+                        </div>`;
                         $('.container-form-agenda').append(html);
                         let scrollBottom = document.querySelector('.container-form-agenda').scrollHeight;
                         document.querySelector('.container-form-agenda').scrollTo({
@@ -714,6 +827,7 @@
                         handleTimeChange(`flatpikr-${nextIndex}`);
                     }
                 }
+                setupChoices(false);
             });
             $('#update-event').click(function() {
                 let data = serializeObject($('#form-event'));
@@ -767,39 +881,6 @@
                 if (window.state == 'update') {
                     $('#file_attachment_help').removeClass('d-none')
                 }
-                $.ajax({
-                    type: "GET",
-                    url: `{{ route('master.agenda.all') }}`,
-                    dataType: "json",
-                    success: function(response) {
-                        $("#agenda_id").html(dataToOption(response.data));
-                        $('.select2').select2({
-                            dropdownParent: $('#modal-event'),
-                        })
-                    }
-                });
-                $.ajax({
-                    type: "GET",
-                    url: `{{ route('master.priority.all') }}`,
-                    dataType: "json",
-                    success: function(response) {
-                        $("#priority_id").html(dataToOption(response.data));
-                        $('.select2').select2({
-                            dropdownParent: $('#modal-event'),
-                        });
-                    }
-                });
-                $.ajax({
-                    type: "GET",
-                    url: `{{ route('master.type.all') }}`,
-                    dataType: "json",
-                    success: function(response) {
-                        $("#type_id").html(dataToOption(response.data));
-                        $('.select2').select2({
-                            dropdownParent: $('#modal-event'),
-                        })
-                    }
-                });
             });
             $('#modal-status-event').on('shown.bs.modal', function() {
                 $('.select2').select2({
@@ -838,7 +919,6 @@
                 FilePondPluginFileValidateType
             );
             var file_pond = document.getElementById('file_attachment');
-            var reply_file_pond = document.getElementById('reply_file_attachment');
             window.file_pond_file_attachment = FilePond.create(file_pond, {
                 maxFiles: 1,
                 maxFileSize: '10MB',
