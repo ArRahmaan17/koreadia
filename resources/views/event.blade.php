@@ -735,8 +735,16 @@
                         $('#modal-event .is-invalid').removeClass('is-invalid')
                         $.each(error.responseJSON.errors, function(indexInArray,
                             valueOfElement) {
-                            $('#modal-event').find('[name=' + indexInArray +
-                                ']').addClass('is-invalid')
+                            if (indexInArray.split('agendas.').length > 1) {
+                                let indexSplitting = indexInArray.split('agendas.').join('').split('.')
+                                let name = indexSplitting[1];
+                                let index = indexSplitting[0];
+                                $($('.container-input-agenda')[index]).find('[name="agenda.' + name + '"]').addClass(
+                                    'is-invalid');
+                            } else {
+                                $('#modal-event').find('[name=' + indexInArray +
+                                    ']').addClass('is-invalid')
+                            }
                         });
                         iziToast.error({
                             id: 'alert-event-form',
