@@ -30,14 +30,15 @@ class sendBroadcastEvent extends Command
     {
         $data = EventSchedule::with('agendas')->select('event_schedules.*', 'e.phone_number')
             ->join('event_queues as eq', 'event_schedules.id', '=', 'eq.event_schedule_id')
-            ->join('employees as e', 'event_schedules.user_id', '=', 'e.id')
-            ->where([['eq.broadcast', false], ['eq.request_broadcast', true]])->orderBy('eq.event_schedule_id', 'ASC')->find($this->argument('event_schedule_id'))->toArray();
+            ->join('employees as e', 'eq.employee_id', '=', 'e.id')
+            ->where([['eq.broadcast', false], ['eq.request_broadcast', true]])->orderBy('eq.id', 'ASC')->where('eq.id', $this->argument('event_schedule_id'))->first()->toArray();
         $data['phone_number'] = unFormattedPhoneNumber($data['phone_number']);
         $response = Http::attach(
             'file_attachment',
             file_get_contents(public_path($data['file_attachment'])),
             $data['name'] . '.jpg'
         )->post(env('WHATSAPP_URL') . 'broadcast-event/' . $data['phone_number'], [
+            'id' => $data['id'],
             'name' => $data['name'],
             'date' => Carbon::createFromFormat('Y-m-d', $data['date'], 'Asia/Jakarta')->format('l, j F Y'),
             'recipient' => $data['recipient'],

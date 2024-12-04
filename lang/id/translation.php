@@ -26,6 +26,7 @@ return [
     'user_valided' => 'Pengguna yang anda tambahan di sini tidak memerlukan veririkasi nomer Whatsapp',
     'image_update_help' => 'Menambahkan file inputan diatas dapat menghilangkan file sebelumnya',
     'changes' => 'perubahan',
+    'location' => 'Lokasi acara',
     'menu' => 'Menu aplikasi',
     'show' => 'Lihat',
     'add' => 'Tambah',

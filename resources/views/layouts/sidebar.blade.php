@@ -5,19 +5,19 @@
         <!-- Dark Logo-->
         <a href="{{ route('home') }}" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('build/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54">
             </span>
-            <span class="logo-lg">
-                <img src="{{ asset('build/images/logo-dark.png') }}" alt="" height="17">
+           <span class="logo-lg text-white fs-1 fw-bold">
+                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54"> Koredia
             </span>
         </a>
         <!-- Light Logo-->
         <a href="{{ route('home') }}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('build/images/logo-sm.png') }}" alt="" height="22">
+                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54">
             </span>
-            <span class="logo-lg">
-                <img src="{{ asset('build/images/logo-light.png') }}" alt="" height="17">
+            <span class="logo-lg text-white fs-1 fw-bold">
+                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54"> Koredia
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -30,7 +30,7 @@
             aria-expanded="false">
             <span class="d-flex align-items-center gap-2">
                 <img class="rounded header-profile-user"
-                    src="@if (Auth::user()->avatar != '') {{ asset( Auth::user()->avatar) }}@else{{ asset('build/images/users/avatar-1.jpg') }} @endif"
+                    src="@if (Auth::user()->avatar != '') {{ asset(Auth::user()->avatar) }}@else{{ asset('build/images/users/avatar-1.jpg') }} @endif"
                     alt="Header Avatar">
                 <span class="text-start">
                     <span class="d-block fw-medium sidebar-user-name-text">{{ Auth::user()->name }}</span>

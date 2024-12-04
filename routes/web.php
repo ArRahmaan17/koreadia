@@ -60,6 +60,7 @@ Route::middleware('check.auth')->group(function () {
         Route::get('/', [EventScheduleController::class, 'index'])->name('index');
         Route::get('/data-table', [EventScheduleController::class, 'dataTable'])->name('data-table');
         Route::put('/event-update/{id?}', [EventScheduleController::class, 'requestBroadcast'])->name('event-update');
+        Route::get('/timeline/{id?}', [EventScheduleController::class, 'showTimeline'])->name('show-timeline');
         Route::get('/{id?}', [EventScheduleController::class, 'show'])->name('show');
         Route::put('/{id?}', [EventScheduleController::class, 'update'])->name('update');
         Route::delete('/{id?}', [EventScheduleController::class, 'destroy'])->name('destroy');

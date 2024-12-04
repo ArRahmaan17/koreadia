@@ -3,6 +3,22 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
+function compareDateEvent($date, $time, $timeNextEvent)
+{
+    if ($timeNextEvent == null) {
+        $timeNextEvent = Carbon\Carbon::parse($date . ' ' . $time)->addHour()->format('h:i');
+    }
+    $dateCompare = now('Asia/Jakarta')->diffInSeconds(Carbon\Carbon::parse($date . ' ' . $time), false);
+    $dateCompareNextEvent = Carbon\Carbon::parse($date . ' ' . $time)->diffInSeconds(Carbon\Carbon::parse($date . ' ' . $timeNextEvent), false);
+    if ($dateCompare < 0) {
+        return ['class' => 'bg-success-subtle', 'color'=> 'text-success', 'label' => 'Selesai'];
+    } else if ($dateCompare > 1 && $dateCompare < $dateCompareNextEvent) {
+        return ['class' => 'bg-warning-subtle', 'color'=> 'text-warning', 'label' => 'Sedang Berjalan'];
+    } else {
+        return ['class' => 'bg-primary-subtle', 'color'=> 'text-primary', 'label' => 'Akan Datang'];
+    }
+}
+
 if (! function_exists('buildTree')) {
     function buildTree(array &$elements, $idParent = 0)
     {
@@ -30,7 +46,7 @@ function getSql($model)
             $pos = strpos($sql, $needle);
             if ($pos !== false) {
                 if (gettype($replace) === 'string') {
-                    $replace = ' "'.addslashes($replace).'" ';
+                    $replace = ' "' . addslashes($replace) . '" ';
                 }
                 $sql = substr_replace($sql, $replace, $pos, strlen($needle));
             }
@@ -95,28 +111,28 @@ if (! function_exists('buildMenu')) {
                     if (isset($element['children'])) {
                         $children = buildMenu($element['children'], $place, 'child');
                         $html .= '<li class="nav-item">
-                        <a class="nav-link '.(($state == 'parent') ? 'menu-link' : '').' collapsed" href="#sideBar'.$element['id'].'" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                        aria-controls="sideBar'.$element['id'].'">
-                        <i class="ri-apps-2-line"></i> <span>'.trans($element['name']).'</span>
+                        <a class="nav-link ' . (($state == 'parent') ? 'menu-link' : '') . ' collapsed" href="#sideBar' . $element['id'] . '" data-bs-toggle="collapse" role="button" aria-expanded="false"
+                        aria-controls="sideBar' . $element['id'] . '">
+                        <i class="ri-apps-2-line"></i> <span>' . trans($element['name']) . '</span>
                     </a>
-                    <div class="collapse menu-dropdown" id="sideBar'.$element['id'].'">
+                    <div class="collapse menu-dropdown" id="sideBar' . $element['id'] . '">
                         <ul class="nav nav-sm flex-column">
-                            '.$children.'
+                            ' . $children . '
                         </ul>
                     </div>
                     </li>';
                     } else {
                         $html .= '<li class="nav-item">
-                            <a href="'.(Route::has($element['route']) ? route($element['route']) : $element['route']).'" class="nav-link '.(($state == 'parent') ? 'menu-link' : '').'">
-                                <i class="'.$element['icon'].' align-middle"></i> 
-                                <span>'.trans($element['name']).'</span>
+                            <a href="' . (Route::has($element['route']) ? route($element['route']) : $element['route']) . '" class="nav-link ' . (($state == 'parent') ? 'menu-link' : '') . '">
+                                <i class="' . $element['icon'] . ' align-middle"></i> 
+                                <span>' . trans($element['name']) . '</span>
                             </a>
                         </li>';
                     }
                 } elseif ($place == 1) {
-                    $html .= '<a class="dropdown-item" href="'.(Route::has($element['route']) ? route($element['route']) : $element['route']).'">
-                                <i class="'.$element['icon'].' text-muted fs-16 align-middle me-1"></i> 
-                                <span class="align-middle">'.$element['name'].'</span>
+                    $html .= '<a class="dropdown-item" href="' . (Route::has($element['route']) ? route($element['route']) : $element['route']) . '">
+                                <i class="' . $element['icon'] . ' text-muted fs-16 align-middle me-1"></i> 
+                                <span class="align-middle">' . $element['name'] . '</span>
                             </a>';
                 }
             }

@@ -105,7 +105,7 @@ class EventScheduleController extends Controller
             $row['admin'] = $item->admin;
             $row['detail_event'] = DetailEventSchedule::where('event_schedule_id', $item->id)->get()->toArray();
             $row['file_attachment'] = "<button title='" . trans('translation.show') . ' ' . trans('translation.event_file_attachment') . "' class='btn btn-icon btn-info file-thumbnails' data-file='" . $item->file_attachment . "'><i class='bx bx-image' ></i></button>";
-            $row['action'] = (($item->broadcasted != $item->count_requesting) ?"<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' " . (($item->request_broadcast > 0) ? 'disabled' : '') . " data-event='" . $item->id . "' >" . (($item->request_broadcast > 0) ? '<i class="bx bx-loader-circle"></i>' : '<i class="bx bxs-paper-plane"></i>') . "</button>": "")."<button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
+            $row['action'] = (($item->count_requesting == 0) ? "<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' " . (($item->request_broadcast > 0) ? 'disabled' : '') . " data-event='" . $item->id . "' >" . (($item->request_broadcast > 0) ? '<i class="bx bx-loader-circle"></i>' : '<i class="bx bxs-paper-plane"></i>') . "</button>" : "") . "<button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -157,12 +157,16 @@ class EventScheduleController extends Controller
                 $value['created_at'] = now('Asia/Jakarta');
                 $value['updated_at'] = now('Asia/Jakarta');
                 if ($value['online'] == 'true') {
+                    $value['location'] = null;
                     $value['meeting'] = json_encode([
                         'id' => $value['meeting.id'],
                         'passcode' => $value['meeting.passcode'],
                         'topic' => $value['meeting.passcode'],
                     ]);
                     unset($value['meeting.id'], $value['meeting.passcode'], $value['meeting.topic']);
+                } else {
+                    $value['meeting'] = null;
+                    $value['location'] = $value['location'];
                 }
                 array_push($data_agenda, $value);
             }
@@ -171,6 +175,7 @@ class EventScheduleController extends Controller
             $response = ['message' => 'successfully creating resources'];
             $code = 200;
         } catch (\Throwable $th) {
+            dd($th);
             DB::rollBack();
             $response = ['message' => 'failed creating resources'];
             $code = 422;
@@ -210,6 +215,16 @@ class EventScheduleController extends Controller
         }
 
         return response()->json($response, $code);
+    }
+
+    public function showTimeline(string $id)
+    {
+        $data = EventSchedule::with('agendas')->find($id);
+        if (empty($data)) {
+            return redirect()->route('fe-home');
+        } else {
+            return view('event-timeline', compact('data'));
+        }
     }
 
     /**

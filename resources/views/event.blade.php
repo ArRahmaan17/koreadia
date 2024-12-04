@@ -391,6 +391,10 @@
                 $('#modal-event-update').find('input[name=id]').val($(this).data('event'));
                 $('#modal-event-update').find('#save-event-update').data('event', $(this).data('event'));
             });
+            $('.show-timeline').click(function() {
+                let id = $(this).data('event');
+                window.open(`{{ route('event.show-timeline') }}/${id}`, true);
+            });
         }
 
         function changeStatusEvent() {
