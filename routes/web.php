@@ -170,7 +170,6 @@ Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
 Route::post('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking');
 Route::get('/tracking', [TrackingController::class, 'tracking'])->name('fe-tracking');
 Route::get('/mail', [MailController::class, 'index'])->name('sendMail');
-Route::get('/all', [AgendaController::class, 'all'])->name('agenda.all');
-Route::get('/all', [TypeController::class, 'all'])->name('master.type.all');
+Route::get('/all', [AgendaController::class, 'all'])->name('master.agenda.all');
 Route::get('/all', [TypeController::class, 'all'])->name('master.type.all');
 Route::get('/all', [PriorityController::class, 'all'])->name('master.priority.all');
