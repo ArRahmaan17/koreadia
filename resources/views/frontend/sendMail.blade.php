@@ -99,14 +99,14 @@
 
             <!-- Section 5 -->
             <div class="row mb-3">
-                <div class="col-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="file_attachment" class="form-label" style="display: inline-block;">Lampiran berkas</label>
                         <input type="file" class="form-control filepond-input-multiple" id="file_attachment" name="file_attachment" aria-describedby="file_attachment_help">
                         <div id="file_attachment_help" class="form-text d-none">Menambahkan file inputan diatas dapat menghilangkan file sebelumnya</div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <div class="g-recaptcha" id="html_element"></div>
                     </div>
@@ -116,7 +116,7 @@
         </div>
 
         <div class="row">
-            <div class="col-12">
+            <div class="col-md-12">
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary">Kirim Email</button>
                 </div>
