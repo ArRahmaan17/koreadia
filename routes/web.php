@@ -80,7 +80,6 @@ Route::middleware('check.auth')->group(function () {
         });
         Route::prefix('type')->name('type.')->group(function () {
             Route::get('/', [TypeController::class, 'index'])->name('index');
-            Route::get('/all', [TypeController::class, 'all'])->name('all');
             Route::get('/data-table', [TypeController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [TypeController::class, 'show'])->name('show');
             Route::put('/{id?}', [TypeController::class, 'update'])->name('update');
