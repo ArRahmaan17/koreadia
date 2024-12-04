@@ -31,6 +31,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('master/agenda/all', [AgendaController::class, 'all'])->name('master.agenda.all');
+Route::get('master/type/all', [TypeController::class, 'all'])->name('master.type.all');
+Route::get('master/priority/all', [PriorityController::class, 'all'])->name('master.priority.all');
 Route::middleware('check.auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -170,6 +173,3 @@ Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
 Route::post('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking');
 Route::get('/tracking', [TrackingController::class, 'tracking'])->name('fe-tracking');
 Route::get('/mail', [MailController::class, 'index'])->name('sendMail');
-Route::get('master/agenda/all', [AgendaController::class, 'all'])->name('master.agenda.all');
-Route::get('master/type/all', [TypeController::class, 'all'])->name('master.type.all');
-Route::get('master/priority/all', [PriorityController::class, 'all'])->name('master.priority.all');
