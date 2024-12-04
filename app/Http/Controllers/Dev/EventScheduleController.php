@@ -24,7 +24,7 @@ class EventScheduleController extends Controller
 
     public function dataTable(Request $request)
     {
-        $totalData = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
+        $totalData = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id) as count_requesting'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast =true) as broadcasted'))
             ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
             ->where([
                 [
@@ -37,7 +37,7 @@ class EventScheduleController extends Controller
             ->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
+            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id) as count_requesting'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast =true) as broadcasted'))
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id');
 
             if ($request['length'] != '-1') {
@@ -55,7 +55,7 @@ class EventScheduleController extends Controller
                 ],
             ])->get();
         } else {
-            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
+            $assets = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id) as count_requesting'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast =true) as broadcasted'))
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
                 ->where('event_schedules.name', 'ilike', '%' . $request['search']['value'] . '%')
                 ->orWhere('date', 'ilike', '%' . $request['search']['value'] . '%')
@@ -77,7 +77,7 @@ class EventScheduleController extends Controller
                 ],
             ])->get();
 
-            $totalFiltered = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'))
+            $totalFiltered = EventSchedule::select('event_schedules.*', 'u.name as admin', DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast = false) as request_broadcast'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id) as count_requesting'), DB::raw('(select count(0) from event_queues where event_schedule_id = event_schedules.id and broadcast =true) as broadcasted'))
                 ->join('users as u', 'u.id', '=', 'event_schedules.user_id')
                 ->where('event_schedules.name', 'ilike', '%' . $request['search']['value'] . '%')
                 ->orWhere('date', 'ilike', '%' . $request['search']['value'] . '%')
@@ -105,7 +105,7 @@ class EventScheduleController extends Controller
             $row['admin'] = $item->admin;
             $row['detail_event'] = DetailEventSchedule::where('event_schedule_id', $item->id)->get()->toArray();
             $row['file_attachment'] = "<button title='" . trans('translation.show') . ' ' . trans('translation.event_file_attachment') . "' class='btn btn-icon btn-info file-thumbnails' data-file='" . $item->file_attachment . "'><i class='bx bx-image' ></i></button>";
-            $row['action'] = "<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' " . (($item->request_broadcast > 0) ? 'disabled' : '') . " data-event='" . $item->id . "' >" . (($item->request_broadcast > 0) ? '<i class="bx bx-loader-circle"></i>' : '<i class="bx bxs-paper-plane"></i>') . "</button><button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
+            $row['action'] = (($item->broadcasted != $item->count_requesting) ?"<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' " . (($item->request_broadcast > 0) ? 'disabled' : '') . " data-event='" . $item->id . "' >" . (($item->request_broadcast > 0) ? '<i class="bx bx-loader-circle"></i>' : '<i class="bx bxs-paper-plane"></i>') . "</button>": "")."<button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
