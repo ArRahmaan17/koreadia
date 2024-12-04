@@ -5,19 +5,19 @@
         <!-- Dark Logo-->
         <a href="{{ route('home') }}" class="logo logo-dark">
             <span class="logo-sm">
-                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54">
+                <img src="{{ asset('build/images/logo.png') }}" alt="" height="50">
             </span>
-            <span class="logo-lg text-white fs-1 fw-bold">
-                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54"> {{ env('APP_NAME') }}
+            <span class="logo-lg text-white fs-2 fw-bold">
+                {{ env('APP_NAME') }}
             </span>
         </a>
         <!-- Light Logo-->
         <a href="{{ route('home') }}" class="logo logo-light">
             <span class="logo-sm">
-                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54">
+                <img src="{{ asset('build/images/logo.png') }}" alt="" height="50">
             </span>
-            <span class="logo-lg text-white fs-1 fw-bold">
-                <img src="{{ asset('build/images/logo.png') }}" alt="" height="54"> {{ env('APP_NAME') }}
+            <span class="logo-lg text-white fs-2 fw-bold">
+                {{ env('APP_NAME') }}
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">

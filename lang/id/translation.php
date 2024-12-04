@@ -45,6 +45,7 @@ return [
     'event_file_attachment' => 'Gambar kecil',
     'event_timeline' => 'Timeline acara',
     'all' => 'Semua',
+    'employee' => 'Pegawai',
     'speaker_agenda' => 'Pejabat yang datang/Penangung jawab acara ',
     'mail_status' => 'Status',
     'mail_date_in' => 'Tanggal masuk',
