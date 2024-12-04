@@ -214,8 +214,8 @@ class MailTransactionController extends Controller
         try {
             $data = $request->except('_token', 'file_attachment', 'admin');
             $data['date_in'] = now('Asia/Jakarta');
-            $data['user_id'] = auth()->user()->id;
-            $data['creator_id'] = auth()->user()->id;
+            $data['user_id'] = auth()->user()->id ?? 1;
+            $data['creator_id'] = auth()->user()->id ?? 1;
             $data['status'] = 'IN';
             if ($request->has('file_attachment')) {
                 $file_attachment = json_decode($request->file_attachment);

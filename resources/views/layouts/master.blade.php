@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>@yield('title') | {{ env('APP_NAME') }} - Admin & Dashboard Template</title>
+    <title>@yield('title') | {{ env('APP_NAME') }} - {{ env('APP_WILAYAH') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -23,7 +23,7 @@
         <!-- ============================================================== -->
         <div class="main-content">
             <div class="page-content">
-                <div class="container-fluid"  data-simplebar-track="primary">
+                <div class="container-fluid" data-simplebar-track="primary">
                     @yield('content')
                 </div>
                 <!-- container-fluid -->
@@ -110,30 +110,30 @@
             //     regex: `[0-9A-Za-z]{3,10}\/[0-9A-Za-z]{2,10}\/[0-9A-Za-z]{2,4}\/\[0-9A-Za-z]{4}`
             // })
             $('.email').inputmask({
-                mask: "*{1,15}[.*{1,15}][.*{1,15}][.*{1,15}]@*{1,15}[.*{2,6}][.*{1,2}]",
-                greedy: false,
-                onBeforePaste: function(pastedValue, opts) {
-                    pastedValue = pastedValue.toLowerCase();
-                    return pastedValue.replace("mailto:", "");
-                },
-                definitions: {
-                    '*': {
-                        validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~\-]",
-                    casing: "lower"
-                }
-            }
-        });
-    }
+                    mask: "*{1,15}[.*{1,15}][.*{1,15}][.*{1,15}]@*{1,15}[.*{2,6}][.*{1,2}]",
+                    greedy: false,
+                    onBeforePaste: function(pastedValue, opts) {
+                        pastedValue = pastedValue.toLowerCase();
+                        return pastedValue.replace("mailto:", "");
+                    },
+                    definitions: {
+                        '*': {
+                            validator: "[0-9A-Za-z!#$%&'*+/=?^_`{|}~\-]",
+                            casing: "lower"
+                        }
+                    })
+            });
+        }
 
-    function debounce(func, delay) {
-        let timer;
-        return function(...args) {
-            clearTimeout(timer);
-            timer = setTimeout(() => {
-                func.apply(this, args);
-            }, delay);
-        };
-    }
+        function debounce(func, delay) {
+            let timer;
+            return function(...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    func.apply(this, args);
+                }, delay);
+            };
+        }
     </script>
     @if (env('APP_ENV') === 'production')
         <script>

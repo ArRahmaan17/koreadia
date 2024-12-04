@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{{ env('APP_NAME') }}</title>
+    <title>{{ env('APP_NAME') }} - {{ env('APP_WILAYAH') }}</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- CSS Connection -->
     @include('layouts.public-css')
-
+    @yield('css')
     <!-- =======================================================
   * Template Name: QuickStart
   * Template URL: https://bootstrapmade.com/quickstart-bootstrap-startup-website-template/
@@ -37,7 +37,7 @@
 
     <!-- JS Connection -->
     @include('layouts.public-js');
-
+    @yield('script')
 </body>
 
 </html>
