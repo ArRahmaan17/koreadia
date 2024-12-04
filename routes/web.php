@@ -69,7 +69,6 @@ Route::middleware('check.auth')->group(function () {
     Route::prefix('master')->name('master.')->group(function () {
         Route::prefix('agenda')->name('agenda.')->group(function () {
             Route::get('/', [AgendaController::class, 'index'])->name('index');
-            Route::get('/all', [AgendaController::class, 'all'])->name('all');
             Route::get('/data-table', [AgendaController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [AgendaController::class, 'show'])->name('show');
             Route::put('/{id?}', [AgendaController::class, 'update'])->name('update');
@@ -87,7 +86,6 @@ Route::middleware('check.auth')->group(function () {
         });
         Route::prefix('priority')->name('priority.')->group(function () {
             Route::get('/', [PriorityController::class, 'index'])->name('index');
-            Route::get('/all', [PriorityController::class, 'all'])->name('all');
             Route::get('/data-table', [PriorityController::class, 'dataTable'])->name('data-table');
             Route::get('/{id?}', [PriorityController::class, 'show'])->name('show');
             Route::put('/{id?}', [PriorityController::class, 'update'])->name('update');
@@ -172,3 +170,7 @@ Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
 Route::post('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking');
 Route::get('/tracking', [TrackingController::class, 'tracking'])->name('fe-tracking');
 Route::get('/mail', [MailController::class, 'index'])->name('sendMail');
+Route::get('/all', [AgendaController::class, 'all'])->name('agenda.all');
+Route::get('/all', [TypeController::class, 'all'])->name('type.all');
+Route::get('/all', [TypeController::class, 'all'])->name('type.all');
+Route::get('/all', [PriorityController::class, 'all'])->name('priority.all');
