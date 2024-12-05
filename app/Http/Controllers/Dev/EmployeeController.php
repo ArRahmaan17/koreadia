@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class EmployeeController extends Controller
 {
@@ -30,16 +31,16 @@ class EmployeeController extends Controller
                     ->offset($request['start']);
             }
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
             $assets = $assets->get();
         } else {
             $assets = Employee::select('*')
-                ->where('name', 'like', '%'.$request['search']['value'].'%')
-                ->orWhere('phone_number', 'like', '%'.$request['search']['value'].'%');
+                ->where('name', 'like', '%' . $request['search']['value'] . '%')
+                ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
+                $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
             if ($request['length'] != '-1') {
                 $assets->limit($request['length'])
@@ -48,11 +49,11 @@ class EmployeeController extends Controller
             $assets = $assets->get();
 
             $totalFiltered = Employee::select('*')
-                ->where('name', 'like', '%'.$request['search']['value'].'%')
-                ->orWhere('phone_number', 'like', '%'.$request['search']['value'].'%');
+                ->where('name', 'like', '%' . $request['search']['value'] . '%')
+                ->orWhere('phone_number', 'like', '%' . $request['search']['value'] . '%');
 
             if (isset($request['order'][0]['column'])) {
-                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'].' '.$request['order'][0]['dir']);
+                $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
             $totalFiltered = $totalFiltered->count();
         }
@@ -62,7 +63,7 @@ class EmployeeController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['phone_number'] = $item->phone_number;
-            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-employee='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-employee='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+            $row['action'] = "<button class='btn btn-icon btn-warning edit' data-employee='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-employee='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
         $response = [
@@ -86,7 +87,14 @@ class EmployeeController extends Controller
         ]);
         DB::beginTransaction();
         try {
-            Employee::create($request->except('_token'));
+            if (env('WHATSAPP_API')) {
+                $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($request->phone_number));
+            }
+            $data = $request->except('_token');
+            if ($registered->status() < 300) {
+                $data['valid'] = true;
+            }
+            Employee::create($data);
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
             DB::commit();
@@ -133,12 +141,21 @@ class EmployeeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:employees,name,'.$id.'|min:5|max:30',
-            'phone_number' => 'required|unique:employees,phone_number,'.$id.'|min:18|max:19',
+            'name' => 'required|unique:employees,name,' . $id . '|min:5|max:30',
+            'phone_number' => 'required|unique:employees,phone_number,' . $id . '|min:18|max:19',
         ]);
         DB::beginTransaction();
         try {
-            Employee::find($id)->update($request->except('_token'));
+            if (env('WHATSAPP_API')) {
+                $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($request->phone_number));
+            }
+            $data = $request->except('_token');
+            if ($registered->status() < 300) {
+                $data['valid'] = true;
+            } else {
+                $data['valid'] = false;
+            }
+            Employee::find($id)->update($data);
             DB::commit();
             $response = ['message' => 'updating resources successfully'];
             $code = 200;

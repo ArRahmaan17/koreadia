@@ -34,6 +34,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('master/agenda/all', [AgendaController::class, 'all'])->name('master.agenda.all');
 Route::get('master/type/all', [TypeController::class, 'all'])->name('master.type.all');
 Route::get('master/priority/all', [PriorityController::class, 'all'])->name('master.priority.all');
+Route::get('/wa-offline', function () {
+    return response()->json(['message' => 'wa offline'], 503);
+})->name('wa-offline');
 Route::middleware('check.auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

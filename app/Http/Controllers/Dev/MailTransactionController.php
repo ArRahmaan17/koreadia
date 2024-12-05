@@ -225,8 +225,11 @@ class MailTransactionController extends Controller
             }
             $transaction_mail = TransactionMail::create($data);
             $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id, 'request_notified' => true];
-            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
-            if ($registered->status() > 300) {
+            if (env('WHATSAPP_API')) {
+                $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+            }
+            if ($registered->status() > 300 || env('WHATSAPP_API') == false) {
+                $data_queue['request_notified'] = true;
                 $data_queue['request_notified_at'] = now('Asia/Jakarta');
                 $data_queue['notified'] = true;
             }
@@ -505,8 +508,10 @@ class MailTransactionController extends Controller
                 default:
                     break;
             }
-            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
-            if ($registered->status() > 300) {
+            if (env('WHATSAPP_API')) {
+                $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+            }
+            if ($registered->status() > 300 || env('WHATSAPP_API') == false) {
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
                         $data_queue[$key]['request_notified'] = true;
@@ -809,8 +814,10 @@ class MailTransactionController extends Controller
                 default:
                     break;
             }
-            $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($current_status->sender_phone_number));
-            if ($registered->status() > 300) {
+            if (env('WHATSAPP_API')) {
+                $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+            }
+            if ($registered->status() > 300 || env('WHATSAPP_API') == false) {
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
                         $data_queue[$key]['request_notified'] = true;

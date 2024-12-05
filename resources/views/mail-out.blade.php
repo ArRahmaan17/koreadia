@@ -129,19 +129,6 @@
                                     <div id="emailHelp" class="form-text">@lang('translation.must_valid_wa_number')</div>
                                 </div>
                             </div><!--end col-->
-                            <div class="col-6 d-none">
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select id="status" name="status" class="form-select select2">
-                                        <option value="ARCHIVE">ARCHIVE</option>
-                                        <option selected value="IN">IN</option>
-                                        <option value="PROCESS">PROCESS</option>
-                                        <option value="DISPOSITION">DISPOSITION</option>
-                                        <option value="REPLIED">REPLIED</option>
-                                        <option value="OUT">OUT</option>
-                                    </select>
-                                </div>
-                            </div><!--end col-->
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="file_attachment" class="form-label">@lang('translation.mail_file_attachment')</label>
