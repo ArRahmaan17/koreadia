@@ -225,10 +225,12 @@ class MailTransactionController extends Controller
             }
             $transaction_mail = TransactionMail::create($data);
             $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id, 'request_notified' => true];
+            $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+                $codeResponse = $registered->status();
             }
-            if ($registered->status() > 300 || env('WHATSAPP_API') == false) {
+            if ($codeResponse > 300) {
                 $data_queue['request_notified'] = true;
                 $data_queue['request_notified_at'] = now('Asia/Jakarta');
                 $data_queue['notified'] = true;
@@ -508,10 +510,12 @@ class MailTransactionController extends Controller
                 default:
                     break;
             }
+            $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+                $codeResponse = $registered->status();
             }
-            if ($registered->status() > 300 || env('WHATSAPP_API') == false) {
+            if ($codeResponse > 300) {
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
                         $data_queue[$key]['request_notified'] = true;
@@ -811,13 +815,26 @@ class MailTransactionController extends Controller
                         'user_id' => auth()->user()->id,
                     ]];
                     break;
+                case 'OUT':
+                    $where_queue = [['transaction_mail_id', null]];
+                    $data_queue = [[
+                        'transaction_mail_id' => $current_status->id,
+                        'current_status' => 'ARCHIVE',
+                        'last_status' => $current_status->status,
+                        'created_at' => now('Asia/Jakarta'),
+                        'updated_at' => now('Asia/Jakarta'),
+                        'user_id' => auth()->user()->id,
+                    ]];
+                    break;
                 default:
                     break;
             }
+            $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+                $codeResponse = $registered->status();
             }
-            if ($registered->status() > 300 || env('WHATSAPP_API') == false) {
+            if ($codeResponse > 300) {
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
                         $data_queue[$key]['request_notified'] = true;

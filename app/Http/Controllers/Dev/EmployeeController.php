@@ -87,11 +87,13 @@ class EmployeeController extends Controller
         ]);
         DB::beginTransaction();
         try {
+            $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($request->phone_number));
+                $codeResponse = $registered->status();
             }
             $data = $request->except('_token');
-            if ($registered->status() < 300) {
+            if ($codeResponse < 300) {
                 $data['valid'] = true;
             }
             Employee::create($data);
@@ -146,11 +148,13 @@ class EmployeeController extends Controller
         ]);
         DB::beginTransaction();
         try {
+            $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($request->phone_number));
+                $codeResponse = $registered->status();
             }
             $data = $request->except('_token');
-            if ($registered->status() < 300) {
+            if ($codeResponse < 300) {
                 $data['valid'] = true;
             } else {
                 $data['valid'] = false;

@@ -82,7 +82,8 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="regarding" class="form-label">@lang('translation.mail_regarding')</label>
-                                    <input type="text" class="form-control" name="regarding" placeholder="@lang('translation.enter') @lang('translation.mail_regarding')" id="regarding">
+                                    <input type="text" class="form-control" name="regarding" placeholder="@lang('translation.enter') @lang('translation.mail_regarding')"
+                                        id="regarding">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
@@ -112,13 +113,15 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="date" class="form-label">@lang('translation.mail_date')</label>
-                                    <input type="text" class="form-control flatpikrc" placeholder="@lang('translation.enter') @lang('translation.mail_date')" id="date" name="date">
+                                    <input type="text" class="form-control flatpikrc" placeholder="@lang('translation.enter') @lang('translation.mail_date')" id="date"
+                                        name="date">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="sender" class="form-label">@lang('translation.mail_sender')</label>
-                                    <input type="text" class="form-control" placeholder="@lang('translation.enter') @lang('translation.mail_sender')" id="sender" name="sender">
+                                    <input type="text" class="form-control" placeholder="@lang('translation.enter') @lang('translation.mail_sender')" id="sender"
+                                        name="sender">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
@@ -166,27 +169,6 @@
                             <label for="user_id">@lang('translation.mail_processor')</label>
                             <select name="user_id" id="user_id" class="form-select select2"></select>
                         </div>
-                        <div class="col-status-process d-none">
-                            <div class="mb-3">
-                                <label for="sincerely">@lang('translation.mail_sincerely')</label>
-                                <select name="sincerely" id="sincerely" class="form-select select2multi"></select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="note">@lang('translation.mail_note')</label>
-                                <input type="text" name="note" id="note" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-status-disposision d-none">
-                            <div class="mb-3">
-                                <label for="reply_file_attachment" class="form-label">@lang('translation.mail_reply_file_attachment')</label>
-                                <input type="file" class="filepond-input-multiple" id="reply_file_attachment" name="reply_file_attachment"
-                                    aria-describedby="file_attachment_help">
-                            </div>
-                            <div class="mb-3">
-                                <label for="reply_note">@lang('translation.mail_reply_note')</label>
-                                <input type="text" name="reply_note" id="reply_note" class="form-control">
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -196,7 +178,8 @@
             </div>
         </div>
     </div>
-    <div id="modal-file-mail-out" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-out-label" aria-hidden="true" style="display: none;">
+    <div id="modal-file-mail-out" class="modal fade" tabindex="-1" aria-labelledby="modal-file-mail-out-label" aria-hidden="true"
+        style="display: none;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -387,35 +370,7 @@
                     url: `{{ route('master.user.all') }}`,
                     dataType: "json",
                     success: function(response) {
-                        if (data.status == 'IN') {
-                            $('input[name=status]').val('PROCESS');
-                            $('.col-status-process').addClass('d-none');
-                            $('.col-status-disposision').addClass('d-none');
-                        } else if (data.status == 'PROCESS') {
-                            $('input[name=status]').val('FILED');
-                            $('.col-status-process').removeClass('d-none');
-                            $('.col-status-disposision').addClass('d-none');
-                            $.ajax({
-                                type: "GET",
-                                url: `{{ route('master.sincerely-word.all') }}`,
-                                dataType: "json",
-                                success: function(response) {
-                                    $('#modal-status-mail-out select[name=sincerely]').html(dataToOption(response.data))
-                                }
-                            });
-                        } else if (data.status == 'FILED') {
-                            $('input[name=status]').val('DISPOSITION');
-                            $('.col-status-process').addClass('d-none');
-                            $('.col-status-disposision').removeClass('d-none');
-                        } else if (data.status == 'DISPOSITION') {
-                            $('input[name=status]').val('REPLIED');
-                            $('.col-status-process').addClass('d-none');
-                            $('.col-status-disposision').removeClass('d-none');
-                        } else if (data.status == 'REPLIED') {
-                            $('input[name=status]').val('ARCHIVE');
-                            $('.col-status-process').addClass('d-none');
-                            $('.col-status-disposision').addClass('d-none');
-                        }
+                        $('input[name=status]').val('ARCHIVE');
                         $('#modal-status-mail-out select[name=user_id]').html(dataToOption(response.data))
                     }
                 });
