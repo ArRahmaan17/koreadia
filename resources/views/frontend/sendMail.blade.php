@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ asset('build/libs/filepond/filepond.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('build/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
     <link rel="stylesheet" href="{{ asset('build/libs/flatpickr/flatpickr.min.css') }}">
+    <link href="{{ asset('build/libs/iziToast/iziToast.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
     <!-- Page Title -->
@@ -29,13 +30,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="number">Nomer</label>
-                                <input type="text" id="number" class="form-control" placeholder="0001/TEST/PNDK/2024">
+                                <input type="text" id="number" name="number" class="form-control" placeholder="0001/TEST/PNDK/2024">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="perihal">Perihal</label>
-                                <input type="text" id="perihal" class="form-control" placeholder="Masukan Perihal">
+                                <label for="regarding">Perihal</label>
+                                <input type="text" name="regarding" id="regarding" class="form-control" placeholder="Masukan Perihal">
                             </div>
                         </div>
                     </div>
@@ -93,12 +94,12 @@
                                 <input type="file" class="filepond-input-multiple" id="file_attachment" name="file_attachment">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="form-group">
                                 <label for="file_attachment" class="form-label">Validasi</label>
                                 <div class="g-recaptcha" id="recaptcha"></div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="row mb-3">
                         <div class="col-12">
@@ -131,17 +132,18 @@
     <script src="{{ asset('build/libs/flatpickr/l10n/id.js') }}"></script>
     <script src="{{ asset('build/js/jquery.inputmask.js') }}"></script>
     <script src="{{ asset('build/libs/select2/select2.min.js') }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onLoadCallback&render=explicit" async defer></script>
+    <script src="{{ asset('build/libs/iziToast/iziToast.min.js') }}"></script>
+    {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onLoadCallback&render=explicit" async defer></script> --}}
     <!-- Main JS File -->
     <script src="{{ asset('frontend') }}/assets/js/main.js"></script>
     <script>
         window.recaptcha = undefined;
 
-        function onLoadCallback() {
-            window.recaptcha = grecaptcha.render('recaptcha', {
-                sitekey: `{{ env('KEY_RECAPTCHA') }}`,
-            });
-        }
+        // function onLoadCallback() {
+        //     window.recaptcha = grecaptcha.render('recaptcha', {
+        //         sitekey: `{{ env('KEY_RECAPTCHA') }}`,
+        //     });
+        // }
 
         function serializeObject(node) {
             var o = {};
@@ -179,55 +181,60 @@
         $(function() {
             $('#save-mail-in').click(function() {
                 let data = serializeObject($('#form-mail-in'));
-                let responseCaptcha = grecaptcha.getResponse(window.recaptcha)['g-recaptcha-response'];
+                // let responseCaptcha = grecaptcha.getResponse(window.recaptcha)['g-recaptcha-response'];
+                // $.ajax({
+                //     type: "POST",
+                //     headers: {
+                //         "Access-Control-Allow-Origin": "*",
+                //     },
+                //     crossDomain: 'true',
+                //     cache: false,
+                //     url: "https://www.google.com/recaptcha/api/siteverify",
+                //     data: {
+                //         secret: `{{ env('KEY_RECAPTCHA') }}`,
+                //         response: responseCaptcha,
+                //     },
+                //     dataType: "json",
+                //     success: function(response) {
                 $.ajax({
                     type: "POST",
-                    headers: {
-                        "Access-Control-Allow-Origin": "*",
-                    },
-                    crossDomain: 'true',
-                    cache: false,
-                    url: "https://www.google.com/recaptcha/api/siteverify",
-                    data: {
-                        secret: `{{ env('KEY_RECAPTCHA') }}`,
-                        response: responseCaptcha,
-                    },
+                    url: `{{ route('mail.in.store') }}`,
+                    data: data,
                     dataType: "json",
                     success: function(response) {
-                        $.ajax({
-                            type: "POST",
-                            url: `{{ route('mail.in.store') }}`,
-                            data: data,
-                            dataType: "json",
-                            success: function(response) {
-                                iziToast.success({
-                                    id: 'alert-mail-in-form',
-                                    title: 'Success',
-                                    message: response.message,
-                                    position: 'topRight',
-                                    layout: 2,
-                                    displayMode: 'replace'
-                                });
-                            },
-                            error: function(error) {
-                                $('#modal-mail-in .is-invalid').removeClass('is-invalid')
-                                $.each(error.responseJSON.errors, function(indexInArray,
-                                    valueOfElement) {
-                                    $('#modal-mail-in').find('[name=' + indexInArray +
-                                        ']').addClass('is-invalid')
-                                });
-                                iziToast.error({
-                                    id: 'alert-mail-in-form',
-                                    title: 'Error',
-                                    message: error.responseJSON.message,
-                                    position: 'topRight',
-                                    layout: 2,
-                                    displayMode: 'replace'
-                                });
-                            }
+                        $('.is-invalid').removeClass('is-invalid')
+                        iziToast.success({
+                            id: 'alert-mail-in-form',
+                            title: 'Success',
+                            message: response.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
+                        });
+                        $('#form-mail-in').find('select, input').map(function(index, element) {
+                            $(element).val('').trigger('change');
+                        });
+                        window.file_pond_file_attachment.removeFiles(window.file_pond_file_attachment.getFiles());
+                    },
+                    error: function(error) {
+                        $('.is-invalid').removeClass('is-invalid')
+                        $.each(error.responseJSON.errors, function(indexInArray,
+                            valueOfElement) {
+                            $('#form-mail-in').find('[name=' + indexInArray +
+                                ']').addClass('is-invalid')
+                        });
+                        iziToast.error({
+                            id: 'alert-mail-in-form',
+                            title: 'Error',
+                            message: error.responseJSON.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
                         });
                     }
                 });
+                //     }
+                // });
             });
             $.ajax({
                 type: "GET",

@@ -224,7 +224,7 @@ class MailTransactionController extends Controller
                 $data['file_attachment'] = $file_name;
             }
             $transaction_mail = TransactionMail::create($data);
-            $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id, 'request_notified' => true];
+            $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id??1, 'request_notified' => true];
             $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
@@ -236,7 +236,7 @@ class MailTransactionController extends Controller
                 $data_queue['notified'] = true;
             }
             WhatsappQueue::create($data_queue);
-            DB::commit();
+            // DB::commit();
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
         } catch (\Throwable $th) {

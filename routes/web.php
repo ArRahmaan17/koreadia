@@ -31,12 +31,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('master/agenda/all', [AgendaController::class, 'all'])->name('master.agenda.all');
-Route::get('master/type/all', [TypeController::class, 'all'])->name('master.type.all');
-Route::get('master/priority/all', [PriorityController::class, 'all'])->name('master.priority.all');
-Route::get('/wa-offline', function () {
-    return response()->json(['message' => 'wa offline'], 503);
-})->name('wa-offline');
+Route::get('/master/agenda/all', [AgendaController::class, 'all'])->name('master.agenda.all');
+Route::get('/master/type/all', [TypeController::class, 'all'])->name('master.type.all');
+Route::get('/master/priority/all', [PriorityController::class, 'all'])->name('master.priority.all');
+Route::get('/event/timeline/{id?}', [EventScheduleController::class, 'showTimeline'])->name('event.show-timeline');
+Route::post('/mail/in', [MailTransactionController::class, 'store'])->name('mail.in.store')->middleware('public.limiter');
 Route::middleware('check.auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -51,7 +50,6 @@ Route::middleware('check.auth')->group(function () {
             Route::get('/{id?}', [MailTransactionController::class, 'show'])->name('show');
             Route::put('/{id?}', [MailTransactionController::class, 'update'])->name('update');
             Route::delete('/{id?}', [MailTransactionController::class, 'destroy'])->name('destroy');
-            Route::post('/', [MailTransactionController::class, 'store'])->name('store');
         });
         Route::prefix('out')->name('out.')->group(function () {
             Route::get('/', [MailOutController::class, 'index'])->name('index');
@@ -66,7 +64,6 @@ Route::middleware('check.auth')->group(function () {
         Route::get('/', [EventScheduleController::class, 'index'])->name('index');
         Route::get('/data-table', [EventScheduleController::class, 'dataTable'])->name('data-table');
         Route::put('/event-update/{id?}', [EventScheduleController::class, 'requestBroadcast'])->name('event-update');
-        Route::get('/timeline/{id?}', [EventScheduleController::class, 'showTimeline'])->name('show-timeline');
         Route::get('/{id?}', [EventScheduleController::class, 'show'])->name('show');
         Route::put('/{id?}', [EventScheduleController::class, 'update'])->name('update');
         Route::delete('/{id?}', [EventScheduleController::class, 'destroy'])->name('destroy');
@@ -164,14 +161,14 @@ Route::middleware('check.auth')->group(function () {
 });
 Route::middleware(['check.un-auth'])->group(function () {
     Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-    Route::post('/process-password', [AuthController::class, 'executeResetPassword'])->name('process-password')->middleware('throttle:5,1');
+    Route::post('/process-password', [AuthController::class, 'executeResetPassword'])->name('process-password')->middleware('throttle:3,1');
     Route::post('/password-update', [AuthController::class, 'passwordUpdate'])->name('password-update');
     Route::get('/login', [AuthController::class, 'index'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('throttle:5,1');
+    Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('throttle:3,1');
     Route::get('/register', [AuthController::class, 'signup'])->name('signup');
-    Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('throttle:5,1');
+    Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('throttle:3,1');
 });
 Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
-Route::post('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking');
+Route::post('/tracking', [MailTransactionController::class, 'tracking'])->name('tracking')->middleware('throttle:10,5');
 Route::get('/tracking', [TrackingController::class, 'tracking'])->name('fe-tracking');
 Route::get('/mail', [MailController::class, 'index'])->name('sendMail');
