@@ -1,235 +1,240 @@
 @extends('layouts.public')
 @section('content')
-<!-- Hero Section -->
-<section id="hero" class="hero section">
-    <div class="hero-bg">
-        <img src=" {{ asset('frontend/assets/img/hero-bg-light.webp') }}" alt="">
-    </div>
-    <div class="container text-center">
-        <div class="d-flex flex-column justify-content-center align-items-center">
-            <h1 data-aos="fade-up">Welcome to <span>Koredia</span></h1>
-            <p data-aos="fade-up" data-aos-delay="100">Korespondensi Administrasi dan Informasi<br></p>
-            <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                <a href="#about" class="btn-get-started">Get Started</a>
-                <a href="https://www.youtube.com/watch?v=A43wkKeH9PA" class="glightbox btn-watch-video d-flex align-items-center"><i
-                        class="bi bi-play-circle"></i><span>Watch Video</span></a>
-            </div>
-            <img src=" {{ asset('frontend/assets/img/hero-services-img.webp') }}" class="img-fluid hero-img" alt="" data-aos="zoom-out"
-                data-aos-delay="300">
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+        <div class="hero-bg">
+            <img src=" {{ asset('frontend/assets/img/hero-bg-light.webp') }}" alt="">
         </div>
-    </div>
-
-</section><!-- /Hero Section -->
-
-<!-- Featured Services Section -->
-<section id="featured-services" class="featured-services section light-background">
-
-    <div class="container">
-
-        <div class="row gy-4">
-
-            <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="service-item d-flex">
-                    <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
-                    <div>
-                        <h4 class="title"><a href="#" class="stretched-link">Pengelolaan Surat Digital</a></h4>
-                        <p class="description">Mengelola seluruh surat dan dokumen secara efisien dalam satu platform yang terpusat, memudahkan pencarian dan pengarsipan.</p>
-                    </div>
+        <div class="container text-center">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <h1 data-aos="fade-up">Welcome to <span>{{ env('APP_NAME') }}</span></h1>
+                <p data-aos="fade-up" data-aos-delay="100">Korespondensi Administrasi dan Informasi<br></p>
+                <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
+                    <a href="#about" class="btn-get-started">Get Started</a>
+                    <a href="https://www.youtube.com/watch?v=A43wkKeH9PA" class="glightbox btn-watch-video d-flex align-items-center"><i
+                            class="bi bi-play-circle"></i><span>Watch Video</span></a>
                 </div>
+                <img src=" {{ asset('frontend/assets/img/hero-services-img.webp') }}" class="img-fluid hero-img" alt="" data-aos="zoom-out"
+                    data-aos-delay="300">
             </div>
-            <!-- End Service Item -->
-
-            <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                <div class="service-item d-flex">
-                    <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
-                    <div>
-                        <h4 class="title"><a href="#" class="stretched-link">Notifikasi dan Tindak Lanjut Cepat</a></h4>
-                        <p class="description">Menyediakan notifikasi otomatis untuk setiap perubahan status dokumen, sehingga proses tindak lanjut lebih terorganisir.</p>
-                    </div>
-                </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
-                <div class="service-item d-flex">
-                    <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
-                    <div>
-                        <h4 class="title"><a href="#" class="stretched-link">Dokumen</a>
-                        </h4>
-                        <p class="description">Kelola dan cari dokumen dengan mudah menggunakan fitur pencarian, membantu menyimpan data secara terstruktur dan efisien.</p>
-                    </div>
-                </div>
-            </div><!-- End Service Item -->
-
         </div>
 
-    </div>
+    </section><!-- /Hero Section -->
 
-</section><!-- /Featured Services Section -->
+    <!-- Featured Services Section -->
+    <section id="featured-services" class="featured-services section light-background">
 
-<!-- About Section -->
-<section id="about" class="about section">
+        <div class="container">
 
-    <div class="container">
+            <div class="row gy-4">
 
-        <div class="row gy-4">
-
-            <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
-                <p class="who-we-are">Tentang Kami</p>
-                <h3> KOREDIA: Solusi Administrasi Modern Papua Barat Daya</h3>
-                <p class="fst-italic">
-
-                    Kata "Koredia" dalam ujaran Papua memiliki arti "sentuh, pegang," atau dalam makna sehari-hari, "terlihat hebat." Filosofi ini mencerminkan semangat bekerja dengan baik untuk menciptakan perubahan yang nyata, menjadikan administrasi lebih profesional dan efektif.
-
-                    Sebagai singkatan dari Korespondensi, Informasi, dan Administrasi, KOREDIA hadir untuk memberikan:
-                </p>
-                <ul>
-                    <li><i class="bi bi-check-circle"></i> <span>Efisiensi dalam pengelolaan surat dan dokumen</span></li>
-                    <li><i class="bi bi-check-circle"></i> <span>Transparansi dalam pelacakan dan pengarsipan</span></li>
-                    <li><i class="bi bi-check-circle"></i> <span>Kemudahan komunikasi antar OPD dalam satu platform terpadu</span></li>
-                </ul>
-                <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-
-            <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
-                <div class="row gy-4">
-                    <div class="col-lg-6">
-                        <img src=" {{ asset('frontend/assets/img/koredia1.png') }}" class="img-fluid" alt="">
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="row gy-4">
-                            <div class="col-lg-12">
-                                <img src=" {{ asset('frontend/assets/img/koredia2.png') }}" class="img-fluid" alt="">
-                            </div>
-                            <div class="col-lg-12">
-                                <img src=" {{ asset('frontend/assets/img/koredia3.png') }}" class="img-fluid" alt="">
-                            </div>
+                <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item d-flex">
+                        <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
+                        <div>
+                            <h4 class="title"><a href="#" class="stretched-link">Pengelolaan Surat Digital</a></h4>
+                            <p class="description">Mengelola seluruh surat dan dokumen secara efisien dalam satu platform yang terpusat, memudahkan pencarian
+                                dan pengarsipan.</p>
                         </div>
                     </div>
                 </div>
+                <!-- End Service Item -->
+
+                <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-item d-flex">
+                        <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
+                        <div>
+                            <h4 class="title"><a href="#" class="stretched-link">Notifikasi dan Tindak Lanjut Cepat</a></h4>
+                            <p class="description">Menyediakan notifikasi otomatis untuk setiap perubahan status dokumen, sehingga proses tindak lanjut lebih
+                                terorganisir.</p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-item d-flex">
+                        <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
+                        <div>
+                            <h4 class="title"><a href="#" class="stretched-link">Dokumen</a>
+                            </h4>
+                            <p class="description">Kelola dan cari dokumen dengan mudah menggunakan fitur pencarian, membantu menyimpan data secara terstruktur
+                                dan efisien.</p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
 
             </div>
 
         </div>
 
-    </div>
-</section><!-- /About Section -->
+    </section><!-- /Featured Services Section -->
 
-<!-- Clients Section -->
-<section id="clients" class="clients section">
+    <!-- About Section -->
+    <section id="about" class="about section">
 
-    <div class="container" data-aos="fade-up">
+        <div class="container">
 
-        <div class="row gy-4">
+            <div class="row gy-4">
 
-            <div class="col-xl-2 col-md-3 col-6 client-logo">
-                <img src=" {{ asset('frontend/assets/img/clients/client-1.png') }}" class="img-fluid" alt="">
-            </div><!-- End Client Item -->
+                <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+                    <p class="who-we-are">Tentang Kami</p>
+                    <h3> KOREDIA: Solusi Administrasi Modern Papua Barat Daya</h3>
+                    <p class="fst-italic">
 
-            <div class="col-xl-2 col-md-3 col-6 client-logo">
-                <img src=" {{ asset('frontend/assets/img/clients/client-2.png') }}" class="img-fluid" alt="">
-            </div><!-- End Client Item -->
+                        Kata "Koredia" dalam ujaran Papua memiliki arti "sentuh, pegang," atau dalam makna sehari-hari, "terlihat hebat." Filosofi ini
+                        mencerminkan semangat bekerja dengan baik untuk menciptakan perubahan yang nyata, menjadikan administrasi lebih profesional dan
+                        efektif.
 
-            <div class="col-xl-2 col-md-3 col-6 client-logo">
-                <img src=" {{ asset('frontend/assets/img/clients/client-3.png') }}" class="img-fluid" alt="">
-            </div><!-- End Client Item -->
+                        Sebagai singkatan dari Korespondensi, Informasi, dan Administrasi, KOREDIA hadir untuk memberikan:
+                    </p>
+                    <ul>
+                        <li><i class="bi bi-check-circle"></i> <span>Efisiensi dalam pengelolaan surat dan dokumen</span></li>
+                        <li><i class="bi bi-check-circle"></i> <span>Transparansi dalam pelacakan dan pengarsipan</span></li>
+                        <li><i class="bi bi-check-circle"></i> <span>Kemudahan komunikasi antar OPD dalam satu platform terpadu</span></li>
+                    </ul>
+                    <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+                </div>
 
-            <div class="col-xl-2 col-md-3 col-6 client-logo">
-                <img src=" {{ asset('frontend/assets/img/clients/client-4.png') }}" class="img-fluid" alt="">
-            </div><!-- End Client Item -->
-
-            <div class="col-xl-2 col-md-3 col-6 client-logo">
-                <img src=" {{ asset('frontend/assets/img/clients/client-5.png') }}" class="img-fluid" alt="">
-            </div><!-- End Client Item -->
-
-            <div class="col-xl-2 col-md-3 col-6 client-logo">
-                <img src=" {{ asset('frontend/assets/img/clients/client-6.png') }}" class="img-fluid" alt="">
-            </div><!-- End Client Item -->
-
-        </div>
-
-    </div>
-
-</section><!-- /Clients Section -->
-
-<!-- Features Section -->
-<section id="features" class="features section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>FITUR UNGGULAN</h2>
-        <p>KOREDIA dirancang untuk mempermudah dan meningkatkan efisiensi korespondensi administrasi</p>
-    </div><!-- End Section Title -->
-
-    <div class="container">
-        <div class="row justify-content-between">
-
-            <div class="col-lg-5 d-flex align-items-center">
-
-                <ul class="nav nav-tabs" data-aos="fade-up" data-aos-delay="100">
-                    <li class="nav-item">
-                        <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1">
-                            <i class="bi bi-envelope-paper"></i>
-                            <div>
-                                <h4 class="d-none d-lg-block">Pengelolaan Surat Terpusat</h4>
-                                <p>
-                                    Memungkinkan pengelolaan surat masuk dan keluar secara digital, terstruktur, dan mudah diakses.
-                                </p>
+                <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
+                    <div class="row gy-4">
+                        <div class="col-lg-6">
+                            <img src=" {{ asset('frontend/assets/img/koredia1.png') }}" class="img-fluid" alt="">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row gy-4">
+                                <div class="col-lg-12">
+                                    <img src=" {{ asset('frontend/assets/img/koredia2.png') }}" class="img-fluid" alt="">
+                                </div>
+                                <div class="col-lg-12">
+                                    <img src=" {{ asset('frontend/assets/img/koredia3.png') }}" class="img-fluid" alt="">
+                                </div>
                             </div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2">
-                            <i class="bi bi-box-seam"></i>
-                            <div>
-                                <h4 class="d-none d-lg-block">Pelacakan Surat Real-Time</h4>
-                                <p>
-                                    Memantau status surat kapan saja, sehingga transparansi dapat terjaga.
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3">
-                            <i class="bi bi-brightness-high"></i>
-                            <div>
-                                <h4 class="d-none d-lg-block">Notifikasi Otomatis</h4>
-                                <p>
-                                    Memberikan pemberitahuan otomatis untuk setiap pembaruan status surat atau dokumen.
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-                </ul><!-- End Tab Nav -->
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="col-lg-6">
+        </div>
+    </section><!-- /About Section -->
 
-                <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+    <!-- Clients Section -->
+    <section id="clients" class="clients section">
 
-                    <div class="tab-pane fade active show" id="features-tab-1">
-                        <img src=" {{ asset('frontend/assets/img/fitur.jpg') }}" alt="" class="img-fluid">
-                    </div><!-- End Tab Content Item -->
+        <div class="container" data-aos="fade-up">
 
-                    <div class="tab-pane fade" id="features-tab-2">
-                        <img src=" {{ asset('frontend/assets/img/fitur3.jpg') }}" alt="" class="img-fluid">
-                    </div><!-- End Tab Content Item -->
+            <div class="row gy-4">
 
-                    <div class="tab-pane fade" id="features-tab-3">
-                        <img src=" {{ asset('frontend/assets/img/fitur2.jpg') }}" alt="" class="img-fluid">
-                    </div><!-- End Tab Content Item -->
+                <div class="col-xl-2 col-md-3 col-6 client-logo">
+                    <img src=" {{ asset('frontend/assets/img/clients/client-1.png') }}" class="img-fluid" alt="">
+                </div><!-- End Client Item -->
+
+                <div class="col-xl-2 col-md-3 col-6 client-logo">
+                    <img src=" {{ asset('frontend/assets/img/clients/client-2.png') }}" class="img-fluid" alt="">
+                </div><!-- End Client Item -->
+
+                <div class="col-xl-2 col-md-3 col-6 client-logo">
+                    <img src=" {{ asset('frontend/assets/img/clients/client-3.png') }}" class="img-fluid" alt="">
+                </div><!-- End Client Item -->
+
+                <div class="col-xl-2 col-md-3 col-6 client-logo">
+                    <img src=" {{ asset('frontend/assets/img/clients/client-4.png') }}" class="img-fluid" alt="">
+                </div><!-- End Client Item -->
+
+                <div class="col-xl-2 col-md-3 col-6 client-logo">
+                    <img src=" {{ asset('frontend/assets/img/clients/client-5.png') }}" class="img-fluid" alt="">
+                </div><!-- End Client Item -->
+
+                <div class="col-xl-2 col-md-3 col-6 client-logo">
+                    <img src=" {{ asset('frontend/assets/img/clients/client-6.png') }}" class="img-fluid" alt="">
+                </div><!-- End Client Item -->
+
+            </div>
+
+        </div>
+
+    </section><!-- /Clients Section -->
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>FITUR UNGGULAN</h2>
+            <p>KOREDIA dirancang untuk mempermudah dan meningkatkan efisiensi korespondensi administrasi</p>
+        </div><!-- End Section Title -->
+
+        <div class="container">
+            <div class="row justify-content-between">
+
+                <div class="col-lg-5 d-flex align-items-center">
+
+                    <ul class="nav nav-tabs" data-aos="fade-up" data-aos-delay="100">
+                        <li class="nav-item">
+                            <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#features-tab-1">
+                                <i class="bi bi-envelope-paper"></i>
+                                <div>
+                                    <h4 class="d-none d-lg-block">Pengelolaan Surat Terpusat</h4>
+                                    <p>
+                                        Memungkinkan pengelolaan surat masuk dan keluar secara digital, terstruktur, dan mudah diakses.
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-2">
+                                <i class="bi bi-box-seam"></i>
+                                <div>
+                                    <h4 class="d-none d-lg-block">Pelacakan Surat Real-Time</h4>
+                                    <p>
+                                        Memantau status surat kapan saja, sehingga transparansi dapat terjaga.
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#features-tab-3">
+                                <i class="bi bi-brightness-high"></i>
+                                <div>
+                                    <h4 class="d-none d-lg-block">Notifikasi Otomatis</h4>
+                                    <p>
+                                        Memberikan pemberitahuan otomatis untuk setiap pembaruan status surat atau dokumen.
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                    </ul><!-- End Tab Nav -->
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
+
+                        <div class="tab-pane fade active show" id="features-tab-1">
+                            <img src=" {{ asset('frontend/assets/img/fitur.jpg') }}" alt="" class="img-fluid">
+                        </div><!-- End Tab Content Item -->
+
+                        <div class="tab-pane fade" id="features-tab-2">
+                            <img src=" {{ asset('frontend/assets/img/fitur3.jpg') }}" alt="" class="img-fluid">
+                        </div><!-- End Tab Content Item -->
+
+                        <div class="tab-pane fade" id="features-tab-3">
+                            <img src=" {{ asset('frontend/assets/img/fitur2.jpg') }}" alt="" class="img-fluid">
+                        </div><!-- End Tab Content Item -->
+                    </div>
+
                 </div>
 
             </div>
 
         </div>
 
-    </div>
+    </section><!-- /Features Section -->
 
-</section><!-- /Features Section -->
-
-<!-- Features Details Section -->
-{{-- <section id="features-details" class="features-details section">
+    <!-- Features Details Section -->
+    {{-- <section id="features-details" class="features-details section">
 
             <div class="container">
 
@@ -285,8 +290,8 @@
 
 </section><!-- /Features Details Section --> --}}
 
-<!-- Services Section -->
-{{-- <section id="services" class="services section light-background">
+    <!-- Services Section -->
+    {{-- <section id="services" class="services section light-background">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -376,8 +381,8 @@
 
         </section><!-- /Services Section --> --}}
 
-<!-- More Features Section -->
-{{-- <section id="more-features" class="more-features section">
+    <!-- More Features Section -->
+    {{-- <section id="more-features" class="more-features section">
 
             <div class="container">
 
@@ -436,8 +441,8 @@
 
 </section><!-- /More Features Section --> --}}
 
-<!-- Pricing Section -->
-{{-- <section id="pricing" class="pricing section">
+    <!-- Pricing Section -->
+    {{-- <section id="pricing" class="pricing section">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -524,97 +529,103 @@
 
         </section><!-- /Pricing Section --> --}}
 
-<!-- Faq Section -->
-<section id="faq" class="faq section">
+    <!-- Faq Section -->
+    <section id="faq" class="faq section">
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Frequently Asked Questions</h2>
-    </div><!-- End Section Title -->
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Frequently Asked Questions</h2>
+        </div><!-- End Section Title -->
 
-    <div class="container">
+        <div class="container">
 
-        <div class="row justify-content-center">
+            <div class="row justify-content-center">
 
-            <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
 
-                <div class="faq-container">
+                    <div class="faq-container">
 
-                    <div class="faq-item faq-active">
-                        <h3>Apa itu Koredia?</h3>
-                        <div class="faq-content">
-                            <p>Koredia adalah aplikasi digital yang dirancang untuk mempermudah korespondensi, administrasi, dan informasi antar Organisasi Perangkat Daerah (OPD) di lingkungan Pemerintah Provinsi Papua Barat Daya. Selain itu, Koredia juga memungkinkan masyarakat untuk mengirim surat langsung ke Pemerintah Provinsi secara online.
-                            </p>
-                        </div>
-                        <i class="faq-toggle bi bi-chevron-right"></i>
-                    </div><!-- End Faq item-->
+                        <div class="faq-item faq-active">
+                            <h3>Apa itu Koredia?</h3>
+                            <div class="faq-content">
+                                <p>Koredia adalah aplikasi digital yang dirancang untuk mempermudah korespondensi, administrasi, dan informasi antar Organisasi
+                                    Perangkat Daerah (OPD) di lingkungan Pemerintah Provinsi Papua Barat Daya. Selain itu, Koredia juga memungkinkan masyarakat
+                                    untuk mengirim surat langsung ke Pemerintah Provinsi secara online.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
 
-                    <div class="faq-item">
-                        <h3>Bagaimana masyarakat dapat mengirim surat ke Pemerintah melalui Koredia ?</h3>
-                        <div class="faq-content">
-                            <p>Masyarakat dapat mengirim surat melalui fitur Kirim Surat Masyarakat yang tersedia di halaman utama Koredia. Prosesnya meliputi:
-                                <br>
-                                1. Mengisi formulir online dengan data lengkap (nama, alamat, kontak).
-                                <br>
-                                2. Menulis isi surat/pengaduan.
-                                <br>
-                                3. Mengunggah dokumen pendukung (jika ada).
-                                <br>
-                                4. Surat akan diteruskan ke OPD terkait untuk diproses lebih lanjut.
-                            </p>
-                        </div>
-                        <i class="faq-toggle bi bi-chevron-right"></i>
-                    </div><!-- End Faq item-->
+                        <div class="faq-item">
+                            <h3>Bagaimana masyarakat dapat mengirim surat ke Pemerintah melalui Koredia ?</h3>
+                            <div class="faq-content">
+                                <p>Masyarakat dapat mengirim surat melalui fitur Kirim Surat Masyarakat yang tersedia di halaman utama Koredia. Prosesnya
+                                    meliputi:
+                                    <br>
+                                    1. Mengisi formulir online dengan data lengkap (nama, alamat, kontak).
+                                    <br>
+                                    2. Menulis isi surat/pengaduan.
+                                    <br>
+                                    3. Mengunggah dokumen pendukung (jika ada).
+                                    <br>
+                                    4. Surat akan diteruskan ke OPD terkait untuk diproses lebih lanjut.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
 
-                    <div class="faq-item">
-                        <h3> Apakah saya bisa melacak surat yang saya kirim ke Pemerintah?</h3>
-                        <div class="faq-content">
-                            <p>Ya, Koredia memiliki fitur pelacakan status surat, sehingga masyarakat dapat mengetahui status pengaduan atau surat mereka, apakah sedang diproses, memerlukan tindak lanjut, atau telah selesai.
-                            </p>
-                        </div>
-                        <i class="faq-toggle bi bi-chevron-right"></i>
-                    </div><!-- End Faq item-->
+                        <div class="faq-item">
+                            <h3> Apakah saya bisa melacak surat yang saya kirim ke Pemerintah?</h3>
+                            <div class="faq-content">
+                                <p>Ya, Koredia memiliki fitur pelacakan status surat, sehingga masyarakat dapat mengetahui status pengaduan atau surat mereka,
+                                    apakah sedang diproses, memerlukan tindak lanjut, atau telah selesai.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
 
-                    <div class="faq-item">
-                        <h3>Bagaimana cara mengakses Koredia untuk masyarakat?</h3>
-                        <div class="faq-content">
-                            <p>Masyarakat dapat mengakses fitur Kirim Surat Masyarakat melalui website resmi Koredia. Tidak diperlukan akun khusus, namun Anda harus memastikan data dan kontak yang diisi sudah benar agar dapat menerima respon dari Pemerintah.</p>
-                        </div>
-                        <i class="faq-toggle bi bi-chevron-right"></i>
-                    </div><!-- End Faq item-->
+                        <div class="faq-item">
+                            <h3>Bagaimana cara mengakses Koredia untuk masyarakat?</h3>
+                            <div class="faq-content">
+                                <p>Masyarakat dapat mengakses fitur Kirim Surat Masyarakat melalui website resmi Koredia. Tidak diperlukan akun khusus, namun
+                                    Anda harus memastikan data dan kontak yang diisi sudah benar agar dapat menerima respon dari Pemerintah.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
 
-                    <div class="faq-item">
-                        <h3>Berapa lama waktu yang dibutuhkan untuk mendapatkan respon?</h3>
-                        <div class="faq-content">
-                            <p>Waktu respon tergantung pada jenis surat dan kompleksitas isu yang diajukan. Namun, Koredia memastikan semua surat masyarakat akan mendapat respon dalam waktu tertentu yang telah ditentukan oleh Pemerintah Provinsi.
-                            </p>
-                        </div>
-                        <i class="faq-toggle bi bi-chevron-right"></i>
-                    </div><!-- End Faq item-->
+                        <div class="faq-item">
+                            <h3>Berapa lama waktu yang dibutuhkan untuk mendapatkan respon?</h3>
+                            <div class="faq-content">
+                                <p>Waktu respon tergantung pada jenis surat dan kompleksitas isu yang diajukan. Namun, Koredia memastikan semua surat
+                                    masyarakat akan mendapat respon dalam waktu tertentu yang telah ditentukan oleh Pemerintah Provinsi.
+                                </p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
 
-                    <div class="faq-item">
-                        <h3>Bagaimana jika saya membutuhkan bantuan dalam menggunakan Koredia?</h3>
-                        <div class="faq-content">
-                            <p>Jika Anda mengalami kesulitan, Anda dapat:
-                                Menghubungi layanan bantuan di website Koredia.
-                                Mengirim email ke support@koredia.papuabaratdayaprov.go.id.
-                                Mengunjungi Biro Umum untuk mendapatkan panduan langsung.</p>
-                        </div>
-                        <i class="faq-toggle bi bi-chevron-right"></i>
-                    </div><!-- End Faq item-->
+                        <div class="faq-item">
+                            <h3>Bagaimana jika saya membutuhkan bantuan dalam menggunakan Koredia?</h3>
+                            <div class="faq-content">
+                                <p>Jika Anda mengalami kesulitan, Anda dapat:
+                                    Menghubungi layanan bantuan di website Koredia.
+                                    Mengirim email ke support@koredia.papuabaratdayaprov.go.id.
+                                    Mengunjungi Biro Umum untuk mendapatkan panduan langsung.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div><!-- End Faq item-->
 
-                </div>
+                    </div>
 
-            </div><!-- End Faq Column-->
+                </div><!-- End Faq Column-->
+
+            </div>
 
         </div>
 
-    </div>
+    </section><!-- /Faq Section -->
 
-</section><!-- /Faq Section -->
-
-<!-- Testimonials Section -->
-{{-- <section id="testimonials" class="testimonials section light-background">
+    <!-- Testimonials Section -->
+    {{-- <section id="testimonials" class="testimonials section light-background">
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
@@ -760,53 +771,53 @@ alt="">
 
 </section><!-- /Testimonials Section --> --}}
 
-<!-- Contact Section -->
-<section id="contact" class="contact section">
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
 
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>KONTAK KAMI</h2>
-        <p></p>
-    </div><!-- End Section Title -->
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>KONTAK KAMI</h2>
+            <p></p>
+        </div><!-- End Section Title -->
 
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="row gy-4">
+            <div class="row gy-4">
 
-            <div class="col-lg-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
-                    <i class="bi bi-geo-alt"></i>
-                    <h3>Address</h3>
-                    <p>Jl. Kurana No. 1 Remu, Distrik Sorong, Kota Sorong 98416</p>
-                </div>
-            </div><!-- End Info Item -->
+                <div class="col-lg-6">
+                    <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+                        <i class="bi bi-geo-alt"></i>
+                        <h3>Address</h3>
+                        <p>Jl. Kurana No. 1 Remu, Distrik Sorong, Kota Sorong 98416</p>
+                    </div>
+                </div><!-- End Info Item -->
 
-            <div class="col-lg-3 col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
-                    <i class="bi bi-telephone"></i>
-                    <h3>Call Us</h3>
-                    <p>+62 852-5119-9441</p>
-                </div>
-            </div><!-- End Info Item -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+                        <i class="bi bi-telephone"></i>
+                        <h3>Call Us</h3>
+                        <p>+62 852-5119-9441</p>
+                    </div>
+                </div><!-- End Info Item -->
 
-            <div class="col-lg-3 col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
-                    <i class="bi bi-envelope"></i>
-                    <h3>Email Us</h3>
-                    <p>koredia@example.com</p>
-                </div>
-            </div><!-- End Info Item -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+                        <i class="bi bi-envelope"></i>
+                        <h3>Email Us</h3>
+                        <p>koredia@example.com</p>
+                    </div>
+                </div><!-- End Info Item -->
 
+            </div>
+
+            <div class="row gy-4 mt-1">
+                <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.951986812019!2d131.28746324211764!3d-0.8810445059758975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d5955a173a2c673%3A0x21e6ce849913aeea!2sKantor%20Gubernur%20Papua%20Barat%20Daya!5e0!3m2!1sid!2sid!4v1732306726986!5m2!1sid!2sid"
+                        frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div><!-- End Google Maps -->
+            </div>
         </div>
-
-        <div class="row gy-4 mt-1">
-            <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d682.951986812019!2d131.28746324211764!3d-0.8810445059758975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d5955a173a2c673%3A0x21e6ce849913aeea!2sKantor%20Gubernur%20Papua%20Barat%20Daya!5e0!3m2!1sid!2sid!4v1732306726986!5m2!1sid!2sid"
-                    frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div><!-- End Google Maps -->
-        </div>
-    </div>
-</section><!-- /Contact Section -->
+    </section><!-- /Contact Section -->
 @endsection
