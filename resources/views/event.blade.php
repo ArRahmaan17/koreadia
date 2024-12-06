@@ -173,10 +173,11 @@
                             <div class="employee-container flex flex-wrap px-0">
                                 @foreach ($employees as $employee)
                                     <div class="form-check form-switch" dir="ltr">
-                                        <input type="checkbox" class="form-check-input employee-checkbox" @disabled(!$employee->valid) value="{{ $employee->id }}" name="employee[]"
-                                            id="employee{{ $employee->id }}">
+                                        <input type="checkbox" class="form-check-input employee-checkbox" @disabled(!$employee->valid)
+                                            value="{{ $employee->id }}" name="employee[]" id="employee{{ $employee->id }}">
                                         <label class="form-check-label" for="employee{{ $employee->id }}">{{ $employee->name }}
-                                            [{{ $employee->phone_number }}]</label>
+                                            [{{ $employee->phone_number }}]<span
+                                                class="badge border {{(($employee->valid)? 'border-success text-success': 'border-danger text-danger')}}">{{ ($employee->valid ? trans('translation.phone_number') . ' valid' : 'mohon validasi ' . trans('translation.phone_number')) }}</span></label>
                                     </div>
                                 @endforeach
                             </div>
