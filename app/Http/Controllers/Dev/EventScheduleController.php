@@ -124,7 +124,7 @@ class EventScheduleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|min:5|max:100',
+            'name' => 'required|min:5|max:100|unique:event_schedules,name',
             'date' => 'required|date',
             'recipient' => 'required|min:5|max:50',
             'agendas' => 'required|array',

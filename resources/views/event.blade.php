@@ -173,7 +173,7 @@
                             <div class="employee-container flex flex-wrap px-0">
                                 @foreach ($employees as $employee)
                                     <div class="form-check form-switch" dir="ltr">
-                                        <input type="checkbox" class="form-check-input employee-checkbox" value="{{ $employee->id }}" name="employee[]"
+                                        <input type="checkbox" class="form-check-input employee-checkbox" @disabled(!$employee->valid) value="{{ $employee->id }}" name="employee[]"
                                             id="employee{{ $employee->id }}">
                                         <label class="form-check-label" for="employee{{ $employee->id }}">{{ $employee->name }}
                                             [{{ $employee->phone_number }}]</label>
