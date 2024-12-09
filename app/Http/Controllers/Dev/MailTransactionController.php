@@ -880,7 +880,7 @@ class MailTransactionController extends Controller
     public function tracking(Request $request)
     {
         $data = TransactionMail::with('histories', 'histories.user')->where('number', $request->number);
-        $response = ['message' => 'we found your mail transaction history', 'data' => $data->get()];
+        $response = ['message' => 'we found your mail transaction history', 'data' => $data->first()];
         $code = 200;
         if ($data->count() == 0) {
             $response = ['message' => "unexpectedly we can't found your mail transaction history", 'data' => $data->get()];
