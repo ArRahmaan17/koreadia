@@ -30,16 +30,14 @@ class MailTransactionController extends Controller
                 $join->on('transaction_mails.id', '=', 'wq.transaction_mail_id')
                     ->on('transaction_mails.status', '=', 'wq.current_status');
             })
-            ->where([
-                [
-                    'transaction_mails.user_id',
-                    ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? null : auth()->user()->id),
-                ],
-                ['transaction_mails.status', '!=', 'OUT'],
-            ])->where(function ($query) {
+            ->where(
+                'transaction_mails.status', '!=', 'OUT'
+            )->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id)
+                    ->orWhere('transaction_mails.user_id',
+                        ((getRole() == 'Developer') ? '<>' : '='),
+                        ((getRole() == 'Developer') ? null : auth()->user()->id));
             })
             ->orderBy('id', 'asc')
             ->count();
@@ -61,16 +59,14 @@ class MailTransactionController extends Controller
             if (isset($request['order'][0]['column'])) {
                 $assets->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
-            $assets = $assets->where([
-                [
-                    'transaction_mails.user_id',
-                    ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? null : auth()->user()->id),
-                ],
-                ['transaction_mails.status', '!=', 'OUT'],
-            ])->where(function ($query) {
+            $assets = $assets->where('transaction_mails.status', '!=', 'OUT')->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id)
+                    ->orWhere(
+                        'transaction_mails.user_id',
+                        ((getRole() == 'Developer') ? '<>' : '='),
+                        ((getRole() == 'Developer') ? null : auth()->user()->id)
+                    );
             })->get();
         } else {
             $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
@@ -102,16 +98,12 @@ class MailTransactionController extends Controller
                 $assets->limit($request['length'])
                     ->offset($request['start']);
             }
-            $assets = $assets->where([
-                [
-                    'transaction_mails.user_id',
-                    ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? null : auth()->user()->id),
-                ],
-                ['transaction_mails.status', '!=', 'OUT'],
-            ])->where(function ($query) {
+            $assets = $assets->where('transaction_mails.status', '!=', 'OUT')->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id)
+                    ->orWhere('transaction_mails.user_id',
+                        ((getRole() == 'Developer') ? '<>' : '='),
+                        ((getRole() == 'Developer') ? null : auth()->user()->id));
             })->get();
             $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
                 ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
@@ -138,16 +130,12 @@ class MailTransactionController extends Controller
             if (isset($request['order'][0]['column'])) {
                 $totalFiltered->orderByRaw($request['columns'][$request['order'][0]['column']]['name'] . ' ' . $request['order'][0]['dir']);
             }
-            $totalFiltered = $totalFiltered->where([
-                [
-                    'transaction_mails.user_id',
-                    ((getRole() == 'Developer') ? '<>' : '='),
-                    ((getRole() == 'Developer') ? null : auth()->user()->id),
-                ],
-                ['transaction_mails.status', '!=', 'OUT'],
-            ])->where(function ($query) {
+            $totalFiltered = $totalFiltered->where('transaction_mails.status', '!=', 'OUT')->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
-                    ->orWhere('transaction_mails.creator_id', auth()->user()->id);
+                    ->orWhere('transaction_mails.creator_id', auth()->user()->id)
+                    ->orWhere('transaction_mails.user_id',
+                        ((getRole() == 'Developer') ? '<>' : '='),
+                        ((getRole() == 'Developer') ? null : auth()->user()->id));
             })->count();
         }
         $dataFiltered = [];
@@ -224,7 +212,7 @@ class MailTransactionController extends Controller
                 $data['file_attachment'] = $file_name;
             }
             $transaction_mail = TransactionMail::create($data);
-            $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id??1, 'request_notified' => true];
+            $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id ?? 1, 'request_notified' => true];
             $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
