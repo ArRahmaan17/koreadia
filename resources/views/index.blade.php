@@ -1,18 +1,11 @@
 @extends('layouts.master')
 @section('title')
-    @lang('translation.analytics')
-@endsection
-@section('css')
-    <link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
+    @lang('translation.dashboards')
 @endsection
 @section('content')
     @component('components.breadcrumb')
         @slot('li_1')
-            Dashboards
-        @endslot
-        @slot('title')
-            Dashboards
+            @lang('translation.dashboards')
         @endslot
     @endcomponent
 
@@ -20,7 +13,7 @@
     <div class="row">
         <div class="d-flex flex-column h-100">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     <div class="card card-animate">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -39,7 +32,7 @@
                         </div><!-- end card body -->
                     </div> <!-- end card-->
                 </div> <!-- end col-->
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     <div class="card card-animate">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -49,7 +42,7 @@
                                 </div>
                                 <div>
                                     <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-info-subtle rounded-circle fs-2">
+                                        <span class="avatar-title bg-danger-subtle rounded-circle fs-2">
                                             <i class="ri-mail-send-line text-info"></i>
                                         </span>
                                     </div>
@@ -58,17 +51,17 @@
                         </div><!-- end card body -->
                     </div> <!-- end card-->
                 </div> <!-- end col-->
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     <div class="card card-animate">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <p class="fw-medium text-muted mb-0">Suarat Diproses</p>
+                                    <p class="fw-medium text-muted mb-0">Surat Diproses</p>
                                     <h2 class="mt-4 ff-secondary cfs-22 fw-semibold"><span class="counter-value" data-target="24">0</span></h2>
                                 </div>
                                 <div>
                                     <div class="avatar-sm flex-shrink-0">
-                                        <span class="avatar-title bg-info-subtle rounded-circle fs-2">
+                                        <span class="avatar-title bg-success-subtle rounded-circle fs-2">
                                             <i class="ri-mail-settings-line text-info"></i>
                                         </span>
                                     </div>
@@ -147,27 +140,4 @@
         </div>
     </div>
     <!-- End Event -->
-@endsection
-@section('script')
-    <!-- apexcharts -->
-    <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
-
-    <!-- dashboard init -->
-    <script src="{{ URL::asset('build/js/pages/dashboard-analytics.init.js') }}"></script>
-
-    <!-- Vector map-->
-    <script src="{{ URL::asset('build/js/maps/us-merc-en.js') }}"></script>
-
-    <!-- Swiper Js -->
-    <script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js') }}"></script>
-    
-    <!-- Widget init -->
-    <script src="{{ URL::asset('build/js/pages/widgets.init.js') }}"></script>
-
-    <!-- Other JS -->
-    <script src="{{ URL::asset('build/js/pages/form-input-spin.init.js') }}"></script>
-    <script src="{{ URL::asset('build/libs/card/card.js') }}"></script>
-
 @endsection

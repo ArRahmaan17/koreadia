@@ -13,6 +13,7 @@ return [
     'tou' => 'Ketentuan Pengguna',
     'reset-instructions' => 'Masukan nomer whatsapp anda dan kami akan mengirimkan intruksi ke nomer tersebut',
     'phone_number' => 'Nomer Whatsapp',
+    'mail_process' => 'Surat Diproses',
     'remember-me' => 'Ingat saya',
     'username' => 'Username/NIP',
     'password' => 'Kata sandi',
