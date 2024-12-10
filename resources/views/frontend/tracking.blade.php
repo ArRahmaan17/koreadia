@@ -59,8 +59,10 @@
                         number: nomorSurat.trim()
                     },
                     dataType: 'json',
-                    success: function(response) {
-                        let data = response.data[0];
+                    success: function({
+                        message,
+                        data
+                    }) {
                         let histories = data.histories;
 
                         // Menampilkan data tracking
@@ -100,23 +102,23 @@
                                         </thead>
                                         <tbody>
                                             ${histories.map((history, index) => `
-                                                                        <tr>
-                                                                            <td>${index + 1}</td>
-                                                                            <td>${history.current_status}</td>
-                                                                            <td>${history.user.name}</td>
-                                                                            <td>${history.user.phone_number}</td>
-                                                                            <td><img src="${history.user.avatar}" alt="${history.user.name}" class="rounded-circle" width="50"></td>
-                                                                            <td>${history.created_at}</td>
-                                                                        </tr>
-                                                                    `).join('')}
+                                                                                        <tr>
+                                                                                            <td>${index + 1}</td>
+                                                                                            <td>${history.current_status}</td>
+                                                                                            <td>${history.user.name}</td>
+                                                                                            <td>${history.user.phone_number}</td>
+                                                                                            <td><img src="${history.user.avatar}" alt="${history.user.name}" class="rounded-circle" width="50"></td>
+                                                                                            <td>${history.created_at}</td>
+                                                                                        </tr>
+                                                                                    `).join('')}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         `);
                     },
-                    error: function() {
-                        $('#result').html('<div class="alert alert-danger">Terjadi kesalahan. Silakan coba lagi.</div>');
+                    error: function(error) {
+                        $('#result').html(`<div class="alert alert-danger">${error.responseJSON.message}</div>`);
                     }
                 });
             });
