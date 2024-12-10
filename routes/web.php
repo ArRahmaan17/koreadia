@@ -31,9 +31,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/master/agenda/all', [AgendaController::class, 'all'])->name('master.agenda.all');
-Route::get('/master/type/all', [TypeController::class, 'all'])->name('master.type.all');
-Route::get('/master/priority/all', [PriorityController::class, 'all'])->name('master.priority.all');
+Route::get('/master/agenda/all', [AgendaController::class, 'all'])->name('master.agenda.all')->middleware('public.limiter');
+Route::get('/master/type/all', [TypeController::class, 'all'])->name('master.type.all')->middleware('public.limiter');
+Route::get('/master/priority/all', [PriorityController::class, 'all'])->name('master.priority.all')->middleware('public.limiter');
 Route::get('/event/timeline/{id?}', [EventScheduleController::class, 'showTimeline'])->name('event.show-timeline');
 Route::post('/mail/in', [MailTransactionController::class, 'store'])->name('mail.in.store')->middleware('public.limiter');
 Route::middleware('check.auth')->group(function () {
@@ -169,6 +169,6 @@ Route::middleware(['check.un-auth'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('throttle:3,1');
 });
 Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
-Route::get('/tracking-surat', [MailTransactionController::class, 'tracking'])->name('tracking')->middleware('throttle:10,5');
+Route::get('/tracking-surat', [MailTransactionController::class, 'tracking'])->name('tracking')->middleware('public.limiter');
 Route::get('/tracking', [TrackingController::class, 'tracking'])->name('fe-tracking');
 Route::get('/mail', [MailController::class, 'index'])->name('sendMail');
