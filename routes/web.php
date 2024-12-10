@@ -169,6 +169,6 @@ Route::middleware(['check.un-auth'])->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register')->middleware('throttle:3,1');
 });
 Route::get('/', [FrontendController::class, 'home'])->name('fe-home');
-Route::get('/tracking-surat', [MailTransactionController::class, 'tracking'])->name('tracking')->middleware('public.limiter');
 Route::get('/tracking', [TrackingController::class, 'tracking'])->name('fe-tracking');
-Route::get('/mail', [MailController::class, 'index'])->name('sendMail');
+Route::get('/tracking-surat', [MailTransactionController::class, 'tracking'])->name('tracking')->middleware('public.limiter');
+Route::get('/mail', [MailController::class, 'index'])->name('send-mail');

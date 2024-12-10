@@ -8,11 +8,11 @@
 
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a  href="{{ route('fe-home') }}">Home</a></li>
+                <li><a href="{{ route('fe-home') }}">Home</a></li>
                 <li><a href="#about">Tentang Kami</a></li>
                 <li><a href="#features">Fitur</a></li>
-                <li><a href="{{ route('sendMail') }}">Kirim Surat</a></li>
-                <li><a href="{{ route('tracking') }}">Lacak Surat</a></li>
+                <li><a href="{{ route('send-mail') }}">Kirim Surat</a></li>
+                <li><a href="{{ route('fe-tracking') }}">Lacak Surat</a></li>
                 <li><a href="#contact">Kontak Kami</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
