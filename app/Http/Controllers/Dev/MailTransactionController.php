@@ -236,7 +236,7 @@ class MailTransactionController extends Controller
                 $data_queue['notified'] = true;
             }
             WhatsappQueue::create($data_queue);
-            // DB::commit();
+            DB::commit();
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
         } catch (\Throwable $th) {
