@@ -82,7 +82,8 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="regarding" class="form-label">@lang('translation.mail_regarding')</label>
-                                    <input type="text" class="form-control" name="regarding" placeholder="@lang('translation.enter') @lang('translation.mail_regarding')" id="regarding">
+                                    <input type="text" class="form-control" name="regarding" placeholder="@lang('translation.enter') @lang('translation.mail_regarding')"
+                                        id="regarding">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
@@ -112,13 +113,15 @@
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="date" class="form-label">@lang('translation.mail_date')</label>
-                                    <input type="text" class="form-control flatpikrc" placeholder="@lang('translation.enter') @lang('translation.mail_date')" id="date" name="date">
+                                    <input type="text" class="form-control flatpikrc" placeholder="@lang('translation.enter') @lang('translation.mail_date')" id="date"
+                                        name="date">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="sender" class="form-label">@lang('translation.mail_sender')</label>
-                                    <input type="text" class="form-control" placeholder="@lang('translation.enter') @lang('translation.mail_sender')" id="sender" name="sender">
+                                    <input type="text" class="form-control" placeholder="@lang('translation.enter') @lang('translation.mail_sender')" id="sender"
+                                        name="sender">
                                 </div>
                             </div><!--end col-->
                             <div class="col-6">
@@ -869,6 +872,8 @@
                 })
             });
             $('#modal-status-mail-in').on('hidden.bs.modal', function() {
+                $('#modal-status-mail-in .form-select.select2').select2('destroy');
+                $('#modal-status-mail-in .form-select.select2multi').select2('destroy');
                 $('#form-status-mail-in')[0].reset();
             });
             $('#modal-file-mail-in').on('hidden.bs.modal', function() {
