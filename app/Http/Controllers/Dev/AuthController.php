@@ -66,7 +66,7 @@ class AuthController extends Controller
             'password' => $request->password,
         ], function (User $user) {
             return $user->valid;
-        }, $request->has('remember_me') ? true : false)) {
+        }, $request->has('remember_me'))) {
             $request->session()->regenerate();
             $response = ['status' => 'Berhasil', 'button' => trans('translation.signin'), 'message' => 'kombinasi username dan password ditemukan', 'button' => 'Masuk Aplikasi'];
             $code = 200;

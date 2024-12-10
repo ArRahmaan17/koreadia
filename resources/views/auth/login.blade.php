@@ -87,8 +87,8 @@
                                                 <h5 class="fs-13 mb-4 title">@lang('translation.sign-in-with')</h5>
                                             </div>
                                             <div>
-                                                <button type="button" class="btn btn-success btn-icon waves-effect waves-light"><i
-                                                        class="ri-whatsapp-fill fs-16"></i></button>
+                                                <button disabled type="button" class="btn btn-success btn-icon waves-effect waves-light"><i
+                                                        class="ri-whatsapp-fill fs-16" title="under development"></i></button>
                                             </div>
                                         </div>
                                     </form>
