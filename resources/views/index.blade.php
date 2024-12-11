@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <p class="fw-medium text-muted mb-0">Surat Masuk</p>
+                                    <p class="fw-medium text-muted mb-0">@lang('translation.mail_in')</p>
                                     <h2 class="mt-4 ff-secondary cfs-22 fw-semibold"><span class="counter-value" data-target="20">0</span></h2>
                                 </div>
                                 <div>
@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <p class="fw-medium text-muted mb-0">Surat Keluar</p>
+                                    <p class="fw-medium text-muted mb-0">@lang('translation.mail_out')</p>
                                     <h2 class="mt-4 ff-secondary cfs-22 fw-semibold"><span class="counter-value" data-target="12">0</span></h2>
                                 </div>
                                 <div>
@@ -56,7 +56,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <p class="fw-medium text-muted mb-0">Surat Diproses</p>
+                                    <p class="fw-medium text-muted mb-0">@lang('translation.mail_process')</p>
                                     <h2 class="mt-4 ff-secondary cfs-22 fw-semibold"><span class="counter-value" data-target="24">0</span></h2>
                                 </div>
                                 <div>
