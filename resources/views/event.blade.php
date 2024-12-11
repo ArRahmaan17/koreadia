@@ -121,17 +121,17 @@
                                         </div>
                                         <div class="col-6 mb-2 online-yes d-none">
                                             <label class="form-label" for="meeting.id1">Id meeting</label>
-                                            <input type="text" id="meeting.id1" name="agenda.meeting.id[]" placeholder="Enter the id"
+                                            <input type="text" id="meeting.id1" name="agenda.meeting.id" placeholder="Enter the id"
                                                 class="form-control" required>
                                         </div>
                                         <div class="col-6 mb-2 online-yes d-none">
                                             <label class="form-label" for="meeting.passcode1">Passcode meeting</label>
-                                            <input type="text" id="meeting.passcode1" name="agenda.meeting.passcode[]" placeholder="Enter the passcode"
+                                            <input type="text" id="meeting.passcode1" name="agenda.meeting.passcode" placeholder="Enter the passcode"
                                                 class="form-control" required>
                                         </div>
                                         <div class="col-6 mb-2 online-yes d-none">
                                             <label class="form-label" for="meeting.topic1">Topic meeting</label>
-                                            <input type="text" id="meeting.topic1" name="agenda.meeting.topic[]" placeholder="Enter the topic"
+                                            <input type="text" id="meeting.topic1" name="agenda.meeting.topic" placeholder="Enter the topic"
                                                 class="form-control" required>
                                         </div>
                                     </div><!--end col-->
@@ -425,12 +425,12 @@
         }
 
         function handleTimeChange(lastCreateElement) {
-            $('[name="time[]"]').change(debounce(function() {
+            $('[name="agenda.time"]').change(debounce(function() {
                 let changeElement = this;
                 if (!$(changeElement).hasClass(lastCreateElement)) {
                     let countElement = $('.container-form-agenda').find('.container-input-agenda').length;
                     if (countElement > 1) {
-                        let element = $('[name="time[]"]');
+                        let element = $('[name="agenda.time"]');
                         let matchElement = false;
                         let indexElementChange = 0;
                         let dateEvent = '';
@@ -687,7 +687,7 @@
                     $(elementOrValue).find('select, input:not(".d-none >input")[type=text]').map(function(indexOrKeyInput,
                         elementOrValueInput) {
                         let element = $(elementOrValueInput);
-                        let elementId = element.prop('name').split('agenda.').join('').split('[]').join('');
+                        let elementId = element.prop('name').split('agenda.').join('');
                         if (element.val().trim() != '') {
                             agenda[elementId] = element.val();
                         }
@@ -814,7 +814,7 @@
                         }
                     });
                     if (valid) {
-                        let elementSave = $('.container-form-agenda').find('.col-12.row.container-input-agenda:last-child [name="time[]"]');
+                        let elementSave = $('.container-form-agenda').find('.col-12.row.container-input-agenda:last-child [name="agenda.time"]');
                         elementSave.data('lastTime', elementSave.val());
                         let index = $('.container-form-agenda').find('.col-12.row.container-input-agenda').length;
                         let nextIndex = index + 1;
@@ -952,7 +952,7 @@
                     $('.employee-checkbox').prop('checked', false);
                 } else if ((this.value == '' && $('.employee-checkbox[value=""]').prop('checked') == true) || $(
                         '.employee-checkbox:not(.employee-checkbox[value=""], .employee-checkbox:checked)').length == 0) {
-                    $('.employee-checkbox').prop('checked', true);
+                    $('.employee-checkbox:not(.employee-checkbox[disabled])').prop('checked', true);
                 } else {
                     $('.employee-checkbox[value=""]').prop('checked', false);
                 }

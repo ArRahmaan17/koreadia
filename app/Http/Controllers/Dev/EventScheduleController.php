@@ -175,7 +175,6 @@ class EventScheduleController extends Controller
             $response = ['message' => 'successfully creating resources'];
             $code = 200;
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollBack();
             $response = ['message' => 'failed creating resources'];
             $code = 422;
