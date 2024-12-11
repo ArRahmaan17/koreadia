@@ -177,7 +177,7 @@
                                             value="{{ $employee->id }}" name="employee[]" id="employee{{ $employee->id }}">
                                         <label class="form-check-label" for="employee{{ $employee->id }}">{{ $employee->name }}
                                             [{{ $employee->phone_number }}]<span
-                                                class="badge border {{(($employee->valid)? 'border-success text-success': 'border-danger text-danger')}}">{{ ($employee->valid ? trans('translation.phone_number') . ' valid' : 'mohon validasi ' . trans('translation.phone_number')) }}</span></label>
+                                                class="badge border {{ $employee->valid ? 'border-success text-success' : 'border-danger text-danger' }}">{{ $employee->valid ? trans('translation.phone_number') . ' valid' : 'mohon validasi ' . trans('translation.phone_number') }}</span></label>
                                     </div>
                                 @endforeach
                             </div>
@@ -694,7 +694,7 @@
                     });
                     agendas.push(agenda);
                 });
-                let file_attachment = data["file_attachment"];
+                let file_attachment = (data["file_attachment"] != '') ? undefined : JSON.parse(data["file_attachment"]);
                 delete data["agenda.location"];
                 delete data["agenda.name"];
                 delete data["agenda.online"];
@@ -704,53 +704,58 @@
                 delete data["agenda.meeting.passcode"];
                 delete data["agenda.meeting.topic"];
                 delete data["file_attachment"];
-
-                $.ajax({
-                    type: "POST",
-                    url: `{{ route('event.store') }}`,
-                    data: {
-                        ...data,
-                        agendas: agendas,
-                        file_attachment: JSON.parse(file_attachment??"[]"),
-                    },
-                    dataType: "json",
-                    success: function(response) {
-                        $('#modal-event').modal('hide')
-                        iziToast.success({
-                            id: 'alert-event-form',
-                            title: 'Success',
-                            message: response.message,
-                            position: 'topRight',
-                            layout: 2,
-                            displayMode: 'replace'
-                        });
-                        window.dataTableEvent.ajax.reload();
-                    },
-                    error: function(error) {
-                        $('#modal-event .is-invalid').removeClass('is-invalid')
-                        $.each(error.responseJSON.errors, function(indexInArray,
-                            valueOfElement) {
-                            if (indexInArray.split('agendas.').length > 1) {
-                                let indexSplitting = indexInArray.split('agendas.').join('').split('.')
-                                let name = indexSplitting[1];
-                                let index = indexSplitting[0];
-                                $($('.container-input-agenda')[index]).find('[name="agenda.' + name + '"]').addClass(
-                                    'is-invalid');
-                            } else {
-                                $('#modal-event').find('[name="' + indexInArray +
-                                    '"]').addClass('is-invalid')
-                            }
-                        });
-                        iziToast.error({
-                            id: 'alert-event-form',
-                            title: 'Error',
-                            message: error.responseJSON.message,
-                            position: 'topRight',
-                            layout: 2,
-                            displayMode: 'replace'
-                        });
-                    }
-                });
+                data = {
+                    ...data,
+                    agendas: agendas,
+                }
+                if (file_attachment != undefined) {
+                    data['file_attachment'] = file_attachment;
+                }
+                console.log(data);
+                // $.ajax({
+                //     type: "POST",
+                //     url: `{{ route('event.store') }}`,
+                //     data: {
+                //         ...data,
+                //     },
+                //     dataType: "json",
+                //     success: function(response) {
+                //         $('#modal-event').modal('hide')
+                //         iziToast.success({
+                //             id: 'alert-event-form',
+                //             title: 'Success',
+                //             message: response.message,
+                //             position: 'topRight',
+                //             layout: 2,
+                //             displayMode: 'replace'
+                //         });
+                //         window.dataTableEvent.ajax.reload();
+                //     },
+                //     error: function(error) {
+                //         $('#modal-event .is-invalid').removeClass('is-invalid')
+                //         $.each(error.responseJSON.errors, function(indexInArray,
+                //             valueOfElement) {
+                //             if (indexInArray.split('agendas.').length > 1) {
+                //                 let indexSplitting = indexInArray.split('agendas.').join('').split('.')
+                //                 let name = indexSplitting[1];
+                //                 let index = indexSplitting[0];
+                //                 $($('.container-input-agenda')[index]).find('[name="agenda.' + name + '"]').addClass(
+                //                     'is-invalid');
+                //             } else {
+                //                 $('#modal-event').find('[name="' + indexInArray +
+                //                     '"]').addClass('is-invalid')
+                //             }
+                //         });
+                //         iziToast.error({
+                //             id: 'alert-event-form',
+                //             title: 'Error',
+                //             message: error.responseJSON.message,
+                //             position: 'topRight',
+                //             layout: 2,
+                //             displayMode: 'replace'
+                //         });
+                //     }
+                // });
             });
             $('#save-event-update').click(function() {
                 let id = $(this).data('event');
@@ -814,7 +819,8 @@
                         }
                     });
                     if (valid) {
-                        let elementSave = $('.container-form-agenda').find('.col-12.row.container-input-agenda:last-child [name="agenda.time"]');
+                        let elementSave = $('.container-form-agenda').find(
+                            '.col-12.row.container-input-agenda:last-child [name="agenda.time"]');
                         elementSave.data('lastTime', elementSave.val());
                         let index = $('.container-form-agenda').find('.col-12.row.container-input-agenda').length;
                         let nextIndex = index + 1;

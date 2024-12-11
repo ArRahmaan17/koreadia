@@ -136,10 +136,10 @@ class EventScheduleController extends Controller
             'agendas.*.meeting.id' => 'required_if:online,true|string|min:5|max:50',
             'agendas.*.meeting.passcode' => 'required_if:online,true|string|min:5|max:50',
             'agendas.*.meeting.topic' => 'required_if:online,true|string|min:5|max:50',
-            'file_attachment.id' => 'required|string',
-            'file_attachment.type' => 'required|string|starts_with:image/',
-            'file_attachment.size' => 'required|integer|max:' . env('FILE_LIMIT') . '',
-            'file_attachment.data' => 'required',
+            'file_attachment.id' => 'required_with:file_attachment|string',
+            'file_attachment.type' => 'required_with:file_attachment|string|starts_with:image/',
+            'file_attachment.size' => 'required_with:file_attachment|integer|max:' . env('FILE_LIMIT') . '',
+            'file_attachment.data' => 'required_with:file_attachment',
         ]);
         DB::beginTransaction();
         try {
