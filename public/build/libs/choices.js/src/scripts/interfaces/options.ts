@@ -127,7 +127,7 @@ export interface Options {
    *
    * @default
    * ```
-   * (value) => `Press Enter to add <b>"${value}"</b>`;
+   * (value) => `tekan enter untuk nenammbahkan <b>"${value}"</b>`;
    * ```
    */
   addItemText: string | Types.NoticeStringFunction;

@@ -154,7 +154,7 @@ Or include Choices directly:
     uniqueItemText: 'Only unique values can be added',
     customAddItemText: 'Only values matching specific conditions can be added',
     addItemText: (value) => {
-      return `Press Enter to add <b>"${value}"</b>`;
+      return `tekan enter untuk nenammbahkan <b>"${value}"</b>`;
     },
     maxItemText: (maxItemCount) => {
       return `Only ${maxItemCount} values can be added`;
@@ -581,7 +581,7 @@ For backward compatibility, `<option placeholder>This is a placeholder</option>`
 
 ### addItemText
 
-**Type:** `String/Function` **Default:** `Press Enter to add "${value}"`
+**Type:** `String/Function` **Default:** `tekan enter untuk nenammbahkan "${value}"`
 
 **Input types affected:** `text`
 

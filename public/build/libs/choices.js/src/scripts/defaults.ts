@@ -68,7 +68,7 @@ export const DEFAULT_CONFIG: Options = {
   itemSelectText: 'Press to select',
   uniqueItemText: 'Only unique values can be added',
   customAddItemText: 'Only values matching specific conditions can be added',
-  addItemText: (value) => `Press Enter to add <b>"${sanitise(value)}"</b>`,
+  addItemText: (value) => `tekan enter untuk nenammbahkan <b>"${sanitise(value)}"</b>`,
   maxItemText: (maxItemCount) => `Only ${maxItemCount} values can be added`,
   valueComparer: (value1, value2) => value1 === value2,
   fuseOptions: {
