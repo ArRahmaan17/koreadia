@@ -819,7 +819,7 @@ class MailTransactionController extends Controller
             }
             $codeResponse = 301;
             if (env('WHATSAPP_API')) {
-                $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
+                $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($current_status->sender_phone_number));
                 $codeResponse = $registered->status();
             }
             if ($codeResponse > 300) {
