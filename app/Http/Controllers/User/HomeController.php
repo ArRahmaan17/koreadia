@@ -14,7 +14,7 @@ class HomeController extends Controller
         $countOut = TransactionMail::where('status', 'OUT')->count();
         $countProcess = TransactionMail::whereNotIn('status', ['IN', 'OUT', 'ARCHIVE'])->count();
         $countArchive = TransactionMail::where('status', 'ARCHIVE')->count();
-        $eventHighlights = EventSchedule::where('date', '>', '2024-01-01' ?? now('Asia/Jakarta')->addDay(-1)->format('Y-m-d'))->limit(10)->get();
+        $eventHighlights = EventSchedule::where('date', '>', now('Asia/Jakarta')->addDay(-1)->format('Y-m-d'))->limit(10)->get();
         return view('index', compact('countIn', 'countOut', 'countProcess', 'countArchive', 'eventHighlights'));
     }
 }
