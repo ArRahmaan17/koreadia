@@ -40,7 +40,7 @@ class sendBroadcastEvent extends Command
         )->post(env('WHATSAPP_URL') . 'broadcast-event/' . $data['phone_number'], [
             'id' => $data['id'],
             'name' => $data['name'],
-            'date' => Carbon::createFromFormat('Y-m-d', $data['date'], 'Asia/Jakarta')->format('l, j F Y'),
+            'date' => Carbon::createFromFormat('Y-m-d', $data['date'], env('APP_TIMEZONE'))->format('l, j F Y'),
             'recipient' => $data['recipient'],
             'agendas' => json_encode($data['agendas'])
         ]);

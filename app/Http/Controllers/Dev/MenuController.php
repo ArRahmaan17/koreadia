@@ -99,7 +99,7 @@ class MenuController extends Controller
             $data = $request->except('_token', 'id', 'role');
             $menu = Menu::create($data);
             $roleMenu = array_map(function ($data) use ($menu) {
-                return ['role_id' => $data, 'menu_id' => $menu->id, 'created_at' => now('Asia/Jakarta')];
+                return ['role_id' => $data, 'menu_id' => $menu->id, 'created_at' => now(env('APP_TIMEZONE'))];
             }, $request->roles);
             RoleMenu::insert($roleMenu);
             DB::commit();
@@ -148,7 +148,7 @@ class MenuController extends Controller
             $menu = Menu::find($id)->update($data);
             RoleMenu::where('menu_id', $id)->delete();
             $roleMenu = array_map(function ($data) use ($id) {
-                return ['role_id' => $data, 'menu_id' => $id, 'created_at' => now('Asia/Jakarta')];
+                return ['role_id' => $data, 'menu_id' => $id, 'created_at' => now(env('APP_TIMEZONE'))];
             }, $request->roles);
             RoleMenu::insert($roleMenu);
             DB::commit();

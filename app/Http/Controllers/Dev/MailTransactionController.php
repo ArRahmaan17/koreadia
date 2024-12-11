@@ -201,7 +201,7 @@ class MailTransactionController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->except('_token', 'file_attachment', 'admin');
-            $data['date_in'] = now('Asia/Jakarta');
+            $data['date_in'] = now(env('APP_TIMEZONE'));
             $data['user_id'] = auth()->user()->id ?? 1;
             $data['creator_id'] = auth()->user()->id ?? 1;
             $data['status'] = 'IN';
@@ -220,7 +220,7 @@ class MailTransactionController extends Controller
             }
             if ($codeResponse > 300) {
                 $data_queue['request_notified'] = true;
-                $data_queue['request_notified_at'] = now('Asia/Jakarta');
+                $data_queue['request_notified_at'] = now(env('APP_TIMEZONE'));
                 $data_queue['notified'] = true;
             }
             WhatsappQueue::create($data_queue);
@@ -292,8 +292,8 @@ class MailTransactionController extends Controller
                             'transaction_mail_id' => $current_status->id,
                             'current_status' => $data['status'],
                             'last_status' => $current_status->status,
-                            'created_at' => now('Asia/Jakarta'),
-                            'updated_at' => now('Asia/Jakarta'),
+                            'created_at' => now(env('APP_TIMEZONE')),
+                            'updated_at' => now(env('APP_TIMEZONE')),
                             'user_id' => auth()->user()->id,
                         ]];
                     } elseif ($data['status'] == 'FILED') {
@@ -302,11 +302,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -315,8 +315,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -326,11 +326,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -339,8 +339,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -350,11 +350,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -363,8 +363,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -377,8 +377,8 @@ class MailTransactionController extends Controller
                             'transaction_mail_id' => $current_status->id,
                             'current_status' => 'FILED',
                             'last_status' => $current_status->status,
-                            'created_at' => now('Asia/Jakarta'),
-                            'updated_at' => now('Asia/Jakarta'),
+                            'created_at' => now(env('APP_TIMEZONE')),
+                            'updated_at' => now(env('APP_TIMEZONE')),
                             'user_id' => auth()->user()->id,
                         ]];
                     } elseif ($data['status'] == 'DISPOSITION') {
@@ -387,11 +387,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -400,8 +400,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -411,11 +411,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -424,8 +424,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -439,8 +439,8 @@ class MailTransactionController extends Controller
                                 'transaction_mail_id' => $current_status->id,
                                 'current_status' => 'DISPOSITION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ]
                         ];
@@ -450,11 +450,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -463,8 +463,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -478,8 +478,8 @@ class MailTransactionController extends Controller
                                 'transaction_mail_id' => $current_status->id,
                                 'current_status' => $data['status'],
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ]];
                     }
@@ -490,8 +490,8 @@ class MailTransactionController extends Controller
                         'transaction_mail_id' => $current_status->id,
                         'current_status' => 'ARCHIVE',
                         'last_status' => $current_status->status,
-                        'created_at' => now('Asia/Jakarta'),
-                        'updated_at' => now('Asia/Jakarta'),
+                        'created_at' => now(env('APP_TIMEZONE')),
+                        'updated_at' => now(env('APP_TIMEZONE')),
                         'user_id' => auth()->user()->id,
                     ]];
                     break;
@@ -507,12 +507,12 @@ class MailTransactionController extends Controller
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
                         $data_queue[$key]['request_notified'] = true;
-                        $data_queue[$key]['request_notified_at'] = now('Asia/Jakarta');
+                        $data_queue[$key]['request_notified_at'] = now(env('APP_TIMEZONE'));
                         $data_queue[$key]['notified'] = true;
                     }
                 } else {
                     $data_queue[0]['request_notified'] = true;
-                    $data_queue[0]['request_notified_at'] = now('Asia/Jakarta');
+                    $data_queue[0]['request_notified_at'] = now(env('APP_TIMEZONE'));
                     $data_queue[0]['notified'] = true;
                 }
             }
@@ -561,7 +561,7 @@ class MailTransactionController extends Controller
                 'request_notified_at' => null,
             ])->update([
                 'request_notified' => true,
-                'request_notified_at' => now('Asia/Jakarta'),
+                'request_notified_at' => now(env('APP_TIMEZONE')),
                 'notified' => $request->skip,
             ]);
             DB::commit();
@@ -600,8 +600,8 @@ class MailTransactionController extends Controller
                             'transaction_mail_id' => $current_status->id,
                             'current_status' => $data['status'],
                             'last_status' => $current_status->status,
-                            'created_at' => now('Asia/Jakarta'),
-                            'updated_at' => now('Asia/Jakarta'),
+                            'created_at' => now(env('APP_TIMEZONE')),
+                            'updated_at' => now(env('APP_TIMEZONE')),
                             'user_id' => auth()->user()->id,
                         ]];
                     } elseif ($data['status'] == 'FILED') {
@@ -610,11 +610,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -623,8 +623,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -634,11 +634,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -647,8 +647,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -658,11 +658,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -671,8 +671,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -685,8 +685,8 @@ class MailTransactionController extends Controller
                             'transaction_mail_id' => $current_status->id,
                             'current_status' => 'FILED',
                             'last_status' => $current_status->status,
-                            'created_at' => now('Asia/Jakarta'),
-                            'updated_at' => now('Asia/Jakarta'),
+                            'created_at' => now(env('APP_TIMEZONE')),
+                            'updated_at' => now(env('APP_TIMEZONE')),
                             'user_id' => auth()->user()->id,
                         ]];
                     } elseif ($data['status'] == 'DISPOSITION') {
@@ -695,11 +695,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -708,8 +708,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -719,11 +719,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -732,8 +732,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -747,8 +747,8 @@ class MailTransactionController extends Controller
                                 'transaction_mail_id' => $current_status->id,
                                 'current_status' => 'DISPOSITION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ]
                         ];
@@ -758,11 +758,11 @@ class MailTransactionController extends Controller
                             [
                                 'transaction_mail_id' => $current_status->id,
                                 'request_notified' => true,
-                                'request_notified_at' => now('Asia/Jakarta'),
+                                'request_notified_at' => now(env('APP_TIMEZONE')),
                                 'current_status' => 'ACCELERATION',
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                             [
@@ -771,8 +771,8 @@ class MailTransactionController extends Controller
                                 'request_notified_at' => null,
                                 'current_status' => $data['status'],
                                 'last_status' => 'ACCELERATION',
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ],
                         ];
@@ -786,8 +786,8 @@ class MailTransactionController extends Controller
                                 'transaction_mail_id' => $current_status->id,
                                 'current_status' => $data['status'],
                                 'last_status' => $current_status->status,
-                                'created_at' => now('Asia/Jakarta'),
-                                'updated_at' => now('Asia/Jakarta'),
+                                'created_at' => now(env('APP_TIMEZONE')),
+                                'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
                             ]];
                     }
@@ -798,8 +798,8 @@ class MailTransactionController extends Controller
                         'transaction_mail_id' => $current_status->id,
                         'current_status' => 'ARCHIVE',
                         'last_status' => $current_status->status,
-                        'created_at' => now('Asia/Jakarta'),
-                        'updated_at' => now('Asia/Jakarta'),
+                        'created_at' => now(env('APP_TIMEZONE')),
+                        'updated_at' => now(env('APP_TIMEZONE')),
                         'user_id' => auth()->user()->id,
                     ]];
                     break;
@@ -809,8 +809,8 @@ class MailTransactionController extends Controller
                         'transaction_mail_id' => $current_status->id,
                         'current_status' => 'ARCHIVE',
                         'last_status' => $current_status->status,
-                        'created_at' => now('Asia/Jakarta'),
-                        'updated_at' => now('Asia/Jakarta'),
+                        'created_at' => now(env('APP_TIMEZONE')),
+                        'updated_at' => now(env('APP_TIMEZONE')),
                         'user_id' => auth()->user()->id,
                     ]];
                     break;
@@ -826,12 +826,12 @@ class MailTransactionController extends Controller
                 if (count($data_queue) > 1) {
                     foreach ($data_queue as $key => $value) {
                         $data_queue[$key]['request_notified'] = true;
-                        $data_queue[$key]['request_notified_at'] = now('Asia/Jakarta');
+                        $data_queue[$key]['request_notified_at'] = now(env('APP_TIMEZONE'));
                         $data_queue[$key]['notified'] = true;
                     }
                 } else {
                     $data_queue[0]['request_notified'] = true;
-                    $data_queue[0]['request_notified_at'] = now('Asia/Jakarta');
+                    $data_queue[0]['request_notified_at'] = now(env('APP_TIMEZONE'));
                     $data_queue[0]['notified'] = true;
                 }
             }

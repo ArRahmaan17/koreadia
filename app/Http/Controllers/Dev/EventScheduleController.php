@@ -154,8 +154,8 @@ class EventScheduleController extends Controller
             $data_agenda = [];
             foreach ($request->only('agendas')['agendas'] as $key => $value) {
                 $value['event_schedule_id'] = $event_schedule->id;
-                $value['created_at'] = now('Asia/Jakarta');
-                $value['updated_at'] = now('Asia/Jakarta');
+                $value['created_at'] = now(env('APP_TIMEZONE'));
+                $value['updated_at'] = now(env('APP_TIMEZONE'));
                 if ($value['online'] == 'true') {
                     $value['location'] = null;
                     $value['meeting'] = json_encode([
@@ -202,7 +202,7 @@ class EventScheduleController extends Controller
         try {
             $broadcast_queue = [];
             foreach ($request->employee as $key => $value) {
-                array_push($broadcast_queue, ['event_schedule_id' => $request->id, 'employee_id' => $value, 'request_broadcast' => true, 'request_broadcasted_at' => now('Asia/Jakarta'), 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
+                array_push($broadcast_queue, ['event_schedule_id' => $request->id, 'employee_id' => $value, 'request_broadcast' => true, 'request_broadcasted_at' => now(env('APP_TIMEZONE')), 'created_at' => now(env('APP_TIMEZONE')), 'updated_at' => now(env('APP_TIMEZONE'))]);
             }
             EventQueue::insert($broadcast_queue);
             $response = ['message' => 'successfully creating resources'];

@@ -31,7 +31,7 @@ class executeEventQueue extends Command
         if (! empty($data)) {
             Artisan::call('app:send-broadcast-event ' . $data->id);
             if (trim(Artisan::output()) == 'Notified employee to join event successfully') {
-                dd(EventQueue::find($data->id)->update(['broadcast' => true, 'broadcasted_at' => now('Asia/Jakarta')]));
+                dd(EventQueue::find($data->id)->update(['broadcast' => true, 'broadcasted_at' => now(env('APP_TIMEZONE'))]));
             }
         }
     }

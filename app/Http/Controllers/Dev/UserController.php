@@ -137,9 +137,9 @@ class UserController extends Controller
             }
             $data['password'] = Hash::make($data['password']);
             $user = User::create($data);
-            RoleUser::insert(['user_id' => $user->id, 'role_id' => $request->role, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
+            RoleUser::insert(['user_id' => $user->id, 'role_id' => $request->role, 'created_at' => now(env('APP_TIMEZONE')), 'updated_at' => now(env('APP_TIMEZONE'))]);
             if ($request->has('organization')) {
-                OrganizationUser::insert(['user_id' => $user->id, 'organization_id' => $request->organization, 'created_at' => now('Asia/Jakarta'), 'updated_at' => now('Asia/Jakarta')]);
+                OrganizationUser::insert(['user_id' => $user->id, 'organization_id' => $request->organization, 'created_at' => now(env('APP_TIMEZONE')), 'updated_at' => now(env('APP_TIMEZONE'))]);
             }
             $response = ['message' => 'creating resources successfully'];
             $code = 200;

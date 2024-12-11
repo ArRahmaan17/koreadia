@@ -207,7 +207,7 @@ class MailOutController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->except('_token', 'file_attachment', 'admin');
-            $data['date_in'] = now('Asia/Jakarta');
+            $data['date_in'] = now(env('APP_TIMEZONE'));
             $data['user_id'] = auth()->user()->id;
             $data['creator_id'] = auth()->user()->id;
             $data['status'] = 'OUT';
@@ -226,7 +226,7 @@ class MailOutController extends Controller
             }
             if ($codeResponse > 300) {
                 $data_queue['request_notified'] = true;
-                $data_queue['request_notified_at'] = now('Asia/Jakarta');
+                $data_queue['request_notified_at'] = now(env('APP_TIMEZONE'));
                 $data_queue['notified'] = true;
             }
             WhatsappQueue::create($data_queue);

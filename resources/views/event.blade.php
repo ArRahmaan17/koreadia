@@ -711,7 +711,7 @@
                     data: {
                         ...data,
                         agendas: agendas,
-                        file_attachment: JSON.parse(file_attachment),
+                        file_attachment: JSON.parse(file_attachment??"[]"),
                     },
                     dataType: "json",
                     success: function(response) {
@@ -737,8 +737,8 @@
                                 $($('.container-input-agenda')[index]).find('[name="agenda.' + name + '"]').addClass(
                                     'is-invalid');
                             } else {
-                                $('#modal-event').find('[name=' + indexInArray +
-                                    ']').addClass('is-invalid')
+                                $('#modal-event').find('[name="' + indexInArray +
+                                    '"]').addClass('is-invalid')
                             }
                         });
                         iziToast.error({

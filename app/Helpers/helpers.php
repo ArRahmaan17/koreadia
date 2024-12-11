@@ -8,7 +8,7 @@ function compareDateEvent($date, $time, $timeNextEvent)
     if ($timeNextEvent == null) {
         $timeNextEvent = Carbon\Carbon::parse($date . ' ' . $time)->addHour()->format('h:i');
     }
-    $dateCompare = now('Asia/Jakarta')->diffInSeconds(Carbon\Carbon::parse($date . ' ' . $time), false);
+    $dateCompare = now(env('APP_TIMEZONE'))->diffInSeconds(Carbon\Carbon::parse($date . ' ' . $time), false);
     $dateCompareNextEvent = Carbon\Carbon::parse($date . ' ' . $time)->diffInSeconds(Carbon\Carbon::parse($date . ' ' . $timeNextEvent), false);
     if ($dateCompare < 0) {
         return ['class' => 'bg-success-subtle', 'color' => 'text-success', 'label' => 'Selesai'];
