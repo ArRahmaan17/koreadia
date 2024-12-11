@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->date('date');
             $table->string('recipient');
-            $table->string('file_attachment');
+            $table->string('file_attachment')->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')
                 ->on('users')

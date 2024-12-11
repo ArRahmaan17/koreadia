@@ -104,7 +104,7 @@ class EventScheduleController extends Controller
             $row['recipient'] = $item->recipient;
             $row['admin'] = $item->admin;
             $row['detail_event'] = DetailEventSchedule::where('event_schedule_id', $item->id)->get()->toArray();
-            $row['file_attachment'] = "<button title='" . trans('translation.show') . ' ' . trans('translation.event_file_attachment') . "' class='btn btn-icon btn-info file-thumbnails' data-file='" . $item->file_attachment . "'><i class='bx bx-image' ></i></button>";
+            $row['file_attachment'] = $item->file_attachment != null ? "<button title='" . trans('translation.show') . ' ' . trans('translation.event_file_attachment') . "' class='btn btn-icon btn-info file-thumbnails' data-file='" . $item->file_attachment . "'><i class='bx bx-image' ></i></button>" : "Tidak Ada";
             $row['action'] = (($item->count_requesting == 0) ? "<button title='Kirim pengumuman' class='btn btn-icon btn-success send-broadcast' " . (($item->request_broadcast > 0) ? 'disabled' : '') . " data-event='" . $item->id . "' >" . (($item->request_broadcast > 0) ? '<i class="bx bx-loader-circle"></i>' : '<i class="bx bxs-paper-plane"></i>') . "</button>" : "") . "<button title='Perbaiki pengumuman' data-event='" . $item->id . "' class='btn btn-icon btn-warning maintenance-broadcast'><i class='bx bx-pencil' ></i></button><button title='" . trans('translation.show') . ' ' . trans('translation.timeline') . "' data-event='" . $item->id . "' class='btn btn-icon btn-secondary show-timeline'><i class='bx bx-show' ></i></button>";
             $dataFiltered[] = $row;
         }

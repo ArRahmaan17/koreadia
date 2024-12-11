@@ -712,50 +712,50 @@
                     data['file_attachment'] = file_attachment;
                 }
                 console.log(data);
-                // $.ajax({
-                //     type: "POST",
-                //     url: `{{ route('event.store') }}`,
-                //     data: {
-                //         ...data,
-                //     },
-                //     dataType: "json",
-                //     success: function(response) {
-                //         $('#modal-event').modal('hide')
-                //         iziToast.success({
-                //             id: 'alert-event-form',
-                //             title: 'Success',
-                //             message: response.message,
-                //             position: 'topRight',
-                //             layout: 2,
-                //             displayMode: 'replace'
-                //         });
-                //         window.dataTableEvent.ajax.reload();
-                //     },
-                //     error: function(error) {
-                //         $('#modal-event .is-invalid').removeClass('is-invalid')
-                //         $.each(error.responseJSON.errors, function(indexInArray,
-                //             valueOfElement) {
-                //             if (indexInArray.split('agendas.').length > 1) {
-                //                 let indexSplitting = indexInArray.split('agendas.').join('').split('.')
-                //                 let name = indexSplitting[1];
-                //                 let index = indexSplitting[0];
-                //                 $($('.container-input-agenda')[index]).find('[name="agenda.' + name + '"]').addClass(
-                //                     'is-invalid');
-                //             } else {
-                //                 $('#modal-event').find('[name="' + indexInArray +
-                //                     '"]').addClass('is-invalid')
-                //             }
-                //         });
-                //         iziToast.error({
-                //             id: 'alert-event-form',
-                //             title: 'Error',
-                //             message: error.responseJSON.message,
-                //             position: 'topRight',
-                //             layout: 2,
-                //             displayMode: 'replace'
-                //         });
-                //     }
-                // });
+                $.ajax({
+                    type: "POST",
+                    url: `{{ route('event.store') }}`,
+                    data: {
+                        ...data,
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        $('#modal-event').modal('hide')
+                        iziToast.success({
+                            id: 'alert-event-form',
+                            title: 'Success',
+                            message: response.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
+                        });
+                        window.dataTableEvent.ajax.reload();
+                    },
+                    error: function(error) {
+                        $('#modal-event .is-invalid').removeClass('is-invalid')
+                        $.each(error.responseJSON.errors, function(indexInArray,
+                            valueOfElement) {
+                            if (indexInArray.split('agendas.').length > 1) {
+                                let indexSplitting = indexInArray.split('agendas.').join('').split('.')
+                                let name = indexSplitting[1];
+                                let index = indexSplitting[0];
+                                $($('.container-input-agenda')[index]).find('[name="agenda.' + name + '"]').addClass(
+                                    'is-invalid');
+                            } else {
+                                $('#modal-event').find('[name="' + indexInArray +
+                                    '"]').addClass('is-invalid')
+                            }
+                        });
+                        iziToast.error({
+                            id: 'alert-event-form',
+                            title: 'Error',
+                            message: error.responseJSON.message,
+                            position: 'topRight',
+                            layout: 2,
+                            displayMode: 'replace'
+                        });
+                    }
+                });
             });
             $('#save-event-update').click(function() {
                 let id = $(this).data('event');
