@@ -102,7 +102,7 @@
                 <div class="mini-stats-wid d-flex align-items-center mt-3">
                     <div class="flex-shrink-0 avatar-sm">
                         <span class="mini-stat-icon avatar-title rounded-circle text-body-tertiary bg-body-tertiary fs-4">
-                            00
+                            404
                         </span>
                     </div>
                     <div class="flex-grow-1 ms-3">
