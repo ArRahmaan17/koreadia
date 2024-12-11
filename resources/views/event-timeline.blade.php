@@ -57,7 +57,6 @@
                                     @endforeach
                                 </ul>
                             @endif
-                            <a href="javascript:void(0);" class="link-primary text-decoration-underline">Read More <i class="ri-arrow-right-line"></i></a>
                         </div>
                     </div>
                 @endforeach

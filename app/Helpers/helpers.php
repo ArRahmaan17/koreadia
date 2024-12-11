@@ -11,12 +11,17 @@ function compareDateEvent($date, $time, $timeNextEvent)
     $dateCompare = now('Asia/Jakarta')->diffInSeconds(Carbon\Carbon::parse($date . ' ' . $time), false);
     $dateCompareNextEvent = Carbon\Carbon::parse($date . ' ' . $time)->diffInSeconds(Carbon\Carbon::parse($date . ' ' . $timeNextEvent), false);
     if ($dateCompare < 0) {
-        return ['class' => 'bg-success-subtle', 'color'=> 'text-success', 'label' => 'Selesai'];
+        return ['class' => 'bg-success-subtle', 'color' => 'text-success', 'label' => 'Selesai'];
     } else if ($dateCompare > 1 && $dateCompare < $dateCompareNextEvent) {
-        return ['class' => 'bg-warning-subtle', 'color'=> 'text-warning', 'label' => 'Sedang Berjalan'];
+        return ['class' => 'bg-warning-subtle', 'color' => 'text-warning', 'label' => 'Sedang Berjalan'];
     } else {
-        return ['class' => 'bg-primary-subtle', 'color'=> 'text-primary', 'label' => 'Akan Datang'];
+        return ['class' => 'bg-primary-subtle', 'color' => 'text-primary', 'label' => 'Akan Datang'];
     }
+}
+
+function localizationDate($date)
+{
+    return Carbon\Carbon::parse($date)->locale('id')->settings(['formatFunction' => 'translatedFormat'])->format('l jS F Y');
 }
 
 if (! function_exists('buildTree')) {
