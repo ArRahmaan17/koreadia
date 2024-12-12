@@ -1,0 +1,6 @@
+- 1 waktu bisa ada 2 acara atau lebih
+- button request notified di disabled kalau sudah request notified (v)
+- diajukan ke siapa? (v)
+- notifikasi admin (v)
+- limit wa untuk hari jumat
+- broken access control

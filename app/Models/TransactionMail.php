@@ -53,6 +53,6 @@ class TransactionMail extends Model
 
     public function histories(): HasMany
     {
-        return $this->hasMany(WhatsappQueue::class, 'transaction_mail_id', 'id')->orderBy('created_at', 'ASC');
+        return $this->hasMany(WhatsappQueue::class, 'transaction_mail_id', 'id')->where('current_status', '!=', 'ALERT')->orderBy('created_at', 'ASC');
     }
 }
