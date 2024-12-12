@@ -24,4 +24,8 @@ class WhatsappQueue extends Model
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
+    public function validator(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'validator_id');
+    }
 }

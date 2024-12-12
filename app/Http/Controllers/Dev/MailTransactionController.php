@@ -227,7 +227,16 @@ class MailTransactionController extends Controller
                 $data['file_attachment'] = $file_name;
             }
             $transaction_mail = TransactionMail::create($data);
-            $data_queue = ['transaction_mail_id' => $transaction_mail->id, 'current_status' => 'IN', 'user_id' => auth()->user()->id ?? 1, 'request_notified' => true];
+            $data_queue = [[
+                'transaction_mail_id' => $transaction_mail->id,
+                'current_status' => 'IN',
+                'user_id' => auth()->user()->id ?? 1,
+                'validator_id' => auth()->user()->id ?? 1,
+                'request_notified' => true,
+                'request_notified_at' => now(env('APP_TIMEZONE')),
+                'created_at' => now(env('APP_TIMEZONE')),
+                'updated_at' => now(env('APP_TIMEZONE')),
+            ]];
             $codeResponse = 301;
             if (env('WHATSAPP_API')) {
                 $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['sender_phone_number']));
@@ -235,14 +244,25 @@ class MailTransactionController extends Controller
             }
             if ($codeResponse > 300) {
                 $data_queue['request_notified'] = true;
-                $data_queue['request_notified_at'] = now(env('APP_TIMEZONE'));
                 $data_queue['notified'] = true;
             }
-            WhatsappQueue::create($data_queue);
+            WhatsappQueue::insert($data_queue);
+            WhatsappQueue::insert([
+                'transaction_mail_id' => $transaction_mail->id,
+                'current_status' => 'ALERT',
+                'last_status' => null,
+                'created_at' => now(env('APP_TIMEZONE')),
+                'updated_at' => now(env('APP_TIMEZONE')),
+                'user_id' => auth()->user()->id ?? 1,
+                'validator_id' => auth()->user()->id ?? 1,
+                'request_notified' => true,
+                'request_notified_at' => now(env('APP_TIMEZONE')),
+            ]);
             DB::commit();
             $response = ['message' => 'creating resources successfully'];
             $code = 200;
         } catch (\Throwable $th) {
+            dd($th);
             $response = ['message' => 'failed creating resources'];
             $code = 422;
             DB::rollBack();
@@ -618,6 +638,7 @@ class MailTransactionController extends Controller
                             'created_at' => now(env('APP_TIMEZONE')),
                             'updated_at' => now(env('APP_TIMEZONE')),
                             'user_id' => auth()->user()->id,
+                            'validator_id' => $request->user_id,
                         ]];
                     } elseif ($data['status'] == 'FILED') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN']];
@@ -631,6 +652,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -641,6 +663,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                         ];
                     } elseif ($data['status'] == 'DISPOSITION') {
@@ -655,6 +678,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -665,6 +689,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                         ];
                     } elseif ($data['status'] == 'REPLIED') {
@@ -679,6 +704,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -689,6 +715,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                         ];
                     }
@@ -703,6 +730,7 @@ class MailTransactionController extends Controller
                             'created_at' => now(env('APP_TIMEZONE')),
                             'updated_at' => now(env('APP_TIMEZONE')),
                             'user_id' => auth()->user()->id,
+                            'validator_id' => $request->user_id,
                         ]];
                     } elseif ($data['status'] == 'DISPOSITION') {
                         $where_queue = [['transaction_mail_id', $current_status->id], ['current_status', '!=', 'IN'], ['current_status', '!=', 'PROCESS']];
@@ -716,6 +744,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -726,6 +755,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                         ];
                     } elseif ($data['status'] == 'REPLIED') {
@@ -740,6 +770,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -750,6 +781,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                         ];
                     }
@@ -765,6 +797,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ]
                         ];
                     } elseif ($data['status'] == 'REPLIED') {
@@ -779,6 +812,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                             [
                                 'transaction_mail_id' => $current_status->id,
@@ -789,6 +823,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ],
                         ];
                     }
@@ -804,6 +839,7 @@ class MailTransactionController extends Controller
                                 'created_at' => now(env('APP_TIMEZONE')),
                                 'updated_at' => now(env('APP_TIMEZONE')),
                                 'user_id' => auth()->user()->id,
+                                'validator_id' => $request->user_id,
                             ]];
                     }
                     break;
@@ -816,6 +852,7 @@ class MailTransactionController extends Controller
                         'created_at' => now(env('APP_TIMEZONE')),
                         'updated_at' => now(env('APP_TIMEZONE')),
                         'user_id' => auth()->user()->id,
+                        'validator_id' => $request->user_id,
                     ]];
                     break;
                 case 'OUT':
@@ -827,6 +864,7 @@ class MailTransactionController extends Controller
                         'created_at' => now(env('APP_TIMEZONE')),
                         'updated_at' => now(env('APP_TIMEZONE')),
                         'user_id' => auth()->user()->id,
+                        'validator_id' => $request->user_id,
                     ]];
                     break;
                 default:
@@ -858,7 +896,8 @@ class MailTransactionController extends Controller
                 'last_status' => null,
                 'created_at' => now(env('APP_TIMEZONE')),
                 'updated_at' => now(env('APP_TIMEZONE')),
-                'user_id' => $request->user_id,
+                'user_id' => auth()->user()->id,
+                'validator_id' => $request->user_id,
                 'request_notified' => true,
                 'request_notified_at' => now(env('APP_TIMEZONE')),
             ]]);
@@ -891,7 +930,7 @@ class MailTransactionController extends Controller
 
     public function tracking(Request $request)
     {
-        $data = TransactionMail::with('histories', 'histories.user')->where('number', $request->number);
+        $data = TransactionMail::with('histories', 'histories.user', 'histories.validator')->where('number', $request->number);
         $response = ['message' => 'kami berhasil menemukan data riwayat surat anda', 'data' => $data->first()];
         $code = 200;
         if ($data->count() == 0) {

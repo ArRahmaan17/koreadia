@@ -64,7 +64,7 @@ class sendWhatsApp extends Command
                 'priority' => $data['priority']['name'],
             ]);
             $code = $response->status();
-        } else {
+        } else if ($data['current_status'] != 'ALERT') {
             $response = Http::post(env('WHATSAPP_URL') . 'mail-status/' . $data['sender_phone_number'] . '/' . $data['current_status'], [
                 'sender' => $data['sender'],
                 'number' => $data['number'],
