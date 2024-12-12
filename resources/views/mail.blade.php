@@ -179,7 +179,11 @@
                         <input type="hidden" name="status">
                         <div class="alert alert-warning">@lang('translation.mail_warning_status')</div>
                         <div class="mb-3">
-                            <label for="user_id">@lang('translation.mail_processor')</label>
+                            <label for="admin" class="form-label">@lang('translation.mail_processor')</label>
+                            <input type="text" class="form-control" name="admin" value="{{ auth()->user()->name }}" disabled id="admin">
+                        </div>
+                        <div class="mb-3">
+                            <label for="user_id">@lang('translation.mail_filed')</label>
                             <select name="user_id" id="user_id" class="form-select select2"></select>
                         </div>
                         <div class="col-status-process d-none">
@@ -447,7 +451,7 @@
                     }
                 });
             });
-            $('.request-notify').click(function() {
+            $('button.request-notify').click(function() {
                 if (window.dataTableMail.rows('.selected').data().length == 0) {
                     $('#table-mail-in tbody').find('tr').removeClass('selected');
                     $(this).parents('tr').addClass('selected')
@@ -699,6 +703,17 @@
                 }, ]
             });
             window.dataTableMail.on('draw.dt', function() {
+                let existsRequestNotified = window.dataTableMail.data().filter((value) => {
+                    return value.request_notified == true && value.notified == false;
+                });
+                let existsRequestNotifiedTimeOut = null;
+                if (existsRequestNotified.length> 0) {
+                    existsRequestNotifiedTimeOut = setTimeout(() => {
+                        $('#reload-mail-in').click()
+                    }, 10000);
+                } else {
+                    clearTimeout(existsRequestNotifiedTimeOut)
+                }
                 actionData();
             });
             $('#save-mail-in').click(function() {

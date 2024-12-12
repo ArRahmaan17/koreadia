@@ -31,13 +31,17 @@ class MailTransactionController extends Controller
                     ->on('transaction_mails.status', '=', 'wq.current_status');
             })
             ->where(
-                'transaction_mails.status', '!=', 'OUT'
+                'transaction_mails.status',
+                '!=',
+                'OUT'
             )->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id)
-                    ->orWhere('transaction_mails.user_id',
+                    ->orWhere(
+                        'transaction_mails.user_id',
                         ((getRole() == 'Developer') ? '<>' : '='),
-                        ((getRole() == 'Developer') ? null : auth()->user()->id));
+                        ((getRole() == 'Developer') ? null : auth()->user()->id)
+                    );
             })
             ->orderBy('id', 'asc')
             ->count();
@@ -101,9 +105,11 @@ class MailTransactionController extends Controller
             $assets = $assets->where('transaction_mails.status', '!=', 'OUT')->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id)
-                    ->orWhere('transaction_mails.user_id',
+                    ->orWhere(
+                        'transaction_mails.user_id',
                         ((getRole() == 'Developer') ? '<>' : '='),
-                        ((getRole() == 'Developer') ? null : auth()->user()->id));
+                        ((getRole() == 'Developer') ? null : auth()->user()->id)
+                    );
             })->get();
             $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
                 ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
@@ -133,9 +139,11 @@ class MailTransactionController extends Controller
             $totalFiltered = $totalFiltered->where('transaction_mails.status', '!=', 'OUT')->where(function ($query) {
                 $query->where('wq.user_id', auth()->user()->id)
                     ->orWhere('transaction_mails.creator_id', auth()->user()->id)
-                    ->orWhere('transaction_mails.user_id',
+                    ->orWhere(
+                        'transaction_mails.user_id',
                         ((getRole() == 'Developer') ? '<>' : '='),
-                        ((getRole() == 'Developer') ? null : auth()->user()->id));
+                        ((getRole() == 'Developer') ? null : auth()->user()->id)
+                    );
             })->count();
         }
         $dataFiltered = [];
@@ -158,12 +166,19 @@ class MailTransactionController extends Controller
             $row['agenda'] = $item->agenda;
             $row['priority'] = $item->priority;
             $row['type'] = $item->type;
+            $row['request_notified'] = $item->request_notified;
+            $row['notified'] = $item->notified;
             if ((getRole() == 'Developer' || $item->creator_id == auth()->user()->id) && $item->notified && (in_array($item->status, ['REPLIED', 'OUT']))) {
                 $row['action'] = "<button class='btn btn-icon btn-warning update-status' data-mailsIn='" . $item->id . "' ><i class='bx bx-check-double'></i></button>";
             } elseif ((getRole() == 'Developer' || $item->user_id == auth()->user()->id) && (!in_array($item->status, ['REPLIED', 'OUT', 'ARCHIVE']))) {
-                $row['action'] = "<button class='btn btn-icon btn-success request-notify' data-mailsIn='" . $item->id . "' ><i class='bx bxl-whatsapp'></i></button><button class='btn btn-icon btn-info update-status' data-mailsIn='" . $item->id . "' ><i class='bx bxs-chevrons-up'></i></button><button class='btn btn-icon btn-warning edit' data-mailsIn='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button data-mailsIn='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
-            } elseif (($item->creator_id == auth()->user()->id && $item->status != 'ARCHIVE') || ($item->request_notified == true && $item->notified == false)) {
-                $row['action'] = "<button class='btn btn-icon btn-secondary disabled' data-mailsIn='" . $item->id . "' ><i class='bx bx-loader-circle' ></i></button>";
+                if ($item->request_notified && $item->notified) {
+                    $row['action'] = "<div title='notifikasi surat sudah dikirim' class='btn btn-icon btn-success' data-mailsIn='" . $item->id . "' ><i class='bx bx-check' ></i></div>";
+                } elseif ($item->request_notified) {
+                    $row['action'] = "<div title='menunggu notifikasi surat' class='btn btn-icon btn-success' data-mailsIn='" . $item->id . "' ><i class='bx bx-loader-circle' ></i></div>";
+                } else {
+                    $row['action'] = "<button title='request notifikasi surat' class='btn btn-icon btn-success request-notify' data-mailsIn='" . $item->id . "' ><i class='bx bxl-whatsapp'></i></button>";
+                }
+                $row['action'] .= "<button title='Ubah status surat' class='btn btn-icon btn-info update-status' data-mailsIn='" . $item->id . "' ><i class='bx bxs-chevrons-up'></i></button><button title='Ubah isi surat' class='btn btn-icon btn-warning edit' data-mailsIn='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button title='Hapus surat' data-mailsIn='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             } else {
                 $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='" . $item->id . "' ><i class='bx bxs-show'></i></button><button class='btn btn-icon btn-success print-report' data-mailsIn='" . $item->id . "' ><i class='bx bxs-printer'></i></button>";
             }
@@ -582,7 +597,7 @@ class MailTransactionController extends Controller
     public function statusUpdate($id, Request $request)
     {
         $request->validate([
-            'user_id' => 'required|numeric',
+            'user_id' => 'required|numeric|exists:users,id',
         ], [
             'user_id.numeric' => 'The processor must selected.',
         ]);
@@ -837,6 +852,16 @@ class MailTransactionController extends Controller
             }
             WhatsappQueue::where($where_queue)->delete();
             WhatsappQueue::insert($data_queue);
+            WhatsappQueue::insert([[
+                'transaction_mail_id' => $current_status->id,
+                'current_status' => 'ALERT',
+                'last_status' => null,
+                'created_at' => now(env('APP_TIMEZONE')),
+                'updated_at' => now(env('APP_TIMEZONE')),
+                'user_id' => $request->user_id,
+                'request_notified' => true,
+                'request_notified_at' => now(env('APP_TIMEZONE')),
+            ]]);
             if ($request->has('reply_file_attachment')) {
                 $file_attachment = json_decode($request->reply_file_attachment);
                 $file_name = 'reply_file_attachment/' . $file_attachment->id . '.pdf';
@@ -852,7 +877,6 @@ class MailTransactionController extends Controller
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th);
             $response = ['message' => 'failed updating status mail'];
             $code = 422;
         }
