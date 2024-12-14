@@ -2,5 +2,5 @@
 - button request notified di disabled kalau sudah request notified (v)
 - diajukan ke siapa? (v)
 - notifikasi admin (v)
-- limit wa untuk hari jumat
+- limit wa untuk hari jumat 
 - broken access control

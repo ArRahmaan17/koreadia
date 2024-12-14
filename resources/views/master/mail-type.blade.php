@@ -29,6 +29,7 @@
                             <th>@lang('translation.no')</th>
                             <th>@lang('translation.name')</th>
                             <th>@lang('translation.description')</th>
+                            <th>@lang('translation.priority')</th>
                             <th>@lang('translation.action')</th>
                         </tr>
                     </thead>
@@ -56,6 +57,10 @@
                         <div class="form-floating mb-3">
                             <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter your description type mail"></textarea>
                             <label for="description">@lang('translation.description')</label>
+                        </div>
+                        <div class="form-check form-switch form-switch-md mb-3">
+                            <input type="checkbox" class="form-check-input" name="priority" id="priority">
+                            <label class="form-check-label" for="priority">Penting</label>
                         </div>
                     </form>
                 </div>
@@ -190,7 +195,7 @@
         }
         $(function() {
             window.dataTableType = $('#table-type').DataTable({
-               // scrollY: '100%',
+                // scrollY: '100%',
                 // scrollX: '100%',
                 ajax: "{{ route('master.type.data-table') }}",
                 processing: true,
@@ -199,42 +204,53 @@
                     [1, 'desc']
                 ],
                 columns: [{
-                    target: 0,
-                    name: 'number',
-                    data: 'number',
-                    orderable: false,
-                    searchable: false,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
+                        target: 0,
+                        name: 'number',
+                        data: 'number',
+                        orderable: false,
+                        searchable: false,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        }
+                    }, {
+                        target: 1,
+                        name: 'name',
+                        data: 'name',
+                        orderable: true,
+                        searchable: true,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        }
+                    }, {
+                        target: 2,
+                        name: 'description',
+                        data: 'description',
+                        orderable: true,
+                        searchable: true,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        }
+                    }, {
+                        target: 3,
+                        name: 'priority',
+                        data: 'priority',
+                        orderable: true,
+                        searchable: false,
+                        render: (data, type, row, meta) => {
+                            return `<div class='text-wrap'>${data}</div>`
+                        }
+                    },
+                    {
+                        target: 4,
+                        name: 'action',
+                        data: 'action',
+                        orderable: false,
+                        searchable: false,
+                        render: (data, type, row, meta) => {
+                            return `<div class='d-flex gap-1'>${data}</div>`
+                        }
                     }
-                }, {
-                    target: 1,
-                    name: 'name',
-                    data: 'name',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 2,
-                    name: 'description',
-                    data: 'description',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 3,
-                    name: 'action',
-                    data: 'action',
-                    orderable: false,
-                    searchable: false,
-                    render: (data, type, row, meta) => {
-                        return `<div class='d-flex gap-1'>${data}</div>`
-                    }
-                }]
+                ]
             });
             window.dataTableType.on('draw.dt', function() {
                 actionData();

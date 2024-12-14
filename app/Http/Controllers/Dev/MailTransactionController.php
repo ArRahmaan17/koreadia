@@ -243,8 +243,8 @@ class MailTransactionController extends Controller
                 $codeResponse = $registered->status();
             }
             if ($codeResponse > 300) {
-                $data_queue['request_notified'] = true;
-                $data_queue['notified'] = true;
+                $data_queue[0]['request_notified'] = true;
+                $data_queue[0]['notified'] = true;
             }
             WhatsappQueue::insert($data_queue);
             WhatsappQueue::insert([

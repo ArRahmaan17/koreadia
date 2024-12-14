@@ -62,6 +62,7 @@ class TypeController extends Controller
             $row['number'] = $request['start'] + ($index + 1);
             $row['name'] = $item->name;
             $row['description'] = $item->description;
+            $row['priority'] = $item->priority ? 'Penting' : 'Biasa';
             $row['action'] = "<button class='btn btn-icon btn-warning edit' data-type='".$item->id."' ><i class='bx bx-pencil' ></i></button><button data-type='".$item->id."' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             $dataFiltered[] = $row;
         }
