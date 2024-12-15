@@ -29,7 +29,7 @@ class sendWhatsApp extends Command
     {
         $data = TransactionMail::select('transaction_mails.*', 'wq.notified', 'wq.request_notified', 'wq.current_status')
             ->join('whatsapp_queues as wq', 'transaction_mails.id', '=', 'wq.transaction_mail_id')
-            ->with('admin', 'agenda', 'type', 'priority')->where([['notified', false], ['request_notified', true]])
+            ->with('admin', 'agenda', 'type', 'priority', 'histories.validator')->where([['notified', false], ['request_notified', true]])
             ->orderBy('wq.transaction_mail_id', 'ASC')
             ->find($this->argument('transaction_mail_id'))
             ->toArray();
@@ -68,7 +68,9 @@ class sendWhatsApp extends Command
             $response = Http::post(env('WHATSAPP_URL') . 'mail-status/' . $data['sender_phone_number'] . '/' . $data['current_status'], [
                 'sender' => $data['sender'],
                 'number' => $data['number'],
+                'regarding' => $data['regarding'],
                 'admin' => $data['admin']['name'],
+                'validator' => $data['validator']['name'],
                 'agenda' => $data['agenda']['name'],
                 'type' => $data['type']['name'],
                 'priority' => $data['priority']['name'],

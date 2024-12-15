@@ -36,7 +36,7 @@
                             <th>@lang('translation.no')</th>
                             <th>@lang('translation.mail_number')</th>
                             <th>@lang('translation.mail_regarding')</th>
-                            <th>@lang('translation.mail_agenda')</th>
+                            {{-- <th>@lang('translation.mail_agenda')</th> --}}
                             <th>@lang('translation.mail_priority')</th>
                             <th>@lang('translation.mail_type')</th>
                             <th>@lang('translation.mail_date')</th>
@@ -86,14 +86,14 @@
                                         id="regarding">
                                 </div>
                             </div><!--end col-->
-                            <div class="col-6">
+                            {{-- <div class="col-6">
                                 <div class="mb-3">
                                     <label for="agenda_id" class="form-label">@lang('translation.mail_agenda')</label>
                                     <select name="agenda_id" id="agenda_id" class="form-select select2">
                                         <option value="">PILIH </option>
                                     </select>
                                 </div>
-                            </div><!--end col-->
+                            </div><!--end col--> --}}
                             <div class="col-6">
                                 <div class="mb-3">
                                     <label for="priority_id" class="form-label">@lang('translation.mail_priority')</label>
@@ -601,17 +601,17 @@
                     render: (data, type, row, meta) => {
                         return `<div class='text-wrap'>${data}</div>`
                     }
+                // }, {
+                //     target: 3,
+                //     name: 'agenda',
+                //     data: 'agenda',
+                //     orderable: true,
+                //     searchable: true,
+                //     render: (data, type, row, meta) => {
+                //         return `<div class='text-wrap'>${data}</div>`
+                //     }
                 }, {
                     target: 3,
-                    name: 'agenda',
-                    data: 'agenda',
-                    orderable: true,
-                    searchable: true,
-                    render: (data, type, row, meta) => {
-                        return `<div class='text-wrap'>${data}</div>`
-                    }
-                }, {
-                    target: 4,
                     name: 'priority',
                     data: 'priority',
                     orderable: true,
@@ -620,7 +620,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 5,
+                    target: 4,
                     name: 'type',
                     data: 'type',
                     orderable: true,
@@ -629,7 +629,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 6,
+                    target: 5,
                     name: 'date',
                     data: 'date',
                     orderable: true,
@@ -638,7 +638,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 7,
+                    target: 6,
                     name: 'sender',
                     data: 'sender',
                     orderable: true,
@@ -647,7 +647,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 8,
+                    target: 7,
                     name: 'sender_phone_number',
                     data: 'sender_phone_number',
                     orderable: true,
@@ -656,7 +656,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 9,
+                    target: 8,
                     name: 'file_attachment',
                     data: 'file_attachment',
                     orderable: false,
@@ -665,7 +665,7 @@
                         return `<div class='d-flex m-0 p-0 g-1'>${data}</div>`
                     }
                 }, {
-                    target: 10,
+                    target: 9,
                     name: 'status',
                     data: 'status',
                     orderable: true,
@@ -674,7 +674,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 11,
+                    target: 10,
                     name: 'date_in',
                     data: 'date_in',
                     orderable: true,
@@ -683,7 +683,7 @@
                         return `<div class='text-wrap'>${data}</div>`
                     }
                 }, {
-                    target: 12,
+                    target: 11,
                     name: 'admin',
                     data: 'admin',
                     orderable: true,
@@ -692,7 +692,7 @@
                         return `<div class='d-flex gap-1'>${data}</div>`
                     }
                 }, {
-                    target: 13,
+                    target: 12,
                     name: 'action',
                     data: 'action',
                     orderable: false,
@@ -843,17 +843,17 @@
                 if (window.state == 'update') {
                     $('#file_attachment_help').removeClass('d-none')
                 }
-                $.ajax({
-                    type: "GET",
-                    url: `{{ route('master.agenda.all') }}`,
-                    dataType: "json",
-                    success: function(response) {
-                        $("#agenda_id").html(dataToOption(response.data));
-                        $('.select2').select2({
-                            dropdownParent: $('#modal-mail-in'),
-                        })
-                    }
-                });
+                // $.ajax({
+                //     type: "GET",
+                //     url: `{{ route('master.agenda.all') }}`,
+                //     dataType: "json",
+                //     success: function(response) {
+                //         $("#agenda_id").html(dataToOption(response.data));
+                //         $('.select2').select2({
+                //             dropdownParent: $('#modal-mail-in'),
+                //         })
+                //     }
+                // });
                 $.ajax({
                     type: "GET",
                     url: `{{ route('master.priority.all') }}`,
