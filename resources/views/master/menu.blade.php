@@ -415,7 +415,6 @@
                             displayMode: 'replace'
                         });
                         window.dataTableMenu.ajax.reload();
-
                     },
                     error: function(error) {
                         $('#modal-menu .is-invalid').removeClass('is-invalid')
@@ -445,7 +444,7 @@
                 $('#table-menu tbody').find('tr').removeClass('selected');
                 $('#modal-menu')
                     .find('form select')
-                    .prop("disabled", true);
+                    .prop("disabled", false);
             });
             $('#modal-menu').on('shown.bs.modal', function() {
                 setTimeout(() => {

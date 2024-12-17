@@ -20,7 +20,6 @@ class TransactionMail extends Model
         'file_attachment',
         'status',
         'date_in',
-        'agenda_id',
         'priority_id',
         'type_id',
         'user_id',

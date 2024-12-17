@@ -29,7 +29,7 @@
                             <th>@lang('translation.no')</th>
                             <th>@lang('translation.name')</th>
                             <th>@lang('translation.description')</th>
-                            <th>@lang('translation.priority')</th>
+                            <th>@lang('translation.mail_priority')</th>
                             <th>@lang('translation.action')</th>
                         </tr>
                     </thead>

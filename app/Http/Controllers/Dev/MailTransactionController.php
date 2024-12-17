@@ -22,7 +22,7 @@ class MailTransactionController extends Controller
 
     public function dataTable(Request $request)
     {
-        $totalData = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
+        $totalData = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
             ->join('mail_priorities as mp', 'mp.id', '=', 'transaction_mails.priority_id')
             ->join('mail_types as mt', 'mt.id', '=', 'transaction_mails.type_id')
             ->join('users as u', 'u.id', '=', 'transaction_mails.user_id')
@@ -47,7 +47,7 @@ class MailTransactionController extends Controller
             ->count();
         $totalFiltered = $totalData;
         if (empty($request['search']['value'])) {
-            $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
+            $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
                 ->join('mail_priorities as mp', 'mp.id', '=', 'transaction_mails.priority_id')
                 ->join('mail_types as mt', 'mt.id', '=', 'transaction_mails.type_id')
                 ->join('users as u', 'u.id', '=', 'transaction_mails.user_id')
@@ -73,8 +73,8 @@ class MailTransactionController extends Controller
                     );
             })->get();
         } else {
-            $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
-                ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
+            $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
+                
                 ->join('mail_priorities as mp', 'mp.id', '=', 'transaction_mails.priority_id')
                 ->join('mail_types as mt', 'mt.id', '=', 'transaction_mails.type_id')
                 ->join('users as u', 'u.id', '=', 'transaction_mails.user_id')
@@ -111,8 +111,8 @@ class MailTransactionController extends Controller
                         ((getRole() == 'Developer') ? null : auth()->user()->id)
                     );
             })->get();
-            $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'ma.name as agenda', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
-                ->join('mail_agendas as ma', 'ma.id', '=', 'transaction_mails.agenda_id')
+            $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
+                
                 ->join('mail_priorities as mp', 'mp.id', '=', 'transaction_mails.priority_id')
                 ->join('mail_types as mt', 'mt.id', '=', 'transaction_mails.type_id')
                 ->join('users as u', 'u.id', '=', 'transaction_mails.user_id')
@@ -200,9 +200,9 @@ class MailTransactionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'number' => 'required|unique:transaction_mails,number|min:14|max:32',
+            'number' => 'required|unique:transaction_mails,number|min:5|max:32',
             'regarding' => 'required|string|min:5|max:50',
-            'agenda_id' => 'required|numeric',
+            // 'agenda_id' => 'required|numeric',
             'priority_id' => 'required|numeric',
             'type_id' => 'required|numeric',
             'date' => 'required|Date',
