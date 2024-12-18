@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -148,8 +149,8 @@ if (! function_exists('buildMenu')) {
 }
 
 if (! function_exists('getRole')) {
-    function getRole()
+    function getRole($id = null)
     {
-        return auth()->user()->role->roles->name;
+        return $id == null ? auth()->user()->role->roles->name : User::with('role.roles')->find($id)->role->roles->name;
     }
 }

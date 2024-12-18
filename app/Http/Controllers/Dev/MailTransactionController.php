@@ -74,7 +74,7 @@ class MailTransactionController extends Controller
             })->get();
         } else {
             $assets = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
-                
+
                 ->join('mail_priorities as mp', 'mp.id', '=', 'transaction_mails.priority_id')
                 ->join('mail_types as mt', 'mt.id', '=', 'transaction_mails.type_id')
                 ->join('users as u', 'u.id', '=', 'transaction_mails.user_id')
@@ -112,7 +112,7 @@ class MailTransactionController extends Controller
                     );
             })->get();
             $totalFiltered = TransactionMail::select('transaction_mails.*', 'u.name as admin', 'mp.name as priority', 'mt.name as type', 'wq.notified', 'wq.request_notified', 'wq.user_id as processor_id')
-                
+
                 ->join('mail_priorities as mp', 'mp.id', '=', 'transaction_mails.priority_id')
                 ->join('mail_types as mt', 'mt.id', '=', 'transaction_mails.type_id')
                 ->join('users as u', 'u.id', '=', 'transaction_mails.user_id')
@@ -178,7 +178,9 @@ class MailTransactionController extends Controller
                 } else {
                     $row['action'] = "<button title='request notifikasi surat' class='btn btn-icon btn-success request-notify' data-mailsIn='" . $item->id . "' ><i class='bx bxl-whatsapp'></i></button>";
                 }
-                $row['action'] .= "<button title='Ubah status surat' class='btn btn-icon btn-info update-status' data-mailsIn='" . $item->id . "' ><i class='bx bxs-chevrons-up'></i></button><button title='Ubah isi surat' class='btn btn-icon btn-warning edit' data-mailsIn='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button title='Hapus surat' data-mailsIn='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
+                $row['action'] .= "<button title='Ubah status surat' class='btn btn-icon btn-info update-status' data-mailsIn='" . $item->id . "' ><i class='bx bxs-chevrons-up'></i></button>";
+            } else if ((getRole() == 'Developer' || $item->creator_id == auth()->user()->id) && $item->status == 'IN') {
+                $row['action'] = "<button title='Ubah isi surat' class='btn btn-icon btn-warning edit' data-mailsIn='" . $item->id . "' ><i class='bx bx-pencil' ></i></button><button title='Hapus surat' data-mailsIn='" . $item->id . "' class='btn btn-icon btn-danger delete'><i class='bx bxs-trash-alt' ></i></button>";
             } else {
                 $row['action'] = "<button class='btn btn-icon btn-info show' data-mailsIn='" . $item->id . "' ><i class='bx bxs-show'></i></button><button class='btn btn-icon btn-success print-report' data-mailsIn='" . $item->id . "' ><i class='bx bxs-printer'></i></button>";
             }
@@ -201,7 +203,7 @@ class MailTransactionController extends Controller
     {
         $request->validate([
             'number' => 'required|unique:transaction_mails,number|min:5|max:32',
-            'regarding' => 'required|string|min:5|max:50',
+            'regarding' => 'required|string|min:5|max:150',
             // 'agenda_id' => 'required|numeric',
             'priority_id' => 'required|numeric',
             'type_id' => 'required|numeric',
@@ -293,7 +295,7 @@ class MailTransactionController extends Controller
     {
         $request->validate([
             'number' => 'required|unique:transaction_mails,number,' . $id . '|min:14|max:32',
-            'regarding' => 'required|string|min:5|max:50',
+            'regarding' => 'required|string|min:5|max:150',
             'agenda_id' => 'required|numeric',
             'priority_id' => 'required|numeric',
             'type_id' => 'required|numeric',

@@ -38,15 +38,35 @@ class sendWhatsApp extends Command
             $registered = Http::get(env('WHATSAPP_URL') . 'phone-check/' . unFormattedPhoneNumber($data['admin']['phone_number']));
             $code = 301;
             if (intval($registered->status()) <= 300) {
-                $response = Http::post(env('WHATSAPP_URL') . 'mail-status/' . unFormattedPhoneNumber($data['admin']['phone_number']) . '/' . $data['current_status'], [
-                    'sender' => $data['sender'],
-                    'number' => $data['number'],
-                    'admin' => $data['admin']['name'],
-                    'agenda' => $data['agenda']['name'],
-                    'type' => $data['type']['name'],
-                    'priority' => $data['priority']['name'],
-                ]);
-                $code = $response->status();
+                if (getRole($data['admin']['id']) == 'User Eselon' || getRole($data['admin']['id']) == 'Developer') {
+                    $response = Http::attach(
+                        'file_attachment',
+                        file_get_contents(public_path($data['file_attachment'])),
+                        $data['regarding'] . '.pdf'
+                    )->post(env('WHATSAPP_URL') . 'mail-status/' . unFormattedPhoneNumber($data['admin']['phone_number']) . '/' . $data['current_status'], [
+                        'sender' => $data['sender'],
+                        'number' => $data['number'],
+                        'regarding' => $data['regarding'],
+                        'admin' => $data['admin']['name'],
+                        'validator' => $data['history']['validator']['name'],
+                        'user' => $data['history']['user']['name'],
+                        'type' => $data['type']['name'],
+                        'priority' => $data['priority']['name'],
+                    ]);
+                    $code = $response->status();
+                } else {
+                    $response = Http::post(env('WHATSAPP_URL') . 'mail-status/' . unFormattedPhoneNumber($data['admin']['phone_number']) . '/' . $data['current_status'], [
+                        'sender' => $data['sender'],
+                        'number' => $data['number'],
+                        'regarding' => $data['regarding'],
+                        'admin' => $data['admin']['name'],
+                        'validator' => $data['history']['validator']['name'],
+                        'user' => $data['history']['user']['name'],
+                        'type' => $data['type']['name'],
+                        'priority' => $data['priority']['name'],
+                    ]);
+                    $code = $response->status();
+                }
             } else {
                 $code = 200;
             }
